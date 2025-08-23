@@ -643,7 +643,7 @@ const CVEditor = () => {
               <div class="contact-item"><strong>Phone:</strong> ${cvData.personalDetails.phone}</div>
               <div class="contact-item"><strong>Address:</strong> ${cvData.personalDetails.address}</div>
               <div class="contact-item"><strong>Email:</strong> ${cvData.personalDetails.email}</div>
-              <div class="contact-item" style="grid-column: 1/-1;"><strong>Website:</strong> ${cvData.personalDetails.website}</div>
+              <div class="contact-item"><strong>Website:</strong> ${cvData.personalDetails.website}</div>
             </div>
           </div>
           

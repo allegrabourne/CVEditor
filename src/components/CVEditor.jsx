@@ -418,7 +418,7 @@ const CVEditor = () => {
         gap: 12px;
       }
       .contact-item {
-        margin: 5px 0;
+        margin: 2px 0;
         display: flex;
         align-items: center;
       }
@@ -634,13 +634,12 @@ const CVEditor = () => {
         </head>
         <body>
           <div class="header">
-            <h1>Curriculum Vitae</h1>
+            <h1>${cvData.personalDetails.name}</h1>
           </div>
           
           <div class="personal-details">
-            <h2>PERSONAL DETAILS</h2>
+            <h2>CONTACT DETAILS</h2>
             <div class="contact-info">
-              <div class="contact-item"><strong>Name:</strong> ${cvData.personalDetails.name}</div>
               <div class="contact-item"><strong>Phone:</strong> ${cvData.personalDetails.phone}</div>
               <div class="contact-item"><strong>Address:</strong> ${cvData.personalDetails.address}</div>
               <div class="contact-item"><strong>Email:</strong> ${cvData.personalDetails.email}</div>

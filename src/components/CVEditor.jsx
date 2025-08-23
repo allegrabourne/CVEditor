@@ -7,7 +7,7 @@ const CVEditor = () => {
       name: "Allegra Bourne",
       phone: "(+44) 7854 943 193",
       address: "14 Lewis Road, Northallerton, North Yorkshire, UK. DL6 3RX",
-      email: "alleweston@gmail.com",
+      email: "allegrabourne@gmail.com",
       website: "allegrabourne.github.io/"
     },
     profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nRecognised for mentoring, collaboration, and building systems that enhance operational performance.",

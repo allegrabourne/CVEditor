@@ -304,7 +304,7 @@ Advocate of mentoring and collaboration. Seeking to contribute technical experti
               <div class="contact-item"><strong>Phone:</strong> ${e.personalDetails.phone}</div>
               <div class="contact-item"><strong>Address:</strong> ${e.personalDetails.address}</div>
               <div class="contact-item"><strong>Email:</strong> ${e.personalDetails.email}</div>
-              <div class="contact-item" style="grid-column: 1/-1;"><strong>Website:</strong> ${e.personalDetails.website}</div>
+              <div class="contact-item"><strong>Website:</strong> ${e.personalDetails.website}</div>
             </div>
           </div>
           

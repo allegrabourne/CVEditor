@@ -197,7 +197,7 @@ const CVEditor = () => {
   };
 
   const generatePrintableHTML = () => {
-    const styledCSS = `
+    const richCSS = `
       body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.6;
@@ -210,7 +210,6 @@ const CVEditor = () => {
       }
       .header {
         text-align: center;
-        border-bottom: 3px solid #2c5aa0;
         padding-bottom: 20px;
         margin-bottom: 30px;
       }
@@ -230,7 +229,6 @@ const CVEditor = () => {
         color: #2c5aa0;
         font-size: 1.2em;
         margin-top: 0;
-        border-bottom: 2px solid #2c5aa0;
         padding-bottom: 5px;
       }
       .contact-info {
@@ -250,7 +248,6 @@ const CVEditor = () => {
       .section h2 {
         color: #2c5aa0;
         font-size: 1.3em;
-        border-bottom: 2px solid #2c5aa0;
         padding-bottom: 5px;
         margin-bottom: 15px;
       }
@@ -336,9 +333,21 @@ const CVEditor = () => {
       .contact-item strong {
         font-weight: bold;
       }
+      .personal-details h2 {
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      .job {
+        margin-bottom: 20px;
+      }
+      .company-description {
+        font-style: italic;
+        margin-bottom: 10px;
+      }
     `;
 
-    const css = selectedStyle === 'styled' ? styledCSS : plainCSS;
+    const css = selectedStyle === 'styled' ? richCSS : plainCSS;
 
     return `
       <!DOCTYPE html>
@@ -451,7 +460,7 @@ const CVEditor = () => {
                 onChange={(e) => setSelectedStyle(e.target.value)}
                 className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="styled">Professional Styled</option>
+                <option value="styled">Rich Professional</option>
                 <option value="plain">Plain Professional</option>
               </select>
             </div>

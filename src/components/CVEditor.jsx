@@ -10,7 +10,7 @@ const CVEditor = () => {
       email: "alleweston@gmail.com",
       website: "allegrabourne.github.io/"
     },
-    profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nRecognised for mentoring, collaboration, and building systems that enhance operational performance.",
+    profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nAdvocate of mentoring and collaboration. Seeking to contribute technical expertise to innovative projects.",
     workExperience: [
       {
         title: "Senior Software Engineer",
@@ -29,7 +29,7 @@ const CVEditor = () => {
         title: "Full Stack Developer",
         company: "Refract - an Allego company, Newcastle upon Tyne, England, United Kingdom",
         dates: "Apr 2021 - Jun 2022",
-        description: "Refract Utilising AI technology to deliver personalised insight, based on the business and their reps, showing the actions and words that align with top performers and results. Allego Sets out to improve onboarding and messaging consistency with high-quality, reliable and secure video learning, communication and collaboration. Engaging new hires quickly, developing critical skills and driving faster results for an organisation.",
+        description: "Refract utilises AI technology to deliver personalised insight, based on the business and their reps, showing the actions and words that align with top performers and results. Allego sets out to improve onboarding and messaging consistency with high-quality, reliable and secure video learning, communication and collaboration. Engaging new hires quickly, developing critical skills and driving faster results for an organisation.",
         responsibilities: [
           "Introduced multilingual capabilities to the Refract platform.",
           "Worked on introducing new 'road map' features to the Refract platform such as Call Analytics, Platform Usage and Deal Intelligence dashboards.",
@@ -169,11 +169,11 @@ const CVEditor = () => {
     certificates: [
       {
         title: "IBM Data Science Professional Certificate",
-        description: ""
+        description: "A comprehensive, ACE-recommended (12 college credits) and FIBAA-accredited (6 ECTS credits) program covering key data science skills, including Python, regression analysis, statistical modeling, and machine learning."
       },
       {
         title: "IBM AI Developer Professional Certificate",
-        description: ""
+        description: "A comprehensive program focused on the essential skills for developing AI applications, including machine learning, deep learning, and natural language processing."
       }
     ],
     education: {

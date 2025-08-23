@@ -85,7 +85,7 @@ Recognised for mentoring, collaboration, and building systems that enhance opera
         gap: 12px;
       }
       .contact-item {
-        margin: 5px 0;
+        margin: 2px 0;
         display: flex;
         align-items: center;
       }
@@ -295,13 +295,12 @@ Recognised for mentoring, collaboration, and building systems that enhance opera
         </head>
         <body>
           <div class="header">
-            <h1>Curriculum Vitae</h1>
+            <h1>${e.personalDetails.name}</h1>
           </div>
           
           <div class="personal-details">
-            <h2>PERSONAL DETAILS</h2>
+            <h2>CONTACT DETAILS</h2>
             <div class="contact-info">
-              <div class="contact-item"><strong>Name:</strong> ${e.personalDetails.name}</div>
               <div class="contact-item"><strong>Phone:</strong> ${e.personalDetails.phone}</div>
               <div class="contact-item"><strong>Address:</strong> ${e.personalDetails.address}</div>
               <div class="contact-item"><strong>Email:</strong> ${e.personalDetails.email}</div>

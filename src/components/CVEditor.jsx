@@ -589,8 +589,8 @@ const CVEditor = () => {
       .contact-info {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
+        gap: 5px;
+        margin-bottom: 15x;
       }
       .contact-item strong {
         font-weight: bold;
@@ -601,7 +601,7 @@ const CVEditor = () => {
         margin-bottom: 10px;
       }
       .job, .project {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
       .company-description {
         font-style: italic;

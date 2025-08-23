@@ -4,47 +4,114 @@ import { Download, Edit3, Eye, FileText, Palette } from 'lucide-react';
 const CVEditor = () => {
   const [cvData, setCvData] = useState({
     personalDetails: {
-      name: "Your Name",
-      phone: "Your Phone Number",
-      address: "Your Address",
-      email: "your.email@example.com",
-      website: "your-website.com"
+      name: "Allegra Bourne",
+      phone: "(+44) 7854 943 193",
+      address: "14 Lewis Road, Northallerton, North Yorkshire, UK. DL6 3RX",
+      email: "allegrabourne@gmail.com",
+      website: "allegrabourne.github.io/"
     },
-    profile: "Enter your professional profile summary here. This should be a brief overview of your experience, skills, and career objectives.",
+    profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nRecognised for mentoring, collaboration, and building systems that enhance operational performance.",
     workExperience: [
       {
-        title: "Job Title",
-        company: "Company Name, Location",
-        dates: "Start Date - End Date",
-        description: "Brief description of the company and your role.",
+        title: "Senior Software Engineer",
+        company: "Ligentia, Leeds, England, United Kingdom",
+        dates: "Jun 2022 - Present",
+        description: "Ligentia is a leading supply chain technology and services provider specialising in manufacturing, consumer brands, pharmaceuticals and the retail sector.",
         responsibilities: [
-          "Key responsibility or achievement",
-          "Another important responsibility",
-          "Third responsibility or achievement"
+          "Development of new Consignment Delivery Management portal with API development utilising Fast Endpoints, messaging via Azure ServiceBus and Angular for UI development.",
+          "Worked to develop the new Landed Cost portal, a project which helped to retain Myer; Australia's largest department store, as a customer. Providing Myer with accurate landed cost and end-to-end visibility of their supply chain, from production confirmation, to freight booking, through to delivery to stores spanning Australia.",
+          "Azure DevOps / Octopus Deploy for CI and release management, creation and maintenance of deployment pipelines inline with industry practice.",
+          "Blazor utilised for the developmental concept for the new Client onboarding web application.",
+          "Business analysis of legacy processes where knowledge had been lost with a view of replacing them with newer tech stacks."
+        ]
+      },
+      {
+        title: "Full Stack Developer",
+        company: "Refract - an Allego company, Newcastle upon Tyne, England, United Kingdom",
+        dates: "Apr 2021 - Jun 2022",
+        description: "Refract Utilising AI technology to deliver personalised insight, based on the business and their reps, showing the actions and words that align with top performers and results. Allego Sets out to improve onboarding and messaging consistency with high-quality, reliable and secure video learning, communication and collaboration. Engaging new hires quickly, developing critical skills and driving faster results for an organisation.",
+        responsibilities: [
+          "Introduced multilingual capabilities to the Refract platform.",
+          "Worked on introducing new 'road map' features to the Refract platform such as Call Analytics, Platform Usage and Deal Intelligence dashboards.",
+          ".Net, Angular and SQL utilising code first and EF migrations.",
+          "Azure development utilising blob containers.",
+          "Emphasis on TDD and design patterns to ensure quality of work."
+        ]
+      },
+      {
+        title: "Integrations Developer",
+        company: "XCM, York, England, United Kingdom",
+        dates: "Apr 2020 - Apr 2021",
+        description: "XCM are marketing specialists working with some of the biggest retailers in the UK to leverage competitive advantage via the use of specialist data tools, analysis and CRM services.",
+        responsibilities: [
+          "Client integration utilising .Net Core and Kafka to ensure real time distributed streaming of big data from Google PubSub.",
+          "Docker used for Kafka containerisation.",
+          "TSQL / KSQL development.",
+          "Google Cloud / PubSub integration.",
+          "Apache AVRO for binary serialisation of messages for faster processing.",
+          "Data migration and integration.",
+          "Single Customer View.",
+          "Development of the XCM Horizon data warehouse.",
+          "Web Services development using .Net Core hosted in Kestrel."
+        ]
+      },
+      {
+        title: "Software Engineer",
+        company: "Cubic Corporation, Stockton-On-Tees, United Kingdom",
+        dates: "Jan 2019 - Apr 2020",
+        description: "Cubic Transportation Systems is one arm of Cubic Corporation that produces public transport solutions, traffic management platforms and fare reading and payment systems.",
+        responsibilities: [
+          "Development of ICMP - the traffic management platform utilised by New South Wales, Australia. The platform formed part of TfNSW's $123 million intelligent congestion management program which enabled better traffic management through real-time data and predictive technology.",
+          "Frontend development utilising Angular / Typescript / SignalR.",
+          "Enterprise messaging conducted utilising NServiceBus / RabbitMQ.",
+          "Micro service development utilising AZURE Service Fabric / Topshelf / WebAPI services.",
+          "Continuous integration via Jenkins with SonarCube code smells and Octopus.",
+          "Development undertaken accordingly with Agile/SCRUM methodologies."
+        ]
+      },
+      {
+        title: "Solution Developer",
+        company: "Vianet Group plc, Stockton-On-Tees, United Kingdom",
+        dates: "Jun 2017 - Dec 2018",
+        description: "Vianet are UK leader in providing draught beer quality and waste management services.",
+        responsibilities: [
+          "Worked on the IDraught IOT platform on the consumption of data that would empower customer's strategic decisions on metrics and business intelligence, these insights were then used to measure metrics such as wastage, temperature, in identifying missing drinks and improving drink quality.",
+          "Frontend development on the new 'Vianet IOT Portal' utilising AngularJS 2 / Typescript.",
+          "WebAPI services via the use of .Net Core and hosted using Kestrel.",
+          "AZURE web app services and message queueing.",
+          "Big data processing via HBASE.",
+          "JAVA / Apache SPARK / Hadoop number crunching business logic utilising IntelliJ GUI and taking on a TDD approach.",
+          "Introduced an emphasis on TDD and introduced concepts attaining to Agile/SCRUM and mentoring junior members of the team."
         ]
       }
     ],
     personalProjects: [
       {
-        title: "Project Name",
-        technologies: "Technologies used",
+        title: "AI-Powered Wildlife Health Monitoring Field Lab",
+        technologies: "Python, PyTorch, Raspberry Pi, FastAPI, librosa, Deep Learning, Bioacoustics",
         responsibilities: [
-          "Project description and key achievements",
-          "Technical details and outcomes"
+          "Developed an IoT edge field lab using Python, Raspberry Pi 4, and PyTorch with a custom convolutional neural network to detect hedgehog respiratory illness from acoustic signals, supporting faster interventions and conservation efforts.",
+          "Designed a real-time audio analysis pipeline that records 5-second clips, converts them into spectrograms, and classifies breathing patterns using a neural network, achieving ~75% accuracy and 0.91 precision.",
+          "Engineered a modular architecture with FastAPI, automated night-time recording, remote inference server on GPU hardware, and Pushbullet alerting.",
+          "Applied non-invasive bioacoustic monitoring aligned with UK conservation ethics, demonstrating cross-disciplinary innovation with potential applications in both wildlife conservation and healthcare."
         ]
       }
     ],
     certificates: [
       {
-        title: "Certificate Name",
-        description: "Description of the certificate and its relevance to your career."
+        title: "IBM Data Science Professional Certificate",
+        description: "A comprehensive, ACE-recommended (12 college credits) and FIBAA-accredited (6 ECTS credits) program covering key data science skills, including Python, regression analysis, statistical modeling, and machine learning."
+      },
+      {
+        title: "IBM AI Developer Professional Certificate",
+        description: "A comprehensive program focused on the essential skills for developing AI applications, including machine learning, deep learning, and natural language processing."
       }
     ],
     education: {
-      degree: "Your Degree",
-      university: "University Name",
-      dates: "Start Year - End Year",
-      grade: "Grade or Classification"
+      degree: "BSc (HONS) BUSINESS COMPUTING",
+      university: "University of Teesside",
+      dates: "2004 - 2008",
+      grade: "With Second Class Honours Division One (2:1)"
     }
   });
 

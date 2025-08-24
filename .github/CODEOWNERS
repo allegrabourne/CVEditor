@@ -1,0 +1,11 @@
+# Default: everything needs your review
+*                               @allegrabourne
+
+# Frontend code (adjust paths to your structure)
+src/**                          @allegrabourne
+
+# GitHub workflows (if you have any)
+.github/workflows/**            @allegrabourne
+
+# Single files can have explicit owners
+README.md                       @allegrabourne

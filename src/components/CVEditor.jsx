@@ -1,3 +1,5 @@
+// CVEditor.jsx - Fixed preview consistency
+
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { 
   Download, Edit3, Eye, FileText, Palette, Plus, Trash2, 
@@ -398,118 +400,12 @@ const CVEditor = () => {
     [sectionManager]
   );
 
-  // Generate text-only preview for plain style
-  const generatePlainTextPreview = useCallback(() => {
-    const sections = [];
-    
-    // Name
-    if (cvData.personalDetails.name) {
-      sections.push(cvData.personalDetails.name.toUpperCase());
-      sections.push('');
-    }
-    
-    // Contact Details
-    if (visibleSections.includes('personal')) {
-      sections.push('CONTACT DETAILS');
-      if (cvData.personalDetails.phone) sections.push(`Phone: ${cvData.personalDetails.phone}`);
-      if (cvData.personalDetails.email) sections.push(`Email: ${cvData.personalDetails.email}`);
-      if (cvData.personalDetails.address) sections.push(`Address: ${cvData.personalDetails.address}`);
-      if (cvData.personalDetails.website) sections.push(`Website: ${cvData.personalDetails.website}`);
-      sections.push('');
-    }
-    
-    // Profile
-    if (visibleSections.includes('profile') && cvData.profile) {
-      sections.push('PROFILE');
-      sections.push(cvData.profile);
-      sections.push('');
-    }
-    
-    // Work Experience
-    if (visibleSections.includes('experience') && cvData.workExperience.length > 0) {
-      sections.push('WORK EXPERIENCE');
-      cvData.workExperience.forEach(job => {
-        if (job.title) sections.push(job.title);
-        if (job.company) sections.push(job.company);
-        if (job.dates) sections.push(job.dates);
-        if (job.description) sections.push(job.description);
-        job.responsibilities.forEach(resp => {
-          if (resp) sections.push(`• ${resp}`);
-        });
-        sections.push('');
-      });
-    }
-    
-    // Personal Projects
-    if (visibleSections.includes('projects') && cvData.personalProjects.length > 0) {
-      sections.push('PERSONAL PROJECTS');
-      cvData.personalProjects.forEach(project => {
-        if (project.title) sections.push(project.title);
-        if (project.technologies) sections.push(`Technologies: ${project.technologies}`);
-        project.responsibilities.forEach(resp => {
-          if (resp) sections.push(`• ${resp}`);
-        });
-        sections.push('');
-      });
-    }
-    
-    // Certificates
-    if (visibleSections.includes('certificates') && cvData.certificates.length > 0) {
-      sections.push('CERTIFICATES');
-      cvData.certificates.forEach(cert => {
-        if (cert.title) sections.push(cert.title);
-        if (cert.description) sections.push(cert.description);
-        sections.push('');
-      });
-    }
-    
-    // Education
-    if (visibleSections.includes('education') && (cvData.education.degree || cvData.education.university)) {
-      sections.push('EDUCATION');
-      if (cvData.education.degree) sections.push(cvData.education.degree);
-      if (cvData.education.university) sections.push(cvData.education.university);
-      if (cvData.education.dates) sections.push(cvData.education.dates);
-      if (cvData.education.grade) sections.push(cvData.education.grade);
-      sections.push('');
-    }
-    
-    // Courses
-    if (visibleSections.includes('courses') && cvData.courses) {
-      sections.push('ADDITIONAL COURSES');
-      sections.push(cvData.courses);
-      sections.push('');
-    }
-    
-    return sections.join('\n');
-  }, [cvData, visibleSections]);
-
-  // Generate preview HTML with proper styling
+  // FIXED: Generate preview HTML that exactly matches the export
   const generatePreviewHTML = useCallback(() => {
-    if (selectedStyle === 'plain') {
-      // For plain style, show as preformatted text
-      const plainText = generatePlainTextPreview();
-      return `
-        <style>
-          .plain-text-preview {
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-            line-height: 1.6;
-            font-size: 12px;
-            color: ${isDark ? '#e4e4e7' : '#333'};
-            background: ${isDark ? '#18181b' : 'white'};
-            padding: 20px;
-            margin: 0;
-            width: 100%;
-            max-width: 100%;
-          }
-        </style>
-        <div class="plain-text-preview">${plainText}</div>
-      `;
-    }
-    
+    // Use the exact same function as export but with theme parameter
     const fullHTML = generatePrintableHTML(cvData, selectedStyle, isDark ? 'dark' : 'light', visibleSections);
     
-    // Extract just the body content but keep the styles
+    // Extract just the body content and styles
     const styleMatch = fullHTML.match(/<style[^>]*>([\s\S]*?)<\/style>/);
     const bodyMatch = fullHTML.match(/<body[^>]*>([\s\S]*?)<\/body>/);
     
@@ -519,22 +415,33 @@ const CVEditor = () => {
     return `
       <style>
         ${styles}
-        /* Additional preview-specific styles */
+        /* Preview container adjustments */
         .cv-container {
           max-width: 100% !important;
           width: 100% !important;
           margin: 0 !important;
-          padding: 0 !important;
+          padding: 20px !important;
+          box-sizing: border-box !important;
         }
-        body {
-          margin: 0 !important;
-          max-width: 100% !important;
-          width: 100% !important;
+        /* Remove any center justification that might be applied by the wrapper */
+        * {
+          text-align: inherit !important;
+        }
+        /* Ensure proper text alignment for different sections */
+        .header {
+          text-align: center !important;
+        }
+        .personal-details, .section, .profile, .job, .project, .certificate {
+          text-align: left !important;
+        }
+        /* Override any preview-specific centering */
+        .cv-preview * {
+          text-align: inherit !important;
         }
       </style>
       ${bodyContent}
     `;
-  }, [cvData, selectedStyle, isDark, visibleSections, generatePlainTextPreview]);
+  }, [cvData, selectedStyle, isDark, visibleSections]);
 
   const getInputClasses = useCallback(() => {
     return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-base ${
@@ -934,7 +841,7 @@ const CVEditor = () => {
                   Live Preview
                 </h2>
               </div>
-              <div className="p-8 max-h-screen overflow-y-auto">
+              <div className="max-h-screen overflow-y-auto">
                 <div 
                   className="cv-preview transition-colors duration-300"
                   style={{ width: '100%', maxWidth: '100%' }}

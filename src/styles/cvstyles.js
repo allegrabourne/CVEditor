@@ -1,4 +1,4 @@
-// styles/cvStyles.js - Fixed form element font sizing consistency
+// styles/cvStyles.js - Fixed font consistency and layout
 
 export const lightThemeCSS = `
   body {
@@ -9,12 +9,14 @@ export const lightThemeCSS = `
     color: #333;
     background: white;
     font-size: 12px;
+    text-align: left;
   }
   .cv-container {
     background: white;
     color: #333;
     max-width: 100%;
     width: 100%;
+    text-align: left;
   }
   /* Light theme scrollbar */
   ::-webkit-scrollbar {
@@ -41,12 +43,14 @@ export const darkThemeCSS = `
     color: #e4e4e7;
     background: #18181b;
     font-size: 12px;
+    text-align: left;
   }
   .cv-container {
     background: #18181b;
     color: #e4e4e7;
     max-width: 100%;
     width: 100%;
+    text-align: left;
   }
   /* Dark theme scrollbar */
   ::-webkit-scrollbar {
@@ -62,7 +66,11 @@ export const darkThemeCSS = `
   ::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
   }
-  /* Dark theme overrides */
+`;
+
+// Dark theme decorative styles (only for rich/styled version)
+export const darkThemeStyledCSS = `
+  /* Dark theme overrides for styled version only */
   .header h1 { color: #a5b4fc; }
   .personal-details {
     background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(196, 181, 253, 0.1));
@@ -99,8 +107,22 @@ export const darkThemeCSS = `
   .certificate .job-title { color: #a5b4fc; }
 `;
 
+// Dark theme plain styles (minimal coloring for plain version)
+export const darkThemePlainCSS = `
+  /* Dark theme overrides for plain version - minimal styling */
+  .header h1 { color: #e4e4e7; }
+  .job-title { color: #e4e4e7; }
+  .company { color: #e4e4e7; }
+  .dates { color: #9ca3af; }
+  .company-description { color: #9ca3af; }
+  .technologies { color: #9ca3af; }
+  .certificate .job-title { color: #e4e4e7; }
+  .personal-details h2 { color: #e4e4e7; }
+  .section h2 { color: #e4e4e7; }
+  .contact-item strong { color: #e4e4e7; }
+`;
+
 export const richStyledCSS = `
-  
   .header {
     text-align: center;
     padding-bottom: 20px;
@@ -165,6 +187,7 @@ export const richStyledCSS = `
     line-height: 1.7;
     border-left: 4px solid #667eea;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: left;
   }
   .job {
     margin-bottom: 25px;
@@ -177,6 +200,7 @@ export const richStyledCSS = `
     border-radius: 0 8px 8px 0;
     margin-left: -5px;
     padding-left: 25px;
+    text-align: left;
   }
   .job::before {
     content: '';
@@ -194,18 +218,21 @@ export const richStyledCSS = `
     font-weight: bold;
     color: #2c5aa0;
     margin-bottom: 5px;
+    text-align: left;
   }
   .company {
     font-weight: bold;
     font-size: 1em;
     margin-bottom: 3px;
     color: #333;
+    text-align: left;
   }
   .dates {
     font-style: italic;
     color: #666;
     margin-bottom: 8px;
     font-size: 0.95em;
+    text-align: left;
   }
   .company-description {
     font-style: italic;
@@ -215,6 +242,7 @@ export const richStyledCSS = `
     padding: 10px;
     border-radius: 6px;
     border-left: 2px solid #667eea;
+    text-align: left;
   }
   .project {
     margin-bottom: 25px;
@@ -227,6 +255,7 @@ export const richStyledCSS = `
     border-radius: 0 8px 8px 0;
     margin-left: -5px;
     padding-left: 25px;
+    text-align: left;
   }
   .project::before {
     content: '';
@@ -245,6 +274,7 @@ export const richStyledCSS = `
     margin-bottom: 8px;
     font-size: 0.95em;
     font-weight: 500;
+    text-align: left;
   }
   .certificate {
     margin-bottom: 20px;
@@ -252,23 +282,26 @@ export const richStyledCSS = `
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
     border-radius: 8px;
     border-left: 4px solid #667eea;
+    text-align: left;
   }
   .certificate .job-title {
     color: #667eea;
     margin-bottom: 10px;
+    text-align: left;
   }
   ul {
     margin: 0;
     padding-left: 18px;
+    text-align: left;
   }
   li {
     margin-bottom: 6px;
     line-height: 1.6;
+    text-align: left;
   }
 `;
 
 export const plainCSS = `
-  
   .header {
     text-align: center;
     padding-bottom: 20px;
@@ -282,6 +315,7 @@ export const plainCSS = `
   .personal-details {
     padding: 20px;
     margin-bottom: 25px;
+    text-align: left;
   }
   .personal-details h2 {
     font-size: 1.2em;
@@ -298,6 +332,7 @@ export const plainCSS = `
     margin: 2px 0;
     display: flex;
     align-items: center;
+    text-align: left;
   }
   .contact-item strong {
     font-weight: bold;
@@ -305,6 +340,7 @@ export const plainCSS = `
   }
   .section {
     margin-bottom: 30px;
+    text-align: left;
   }
   .section h2 {
     font-size: 1.3em;
@@ -316,61 +352,73 @@ export const plainCSS = `
     padding: 25px;
     font-size: 1.05em;
     line-height: 1.7;
+    text-align: left;
   }
   .job {
     margin-bottom: 25px;
     padding-left: 0;
     padding-top: 15px;
     padding-bottom: 15px;
+    text-align: left;
   }
   .job-title {
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 5px;
+    text-align: left;
   }
   .company {
     font-weight: bold;
     font-size: 1em;
     margin-bottom: 3px;
+    text-align: left;
   }
   .dates {
     font-style: italic;
     margin-bottom: 8px;
     font-size: 0.95em;
+    text-align: left;
   }
   .company-description {
     font-style: italic;
     margin-bottom: 12px;
-    padding: 10px;
+    padding: 0;
+    text-align: left;
   }
   .project {
     margin-bottom: 25px;
     padding-left: 0;
     padding-top: 15px;
     padding-bottom: 15px;
+    text-align: left;
   }
   .technologies {
     font-style: italic;
     margin-bottom: 8px;
     font-size: 0.95em;
     font-weight: 500;
+    text-align: left;
   }
   .certificate {
     margin-bottom: 20px;
     padding: 15px;
+    text-align: left;
   }
   .certificate .job-title {
     margin-bottom: 10px;
+    text-align: left;
   }
   ul {
     margin: 0;
     padding-left: 18px;
+    text-align: left;
   }
   li {
     margin-bottom: 6px;
     line-height: 1.6;
+    text-align: left;
   }
-  /* Remove decorative elements but keep consistent spacing */
+  /* Remove decorative elements but keep consistent spacing and fonts */
   .personal-details {
     border: none;
     background: none;
@@ -399,7 +447,7 @@ export const plainCSS = `
     background: none;
     border: none;
   }
- /* Light theme scrollbar for plain style */
+  /* Light theme scrollbar for plain style */
   ::-webkit-scrollbar {
     width: 12px;
   }
@@ -417,7 +465,6 @@ export const plainCSS = `
 
 export const printMediaCSS = `
   @media print {
-    
     body { 
       font-size: 11px; 
       background: white !important;
@@ -435,11 +482,20 @@ export const printMediaCSS = `
   }
 `;
 
-// Rest of the file remains the same
+// Updated generatePrintableHTML function with proper dark theme handling
 export const generatePrintableHTML = (cvData, selectedStyle, theme = 'light', sectionOrder) => {
   const baseCSS = theme === 'dark' ? darkThemeCSS : lightThemeCSS;
   const styleCSS = selectedStyle === 'styled' ? richStyledCSS : plainCSS;
-  const themeCSS = theme === 'dark' ? darkThemeCSS : '';
+  
+  // Apply the correct dark theme styling based on selected style
+  let themeSpecificCSS = '';
+  if (theme === 'dark') {
+    if (selectedStyle === 'styled') {
+      themeSpecificCSS = darkThemeStyledCSS;
+    } else {
+      themeSpecificCSS = darkThemePlainCSS;
+    }
+  }
 
   const renderSectionContent = (sectionId) => {
     switch (sectionId) {
@@ -557,7 +613,7 @@ export const generatePrintableHTML = (cvData, selectedStyle, theme = 'light', se
         <style>
           ${baseCSS}
           ${styleCSS}
-          ${themeCSS}
+          ${themeSpecificCSS}
           ${printMediaCSS}
         </style>
       </head>

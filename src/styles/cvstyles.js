@@ -1,4 +1,4 @@
-// styles/cvStyles.js - Fixed font consistency and layout
+// styles/cvStyles.js - Fixed A4 compatibility
 
 export const lightThemeCSS = `
   body {
@@ -125,35 +125,36 @@ export const darkThemePlainCSS = `
 export const richStyledCSS = `
   .header {
     text-align: center;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
     border-bottom: 2px solid #667eea;
   }
   .header h1 {
-    font-size: 2em;
+    font-size: 1.8em;
     margin: 0;
     color: #2c5aa0;
     font-weight: bold;
   }
   .personal-details {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
     border: 1px solid #e9ecef;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   }
   .personal-details h2 {
     color: #2c5aa0;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-top: 0;
-    padding-bottom: 5px;
+    margin-bottom: 8px;
+    padding-bottom: 3px;
     border-bottom: 1px solid #667eea;
   }
   .contact-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 8px;
   }
   .contact-item {
     margin: 2px 0;
@@ -162,67 +163,67 @@ export const richStyledCSS = `
   }
   .contact-item strong {
     color: #2c5aa0;
-    min-width: 70px;
+    min-width: 60px;
   }
   .section {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     position: relative;
   }
   .section h2 {
     color: #2c5aa0;
-    font-size: 1.3em;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
+    font-size: 1.2em;
+    padding-bottom: 6px;
+    margin-bottom: 15px;
     border-bottom: 2px solid #667eea;
     background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent);
-    padding-left: 10px;
-    margin-left: -10px;
-    border-radius: 5px 0 0 0;
+    padding-left: 8px;
+    margin-left: -8px;
+    border-radius: 3px 0 0 0;
   }
   .profile {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-    padding: 25px;
-    border-radius: 12px;
-    font-size: 1.05em;
-    line-height: 1.7;
-    border-left: 4px solid #667eea;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1em;
+    line-height: 1.5;
+    border-left: 3px solid #667eea;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     text-align: left;
   }
   .job {
-    margin-bottom: 25px;
-    border-left: 4px solid #667eea;
-    padding-left: 20px;
+    margin-bottom: 18px;
+    border-left: 3px solid #667eea;
+    padding-left: 15px;
     position: relative;
     background: linear-gradient(90deg, rgba(102, 126, 234, 0.03), transparent);
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border-radius: 0 8px 8px 0;
-    margin-left: -5px;
-    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 0 6px 6px 0;
+    margin-left: -3px;
+    padding-left: 18px;
     text-align: left;
   }
   .job::before {
     content: '';
     position: absolute;
-    left: -6px;
-    top: 15px;
-    width: 8px;
-    height: 8px;
+    left: -5px;
+    top: 12px;
+    width: 6px;
+    height: 6px;
     background: #667eea;
     border-radius: 50%;
-    box-shadow: 0 0 0 3px white, 0 0 0 6px #667eea;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #667eea;
   }
   .job-title {
-    font-size: 1.1em;
+    font-size: 1.05em;
     font-weight: bold;
     color: #2c5aa0;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     text-align: left;
   }
   .company {
     font-weight: bold;
-    font-size: 1em;
+    font-size: 0.95em;
     margin-bottom: 3px;
     color: #333;
     text-align: left;
@@ -230,73 +231,73 @@ export const richStyledCSS = `
   .dates {
     font-style: italic;
     color: #666;
-    margin-bottom: 8px;
-    font-size: 0.95em;
+    margin-bottom: 6px;
+    font-size: 0.9em;
     text-align: left;
   }
   .company-description {
     font-style: italic;
     color: #666;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     background: rgba(102, 126, 234, 0.08);
-    padding: 10px;
-    border-radius: 6px;
+    padding: 6px;
+    border-radius: 4px;
     border-left: 2px solid #667eea;
     text-align: left;
   }
   .project {
-    margin-bottom: 25px;
-    border-left: 4px solid #764ba2;
-    padding-left: 20px;
+    margin-bottom: 18px;
+    border-left: 3px solid #764ba2;
+    padding-left: 15px;
     position: relative;
     background: linear-gradient(90deg, rgba(118, 75, 162, 0.03), transparent);
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border-radius: 0 8px 8px 0;
-    margin-left: -5px;
-    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 0 6px 6px 0;
+    margin-left: -3px;
+    padding-left: 18px;
     text-align: left;
   }
   .project::before {
     content: '';
     position: absolute;
-    left: -6px;
-    top: 15px;
-    width: 8px;
-    height: 8px;
+    left: -5px;
+    top: 12px;
+    width: 6px;
+    height: 6px;
     background: #764ba2;
     border-radius: 50%;
-    box-shadow: 0 0 0 3px white, 0 0 0 6px #764ba2;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #764ba2;
   }
   .technologies {
     font-style: italic;
     color: #764ba2;
-    margin-bottom: 8px;
-    font-size: 0.95em;
+    margin-bottom: 6px;
+    font-size: 0.9em;
     font-weight: 500;
     text-align: left;
   }
   .certificate {
-    margin-bottom: 20px;
-    padding: 15px;
+    margin-bottom: 15px;
+    padding: 12px;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-radius: 6px;
+    border-left: 3px solid #667eea;
     text-align: left;
   }
   .certificate .job-title {
     color: #667eea;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     text-align: left;
   }
   ul {
-    margin: 0;
-    padding-left: 18px;
+    margin: 0 0 8px 0;
+    padding-left: 16px;
     text-align: left;
   }
   li {
-    margin-bottom: 6px;
-    line-height: 1.6;
+    margin-bottom: 4px;
+    line-height: 1.5;
     text-align: left;
   }
 `;
@@ -466,18 +467,77 @@ export const plainCSS = `
 export const printMediaCSS = `
   @media print {
     body { 
-      font-size: 11px; 
+      font-size: 10px !important; 
       background: white !important;
       color: black !important;
       max-width: 100% !important;
+      margin: 0 !important;
+      padding: 10mm !important;
+      box-sizing: border-box !important;
     }
     .cv-container {
       max-width: 100% !important;
       width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .header {
+      padding-bottom: 10px !important;
+      margin-bottom: 15px !important;
+    }
+    .header h1 {
+      font-size: 1.6em !important;
+      margin-bottom: 0 !important;
+    }
+    .personal-details {
+      padding: 10px !important;
+      margin-bottom: 15px !important;
+    }
+    .section {
+      margin-bottom: 15px !important;
+    }
+    .section h2 {
+      margin-bottom: 10px !important;
+      padding-bottom: 4px !important;
+      page-break-after: avoid;
+    }
+    .profile {
+      padding: 10px !important;
+      line-height: 1.4 !important;
+    }
+    .job, .project {
+      margin-bottom: 12px !important;
+      padding-top: 6px !important;
+      padding-bottom: 6px !important;
+    }
+    .certificate {
+      margin-bottom: 10px !important;
+      padding: 8px !important;
+    }
+    .company-description {
+      padding: 4px !important;
+      margin-bottom: 6px !important;
+    }
+    ul {
+      margin-bottom: 6px !important;
+    }
+    li {
+      margin-bottom: 2px !important;
+      line-height: 1.4 !important;
     }
     .no-print { display: none; }
-    .job::before { box-shadow: 0 0 0 3px white, 0 0 0 6px #667eea; }
-    .project::before { box-shadow: 0 0 0 3px white, 0 0 0 6px #764ba2; }
+    .job::before { 
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #667eea !important;
+      width: 5px !important;
+      height: 5px !important;
+      top: 8px !important;
+    }
+    .project::before { 
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #764ba2 !important;
+      width: 5px !important;
+      height: 5px !important;
+      top: 8px !important;
+    }
     * { color-adjust: exact !important; }
   }
 `;

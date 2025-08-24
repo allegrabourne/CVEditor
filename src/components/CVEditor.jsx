@@ -34,7 +34,7 @@ const CVEditor = () => {
   const printRef = useRef();
   const sectionManager = useMemo(() => new SectionManager(sectionOrder), [sectionOrder]);
 
-  // Section reordering function - THIS WAS THE MISSING FUNCTION
+  // Section reordering function
   const handleReorderSections = useCallback((newOrder) => {
     setSectionOrder(newOrder);
   }, []);
@@ -398,6 +398,162 @@ const CVEditor = () => {
     [sectionManager]
   );
 
+  // Generate text-only preview for plain style
+  const generatePlainTextPreview = useCallback(() => {
+    const sections = [];
+    
+    // Name
+    if (cvData.personalDetails.name) {
+      sections.push(cvData.personalDetails.name.toUpperCase());
+      sections.push('');
+    }
+    
+    // Contact Details
+    if (visibleSections.includes('personal')) {
+      sections.push('CONTACT DETAILS');
+      if (cvData.personalDetails.phone) sections.push(`Phone: ${cvData.personalDetails.phone}`);
+      if (cvData.personalDetails.email) sections.push(`Email: ${cvData.personalDetails.email}`);
+      if (cvData.personalDetails.address) sections.push(`Address: ${cvData.personalDetails.address}`);
+      if (cvData.personalDetails.website) sections.push(`Website: ${cvData.personalDetails.website}`);
+      sections.push('');
+    }
+    
+    // Profile
+    if (visibleSections.includes('profile') && cvData.profile) {
+      sections.push('PROFILE');
+      sections.push(cvData.profile);
+      sections.push('');
+    }
+    
+    // Work Experience
+    if (visibleSections.includes('experience') && cvData.workExperience.length > 0) {
+      sections.push('WORK EXPERIENCE');
+      cvData.workExperience.forEach(job => {
+        if (job.title) sections.push(job.title);
+        if (job.company) sections.push(job.company);
+        if (job.dates) sections.push(job.dates);
+        if (job.description) sections.push(job.description);
+        job.responsibilities.forEach(resp => {
+          if (resp) sections.push(`• ${resp}`);
+        });
+        sections.push('');
+      });
+    }
+    
+    // Personal Projects
+    if (visibleSections.includes('projects') && cvData.personalProjects.length > 0) {
+      sections.push('PERSONAL PROJECTS');
+      cvData.personalProjects.forEach(project => {
+        if (project.title) sections.push(project.title);
+        if (project.technologies) sections.push(`Technologies: ${project.technologies}`);
+        project.responsibilities.forEach(resp => {
+          if (resp) sections.push(`• ${resp}`);
+        });
+        sections.push('');
+      });
+    }
+    
+    // Certificates
+    if (visibleSections.includes('certificates') && cvData.certificates.length > 0) {
+      sections.push('CERTIFICATES');
+      cvData.certificates.forEach(cert => {
+        if (cert.title) sections.push(cert.title);
+        if (cert.description) sections.push(cert.description);
+        sections.push('');
+      });
+    }
+    
+    // Education
+    if (visibleSections.includes('education') && (cvData.education.degree || cvData.education.university)) {
+      sections.push('EDUCATION');
+      if (cvData.education.degree) sections.push(cvData.education.degree);
+      if (cvData.education.university) sections.push(cvData.education.university);
+      if (cvData.education.dates) sections.push(cvData.education.dates);
+      if (cvData.education.grade) sections.push(cvData.education.grade);
+      sections.push('');
+    }
+    
+    // Courses
+    if (visibleSections.includes('courses') && cvData.courses) {
+      sections.push('ADDITIONAL COURSES');
+      sections.push(cvData.courses);
+      sections.push('');
+    }
+    
+    return sections.join('\n');
+  }, [cvData, visibleSections]);
+
+  // Generate preview HTML with proper styling
+  const generatePreviewHTML = useCallback(() => {
+    if (selectedStyle === 'plain') {
+      // For plain style, show as preformatted text
+      const plainText = generatePlainTextPreview();
+      return `
+        <style>
+          .plain-text-preview {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 12px;
+            color: ${isDark ? '#e4e4e7' : '#333'};
+            background: ${isDark ? '#18181b' : 'white'};
+            padding: 20px;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+          }
+        </style>
+        <div class="plain-text-preview">${plainText}</div>
+      `;
+    }
+    
+    const fullHTML = generatePrintableHTML(cvData, selectedStyle, isDark ? 'dark' : 'light', visibleSections);
+    
+    // Extract just the body content but keep the styles
+    const styleMatch = fullHTML.match(/<style[^>]*>([\s\S]*?)<\/style>/);
+    const bodyMatch = fullHTML.match(/<body[^>]*>([\s\S]*?)<\/body>/);
+    
+    const styles = styleMatch ? styleMatch[1] : '';
+    const bodyContent = bodyMatch ? bodyMatch[1] : fullHTML;
+    
+    return `
+      <style>
+        ${styles}
+        /* Additional preview-specific styles */
+        .cv-container {
+          max-width: 100% !important;
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        body {
+          margin: 0 !important;
+          padding: 20px !important;
+          max-width: 100% !important;
+          width: 100% !important;
+        }
+      </style>
+      ${bodyContent}
+    `;
+  }, [cvData, selectedStyle, isDark, visibleSections, generatePlainTextPreview]);
+
+  // Get proper input field classes with theme support
+  const getInputClasses = (isDark) => {
+    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+      isDark 
+        ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' 
+        : 'border-gray-200 bg-white text-gray-900 placeholder-gray-500'
+    }`;
+  };
+
+  const getTextareaClasses = (isDark) => {
+    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none ${
+      isDark 
+        ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' 
+        : 'border-gray-200 bg-white text-gray-900 placeholder-gray-500'
+    }`;
+  };
+
   // Render edit section based on active section
   const renderEditSection = () => {
     switch (activeSection) {
@@ -412,7 +568,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.name}
                   onChange={(e) => updatePersonalDetails('name', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                  className={getInputClasses(isDark)}
                 />
               </div>
               <div>
@@ -421,7 +577,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.phone}
                   onChange={(e) => updatePersonalDetails('phone', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                  className={getInputClasses(isDark)}
                 />
               </div>
               <div>
@@ -430,7 +586,7 @@ const CVEditor = () => {
                   value={cvData.personalDetails.address}
                   onChange={(e) => updatePersonalDetails('address', e.target.value)}
                   rows="3"
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300 resize-none"
+                  className={getTextareaClasses(isDark)}
                 />
               </div>
               <div>
@@ -439,7 +595,7 @@ const CVEditor = () => {
                   type="email"
                   value={cvData.personalDetails.email}
                   onChange={(e) => updatePersonalDetails('email', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                  className={getInputClasses(isDark)}
                 />
               </div>
               <div>
@@ -448,7 +604,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.website}
                   onChange={(e) => updatePersonalDetails('website', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                  className={getInputClasses(isDark)}
                 />
               </div>
             </div>
@@ -465,7 +621,7 @@ const CVEditor = () => {
                 value={cvData.profile}
                 onChange={(e) => updateProfile(e.target.value)}
                 rows="8"
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300 resize-none"
+                className={getTextareaClasses(isDark)}
                 placeholder="Write your professional profile here..."
               />
             </div>
@@ -534,10 +690,18 @@ const CVEditor = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
+    <div className={`min-h-screen w-full transition-colors duration-300 ${
+      isDark 
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+        : 'bg-gradient-to-br from-blue-50 via-white to-indigo-50'
+    }`}>
       {/* Header */}
-      <div className="bg-white/90 dark:bg-gray-800/90 shadow-xl border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className={`shadow-xl border-b sticky top-0 z-50 backdrop-blur-xl ${
+        isDark 
+          ? 'bg-gray-800/90 border-gray-700' 
+          : 'bg-white/90 border-gray-200'
+      }`}>
+        <div className="w-full max-w-none px-6 py-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 flex items-center gap-3">
               <FileText className="h-8 w-8 text-purple-600" />
@@ -548,19 +712,27 @@ const CVEditor = () => {
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-3 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className={`p-3 rounded-xl transition-colors ${
+                  isDark 
+                    ? 'bg-gray-700 hover:bg-gray-600' 
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
                 title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
               >
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
               
               {/* Style selector */}
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-xl p-2">
-                <Palette className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <div className={`flex items-center gap-2 rounded-xl p-2 ${
+                isDark ? 'bg-gray-700' : 'bg-gray-100'
+              }`}>
+                <Palette className={`h-4 w-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
                 <select 
                   value={selectedStyle}
                   onChange={(e) => setSelectedStyle(e.target.value)}
-                  className="bg-transparent text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none"
+                  className={`bg-transparent text-sm font-medium focus:outline-none ${
+                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  }`}
                 >
                   <option value="styled">Rich Professional</option>
                   <option value="plain">Plain Professional</option>
@@ -573,7 +745,11 @@ const CVEditor = () => {
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
                   editMode 
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' 
-                    : 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 hover:from-gray-300 hover:to-gray-400 dark:from-gray-600 dark:to-gray-700 dark:text-gray-200'
+                    : `bg-gradient-to-r ${
+                        isDark 
+                          ? 'from-gray-600 to-gray-700 text-gray-200 hover:from-gray-500 hover:to-gray-600' 
+                          : 'from-gray-200 to-gray-300 text-gray-700 hover:from-gray-300 hover:to-gray-400'
+                      }`
                 }`}
               >
                 {editMode ? <Eye className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
@@ -605,15 +781,21 @@ const CVEditor = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="w-full max-w-none px-6 py-8">
+        <div className={`grid gap-8 ${editMode ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
           
           {/* Editor Panel */}
           {editMode && (
             <div className="lg:col-span-5 space-y-6">
               {/* Section Navigation with Drag and Drop */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700">
-                <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <div className={`rounded-2xl shadow-xl p-6 border ${
+                isDark 
+                  ? 'bg-gray-800 border-gray-700' 
+                  : 'bg-white border-gray-200'
+              }`}>
+                <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                  isDark ? 'text-gray-100' : 'text-gray-900'
+                }`}>
                   <Settings className="h-5 w-5" />
                   Edit Sections
                 </h2>
@@ -634,7 +816,9 @@ const CVEditor = () => {
                         className={`
                           relative transition-all duration-300
                           ${dragDropHook.dragOverIndex === index 
-                            ? 'transform scale-105 bg-purple-50 dark:bg-purple-900/20' 
+                            ? `transform scale-105 ${
+                                isDark ? 'bg-purple-900/20' : 'bg-purple-50'
+                              }` 
                             : ''
                           }
                         `}
@@ -645,7 +829,11 @@ const CVEditor = () => {
                             flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 cursor-move
                             ${isActive
                               ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                              : `hover:bg-gray-200 dark:hover:bg-gray-600 ${isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`
+                              : `${
+                                  isDark 
+                                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`
                             }
                             ${!isVisible ? 'opacity-60' : ''}
                             ${!hasData ? 'border-l-4 border-orange-400' : ''}
@@ -659,12 +847,16 @@ const CVEditor = () => {
                             <div className="flex items-center gap-2">
                               <span>{section.name}</span>
                               {!hasData && !isActive && (
-                                <span className={`text-xs px-2 py-1 rounded-full ${isDark ? 'bg-orange-900/30 text-orange-400' : 'bg-orange-100 text-orange-600'}`}>
+                                <span className={`text-xs px-2 py-1 rounded-full ${
+                                  isDark ? 'bg-orange-900/30 text-orange-400' : 'bg-orange-100 text-orange-600'
+                                }`}>
                                   Empty
                                 </span>
                               )}
                               {isRequired && !isActive && (
-                                <span className={`text-xs px-2 py-1 rounded-full ${isDark ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-600'}`}>
+                                <span className={`text-xs px-2 py-1 rounded-full ${
+                                  isDark ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-600'
+                                }`}>
                                   Required
                                 </span>
                               )}
@@ -707,15 +899,25 @@ const CVEditor = () => {
                     );
                   })}
                 </div>
-                <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                <div className={`mt-4 p-3 rounded-lg border ${
+                  isDark 
+                    ? 'bg-blue-900/20 border-blue-700' 
+                    : 'bg-blue-50 border-blue-200'
+                }`}>
+                  <p className={`text-sm ${
+                    isDark ? 'text-blue-300' : 'text-blue-700'
+                  }`}>
                     💡 Drag sections to reorder • Orange border = empty section • Eye icon = show/hide
                   </p>
                 </div>
               </div>
 
               {/* Edit Form */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className={`rounded-2xl shadow-xl p-6 border ${
+                isDark 
+                  ? 'bg-gray-800 border-gray-700' 
+                  : 'bg-white border-gray-200'
+              }`}>
                 {renderEditSection()}
               </div>
             </div>
@@ -723,7 +925,11 @@ const CVEditor = () => {
 
           {/* Preview Panel */}
           <div className={editMode ? 'lg:col-span-7' : 'lg:col-span-12'}>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className={`rounded-2xl shadow-xl border overflow-hidden ${
+              isDark 
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-white border-gray-200'
+            }`}>
               <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4">
                 <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                   <Eye className="h-5 w-5" />
@@ -732,22 +938,10 @@ const CVEditor = () => {
               </div>
               <div className="p-8 max-h-screen overflow-y-auto">
                 <div 
-                  className={`cv-preview transition-colors duration-300 ${
-                    isDark ? 'dark-preview' : 'light-preview'
-                  }`}
-                  style={{
-                    fontFamily: selectedStyle === 'styled' ? "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" : 'Arial, sans-serif',
-                    lineHeight: '1.6',
-                    fontSize: '14px'
-                  }}
+                  className="cv-preview transition-colors duration-300"
+                  style={{ width: '100%', maxWidth: '100%' }}
                   dangerouslySetInnerHTML={{ 
-                    __html: generatePrintableHTML(cvData, selectedStyle, isDark ? 'dark' : 'light', visibleSections)
-                      .replace(/<!DOCTYPE[^>]*>/, '')
-                      .replace(/<html[^>]*>/, '')
-                      .replace(/<\/html>/, '')
-                      .replace(/<head[^>]*>[\s\S]*?<\/head>/, '')
-                      .replace(/<body[^>]*>/, '')
-                      .replace(/<\/body>/, '')
+                    __html: generatePreviewHTML()
                   }}
                 />
               </div>

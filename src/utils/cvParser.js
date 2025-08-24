@@ -1,4 +1,4 @@
-// utils/cvParser.js - Enhanced CV parser with better job history parsing
+// utils/cvParser.js - Enhanced CV parser with better job history parsing and improved project/certificate handling
 
 export const EMAIL = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 export const URL = /\bhttps?:\/\/[^\s]+|(?:www\.)[^\s]+\.[a-z]{2,}\b/i;
@@ -282,16 +282,169 @@ function parseEducation(lines) {
   };
 }
 
-function parseSimpleList(lines, type) {
-  return lines
-    .filter(line => line.trim() && !isLikelyDate(line))
-    .map(l => {
-      const cleanLine = l.replace(BULLET, '').trim();
-      return type === 'cert' 
-        ? { title: cleanLine, description: '' }
-        : { title: cleanLine, technologies: '', responsibilities: [] };
-    })
-    .filter(item => item.title);
+// Enhanced parsing for projects and certificates that groups related lines
+function parseProjectsEnhanced(lines) {
+  const projects = [];
+  let currentProject = null;
+  let currentSection = null;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const isBullet = isLikelyBulletPoint(line);
+    const hasTechnologies = /technologies?:/i.test(line);
+    
+    // If we find a non-bullet line that looks like a title and we're not already in a project
+    if (!isBullet && !hasTechnologies && (!currentProject || currentSection === 'complete')) {
+      // Save previous project if it exists
+      if (currentProject && (currentProject.title || currentProject.responsibilities.length > 0)) {
+        projects.push(currentProject);
+      }
+      
+      // Start new project
+      currentProject = {
+        title: line,
+        technologies: '',
+        responsibilities: []
+      };
+      currentSection = 'title';
+    } 
+    // Handle technologies line
+    else if (hasTechnologies) {
+      if (currentProject) {
+        currentProject.technologies = line.replace(/^technologies?:\s*/i, '').trim();
+        currentSection = 'technologies';
+      }
+    }
+    // Handle bullet points (project details)
+    else if (isBullet) {
+      if (!currentProject) {
+        // If we don't have a current project, create one with empty title
+        currentProject = {
+          title: '',
+          technologies: '',
+          responsibilities: []
+        };
+      }
+      
+      const cleanedBullet = line.replace(BULLET, '').trim();
+      if (cleanedBullet) {
+        currentProject.responsibilities.push(cleanedBullet);
+      }
+      currentSection = 'responsibilities';
+    }
+    // Handle additional content that might be part of the current project
+    else if (currentProject && currentSection !== 'complete') {
+      // If it's not a title-looking line and we have a current project, add as responsibility
+      if (line.length > 30) {
+        currentProject.responsibilities.push(line);
+      }
+    }
+  }
+  
+  // Don't forget the last project
+  if (currentProject && (currentProject.title || currentProject.responsibilities.length > 0)) {
+    projects.push(currentProject);
+  }
+  
+  // Clean up projects
+  return projects
+    .filter(project => project.title.trim() || project.responsibilities.length > 0)
+    .map(project => ({
+      title: project.title.trim(),
+      technologies: project.technologies.trim(),
+      responsibilities: project.responsibilities.filter(r => r.trim()).map(r => r.trim())
+    }));
+}
+
+function parseCertificatesEnhanced(lines) {
+  const certificates = [];
+  let currentCert = null;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const isBullet = isLikelyBulletPoint(line);
+    
+    // If it's not a bullet point, it's likely a certificate title
+    if (!isBullet) {
+      // Save previous certificate if it exists
+      if (currentCert && currentCert.title) {
+        certificates.push(currentCert);
+      }
+      
+      // Start new certificate
+      currentCert = {
+        title: line,
+        description: ''
+      };
+    } 
+    // If it's descriptive text and we have a current certificate
+    else if (currentCert) {
+      const cleanedDescription = line.replace(BULLET, '').trim();
+      if (cleanedDescription) {
+        if (currentCert.description) {
+          currentCert.description += ' ' + cleanedDescription;
+        } else {
+          currentCert.description = cleanedDescription;
+        }
+      }
+    }
+  }
+  
+  // Don't forget the last certificate
+  if (currentCert && currentCert.title) {
+    certificates.push(currentCert);
+  }
+  
+  // Handle multi-line descriptions by looking ahead for non-title lines
+  const refinedCertificates = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const isBullet = isLikelyBulletPoint(line);
+    
+    if (!isBullet && !line.startsWith(' ')) {
+      // This looks like a title
+      const cert = {
+        title: line,
+        description: ''
+      };
+      
+      // Look ahead for description lines
+      const descriptionLines = [];
+      for (let j = i + 1; j < lines.length; j++) {
+        const nextLine = lines[j].trim();
+        if (!nextLine) continue;
+        
+        const nextIsBullet = isLikelyBulletPoint(nextLine);
+        
+        // If the next line looks like another title, stop
+        if (!nextIsBullet && !nextLine.startsWith(' ') && 
+            nextLine.length < 200 && 
+            !(/(certificate|certification|program|course|training)/i.test(cert.title) && 
+              /(A comprehensive|program|skills|including)/i.test(nextLine))) {
+          break;
+        }
+        
+        // Add this line as part of the description
+        const cleanedLine = nextLine.replace(BULLET, '').trim();
+        if (cleanedLine) {
+          descriptionLines.push(cleanedLine);
+        }
+        i = j; // Skip ahead
+      }
+      
+      cert.description = descriptionLines.join(' ');
+      refinedCertificates.push(cert);
+    }
+  }
+  
+  // Return the refined certificates if we found any, otherwise fall back to simple parsing
+  return refinedCertificates.length > 0 ? refinedCertificates : certificates;
 }
 
 export function makeDefaultCV() {
@@ -342,12 +495,12 @@ export const CVParser = {
 
       const projLines = sliceSection(lines, sections, 'projects');
       if (projLines.length) {
-        data.personalProjects = parseSimpleList(projLines, 'proj');
+        data.personalProjects = parseProjectsEnhanced(projLines);
       }
 
       const certLines = sliceSection(lines, sections, 'certs');
       if (certLines.length) {
-        data.certificates = parseSimpleList(certLines, 'cert');
+        data.certificates = parseCertificatesEnhanced(certLines);
       }
 
       const courseLines = sliceSection(lines, sections, 'courses');
@@ -358,7 +511,7 @@ export const CVParser = {
       return { 
         success: true, 
         data, 
-        message: `Successfully parsed CV. Found ${data.workExperience.length} work experience entries.`,
+        message: `Successfully parsed CV. Found ${data.workExperience.length} work experience entries, ${data.personalProjects.length} projects, ${data.certificates.length} certificates.`,
         debug: {
           sectionsFound: sections.map(s => ({ key: s.key, title: s.title })),
           linesProcessed: lines.length

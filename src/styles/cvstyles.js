@@ -4,7 +4,7 @@ export const lightThemeCSS = `
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     color: #333;
@@ -14,6 +14,8 @@ export const lightThemeCSS = `
   .cv-container {
     background: white;
     color: #333;
+    max-width: 100%;
+    width: 100%;
   }
 `;
 
@@ -21,7 +23,7 @@ export const darkThemeCSS = `
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     color: #e4e4e7;
@@ -31,6 +33,8 @@ export const darkThemeCSS = `
   .cv-container {
     background: #18181b;
     color: #e4e4e7;
+    max-width: 100%;
+    width: 100%;
   }
   /* Dark theme overrides */
   .header h1 { color: #a5b4fc; }
@@ -289,6 +293,27 @@ export const plainCSS = `
   .certificate {
     margin-bottom: 15px;
   }
+  .personal-details {
+    border: none;
+    background: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  .profile {
+    background: none;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+  .job, .project {
+    border: none;
+    background: none;
+    padding: 0;
+    margin-left: 0;
+  }
+  .job::before, .project::before {
+    display: none;
+  }
 `;
 
 export const printMediaCSS = `
@@ -297,6 +322,11 @@ export const printMediaCSS = `
       font-size: 11px; 
       background: white !important;
       color: black !important;
+      max-width: 100% !important;
+    }
+    .cv-container {
+      max-width: 100% !important;
+      width: 100% !important;
     }
     .no-print { display: none; }
     .job::before { box-shadow: 0 0 0 3px white, 0 0 0 6px #667eea; }

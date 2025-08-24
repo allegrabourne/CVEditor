@@ -34,10 +34,7 @@ jobs:
         
       - name: Build
         run: npm run build
-        env:
-          # This ensures the correct base path for GitHub Pages
-          PUBLIC_URL: /${{ github.event.repository.name }}
-          
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

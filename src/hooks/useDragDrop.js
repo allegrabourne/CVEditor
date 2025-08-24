@@ -10,11 +10,16 @@ export const useDragDrop = (initialItems, onReorder) => {
     setDraggedItem({ item, index });
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/html', event.target.outerHTML);
-    event.target.classList.add('dragging');
+    
+    // Add visual feedback
+    setTimeout(() => {
+      event.target.style.opacity = '0.5';
+    }, 0);
   }, []);
 
   const handleDragEnd = useCallback((event) => {
-    event.target.classList.remove('dragging');
+    // Reset visual feedback
+    event.target.style.opacity = '1';
     setDraggedItem(null);
     setDragOverIndex(null);
   }, []);
@@ -26,8 +31,12 @@ export const useDragDrop = (initialItems, onReorder) => {
   }, []);
 
   const handleDragLeave = useCallback((event) => {
-    // Only clear drag over if we're leaving the container, not just moving between children
-    if (!event.currentTarget.contains(event.relatedTarget)) {
+    // Only clear drag over if we're actually leaving the drop zone
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX;
+    const y = event.clientY;
+    
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
       setDragOverIndex(null);
     }
   }, []);
@@ -43,7 +52,10 @@ export const useDragDrop = (initialItems, onReorder) => {
 
     const newItems = [...initialItems];
     const [movedItem] = newItems.splice(draggedItem.index, 1);
-    newItems.splice(dropIndex, 0, movedItem);
+    
+    // Adjust the drop index if we're moving an item from before the drop position
+    const actualDropIndex = draggedItem.index < dropIndex ? dropIndex - 1 : dropIndex;
+    newItems.splice(actualDropIndex, 0, movedItem);
 
     onReorder(newItems);
     setDraggedItem(null);
@@ -54,20 +66,32 @@ export const useDragDrop = (initialItems, onReorder) => {
     draggable: true,
     onDragStart: (e) => handleDragStart(e, item, index),
     onDragEnd: handleDragEnd,
-    className: draggedItem?.index === index ? 'dragging' : ''
+    style: {
+      cursor: 'grab',
+      userSelect: 'none',
+      ...(draggedItem?.index === index && { opacity: 0.5, transform: 'scale(0.95)' })
+    }
   }), [draggedItem, handleDragStart, handleDragEnd]);
 
   const getDropProps = useCallback((index) => ({
     onDragOver: (e) => handleDragOver(e, index),
     onDragLeave: handleDragLeave,
     onDrop: (e) => handleDrop(e, index),
-    className: dragOverIndex === index ? 'drag-over' : ''
+    'data-drop-target': true,
+    style: {
+      ...(dragOverIndex === index && {
+        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+        borderColor: 'rgba(168, 85, 247, 0.5)',
+        transform: 'scale(1.02)'
+      })
+    }
   }), [dragOverIndex, handleDragOver, handleDragLeave, handleDrop]);
 
   return {
     draggedItem,
     dragOverIndex,
     getDragProps,
-    getDropProps
+    getDropProps,
+    isDragging: !!draggedItem
   };
 };

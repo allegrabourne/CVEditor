@@ -1,7 +1,12 @@
 import CVEditor from './components/CVEditor'
+import './App.css'
 
 function App() {
-  return <CVEditor />
+  return (
+    <div className="App">
+      <CVEditor />
+    </div>
+  )
 }
 
 export default App

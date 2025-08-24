@@ -1,111 +1,144 @@
-# CV Editor
+# CV Editor Pro - Enhanced Version
 
-A professional CV/Resume builder and editor with real-time preview and PDF export functionality.
+This is an improved version of the CV Editor with better parsing, drag-and-drop functionality, theme support, and adherence to SOLID principles.
 
-## Features
+## 🚀 Key Improvements
 
-- 📝 **Real-time editing** - Edit your CV content with instant preview
-- 🎨 **Multiple styles** - Choose between professional styled and plain formats
-- 📄 **PDF export** - Export your CV as a PDF for printing or sharing
-- 💾 **In-browser storage** - Your changes are preserved during your session
-- 📱 **Responsive design** - Works on desktop, tablet, and mobile devices
-- ⚡ **Fast and lightweight** - Built with modern web technologies
+### 1. Enhanced CV Parsing
+- **Better Job History Parsing**: The parser now correctly identifies and separates individual job entries instead of lumping everything into one field
+- **Improved Pattern Recognition**: Enhanced regex patterns for dates, job titles, companies, and responsibilities
+- **Structured Data Extraction**: More accurate extraction of contact information, education, and certifications
 
-## Live Demo
+### 2. Drag-and-Drop Section Management
+- **Reorderable Sections**: Drag sections to reorder them on your CV
+- **Section Visibility**: Toggle sections on/off (except required sections)
+- **Visual Feedback**: Clear drag indicators and drop zones
 
-Visit the live application: [CV Editor](https://yourusername.github.io/cv-editor/)
+### 3. Theme Support
+- **Dark/Light Mode**: Toggle between themes with proper contrast
+- **Preview Theming**: The preview section now respects the selected theme
+- **Persistent Settings**: Theme preference is saved to localStorage
 
-## Getting Started
+### 4. Better Architecture (SOLID Principles)
 
-### Prerequisites
+#### Single Responsibility Principle
+- **Hooks**: Separate hooks for theme management and drag-drop functionality
+- **Utils**: Dedicated utilities for parsing, section management, and styling
+- **Components**: Focused components with clear responsibilities
 
-- Node.js (version 16 or higher)
-- npm or yarn
+#### Open/Closed Principle
+- **Extensible Parsers**: Easy to add new parsing rules
+- **Style System**: New themes can be added without modifying existing code
+
+#### Liskov Substitution Principle
+- **Interface Consistency**: All data update functions follow consistent patterns
+
+#### Interface Segregation Principle
+- **Focused Interfaces**: Components only receive the props they need
+
+#### Dependency Inversion Principle
+- **Configuration-Driven**: Section management is configuration-driven
+- **Pluggable Components**: Easy to swap out implementations
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── CVEditor.jsx              # Main editor component
+│   └── SectionOrderManager.jsx   # Drag-and-drop section management
+├── hooks/
+│   ├── useTheme.js              # Theme management hook
+│   └── useDragDrop.js           # Drag and drop functionality
+├── utils/
+│   ├── cvParser.js              # Enhanced CV parsing logic
+│   ├── sectionManager.js        # Section configuration and management
+│   └── cv_data.js               # Sample CV data
+├── styles/
+│   └── cvStyles.js              # Theme-aware styling system
+├── App.jsx                      # Main app component
+├── App.css                      # Global styles and animations
+├── main.jsx                     # Application entry point
+└── index.css                    # Tailwind and base styles
+```
+
+## 🔧 How to Use
 
 ### Installation
+1. Copy all files to your React project
+2. Ensure you have the required dependencies:
+   - `react`
+   - `lucide-react`
+   - `pdfjs-dist`
+   - `tailwindcss`
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/cv-editor.git
-cd cv-editor
+### Import Structure
+The new structure makes it easy to import individual components:
+```javascript
+import CVEditor from './components/CVEditor'
+import { useTheme } from './hooks/useTheme'
+import { CVParser } from './utils/cvParser'
 ```
 
-2. Install dependencies:
-```bash
-npm install
+## 🆕 New Features
+
+### Section Management
+- Click the "Sections" button to manage section order and visibility
+- Drag sections up/down to reorder them
+- Use the eye icon to show/hide sections (except required ones)
+
+### Enhanced Import
+- **Better PDF Parsing**: Improved text extraction with proper line grouping
+- **Embedded Data Support**: Export includes metadata for perfect re-import
+- **Multiple Formats**: Support for PDF, TXT, and JSON files
+- **Detailed Feedback**: Clear success/error messages with parsing statistics
+
+### Theme Support
+- **Auto-Detection**: Respects system theme preference
+- **Preview Theming**: Live preview matches selected theme
+- **Persistent**: Theme choice is remembered between sessions
+
+### Improved Export
+- **Theme-Aware Export**: PDF export respects current theme
+- **Section Order**: Exported CV follows your custom section order
+- **Re-import Friendly**: Includes metadata for perfect re-import
+
+## 🎨 Styling System
+
+The new styling system supports:
+- **Theme-Aware Colors**: Automatic dark/light mode adaptation
+- **Rich/Plain Styles**: Two professional styling options
+- **Print Optimization**: Special styles for PDF export
+- **Responsive Design**: Works on all screen sizes
+
+## 🔍 Parser Improvements
+
+The enhanced parser now:
+- Identifies job titles vs company names more accurately
+- Properly separates individual work experiences
+- Better handles bullet points and responsibilities
+- Extracts dates, education, and certifications more reliably
+- Provides debugging information for troubleshooting
+
+## 💾 Data Structure
+
+The CV data structure remains compatible with the original but now includes:
+```javascript
+{
+  cvData: { /* CV content */ },
+  sectionOrder: ['personal', 'profile', 'experience', ...],
+  hiddenSections: ['courses'],
+  theme: 'dark'
+}
 ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+## 🎯 Future Enhancements
 
-4. Open your browser and visit `http://localhost:5173`
+The new architecture makes it easy to add:
+- Custom section types
+- Advanced parsing rules
+- Additional export formats
+- Collaborative editing
+- Template system
 
-## Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist` directory.
-
-## Deployment to GitHub Pages
-
-1. Update the `base` in `vite.config.js` to match your repository name
-2. Run the deployment command:
-```bash
-npm run deploy
-```
-
-This will build the project and deploy it to GitHub Pages.
-
-## Technologies Used
-
-- **React** - UI framework
-- **Vite** - Build tool and development server
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide React** - Icon library
-- **GitHub Pages** - Hosting
-
-## Project Structure
-
-```
-cv-editor/
-├── public/
-├── src/
-│   ├── components/
-│   │   └── CVEditor.jsx
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── index.html
-├── package.json
-├── vite.config.js
-└── tailwind.config.js
-```
-
-## Usage
-
-1. **Edit Mode**: Click the "Edit" button to modify your CV content
-2. **Preview**: Click "Preview" to see how your CV will look
-3. **Style Selection**: Choose between "Professional Styled" and "Plain Professional" formats
-4. **Export**: Click "Export PDF" to download or print your CV
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## Support
-
-If you encounter any issues or have questions, please open an issue on GitHub.
+This restructured application maintains backward compatibility while providing a much more robust and maintainable codebase.

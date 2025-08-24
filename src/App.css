@@ -1,0 +1,119 @@
+/* App.css - Global styles and drag-drop styles */
+
+.App {
+    text-align: center;
+  }
+  
+  /* Drag and drop styles */
+  .dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+    transition: all 0.2s ease;
+  }
+  
+  .drag-over {
+    background: rgba(139, 92, 246, 0.1) !important;
+    border: 2px dashed #8b5cf6 !important;
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+  }
+  
+  /* Custom scrollbar styles */
+  .cv-preview::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .cv-preview::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-700 rounded;
+  }
+  
+  .cv-preview::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-500 rounded hover:bg-gray-400 dark:hover:bg-gray-400;
+  }
+  
+  /* Preview theme styles */
+  .light-preview {
+    background: white;
+    color: #333;
+  }
+  
+  .dark-preview {
+    background: #18181b;
+    color: #e4e4e7;
+  }
+  
+  .dark-preview .header h1 {
+    color: #a5b4fc !important;
+  }
+  
+  .dark-preview .personal-details {
+    background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(196, 181, 253, 0.1)) !important;
+    border: 1px solid #374151 !important;
+  }
+  
+  .dark-preview .personal-details h2 {
+    color: #a5b4fc !important;
+    border-bottom: 1px solid #a5b4fc !important;
+  }
+  
+  .dark-preview .contact-item strong {
+    color: #a5b4fc !important;
+  }
+  
+  .dark-preview .section h2 {
+    color: #a5b4fc !important;
+    border-bottom: 2px solid #a5b4fc !important;
+    background: linear-gradient(90deg, rgba(165, 180, 252, 0.1), transparent) !important;
+  }
+  
+  .dark-preview .job-title {
+    color: #a5b4fc !important;
+  }
+  
+  .dark-preview .company {
+    color: #e4e4e7 !important;
+  }
+  
+  .dark-preview .dates {
+    color: #9ca3af !important;
+  }
+  
+  .dark-preview .company-description {
+    color: #9ca3af !important;
+    background: rgba(165, 180, 252, 0.08) !important;
+    border-left: 2px solid #a5b4fc !important;
+  }
+  
+  .dark-preview .technologies {
+    color: #c4b5fd !important;
+  }
+  
+  .dark-preview .certificate .job-title {
+    color: #a5b4fc !important;
+  }
+  
+  /* Animation classes */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Responsive improvements */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .flex-wrap {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .gap-3 > * {
+      margin-bottom: 0.75rem;
+    }
+  }

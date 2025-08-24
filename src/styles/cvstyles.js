@@ -1,4 +1,4 @@
-// styles/cvStyles.js - Complete enhanced CV styling with theme support
+// styles/cvStyles.js - Fixed form element font sizing consistency
 
 export const lightThemeCSS = `
   body {
@@ -6,7 +6,6 @@ export const lightThemeCSS = `
     line-height: 1.6;
     max-width: 100%;
     margin: 0 auto;
-    padding: 20px;
     color: #333;
     background: white;
     font-size: 12px;
@@ -16,6 +15,20 @@ export const lightThemeCSS = `
     color: #333;
     max-width: 100%;
     width: 100%;
+  }
+  /* Light theme scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
   }
 `;
 
@@ -25,7 +38,6 @@ export const darkThemeCSS = `
     line-height: 1.6;
     max-width: 100%;
     margin: 0 auto;
-    padding: 20px;
     color: #e4e4e7;
     background: #18181b;
     font-size: 12px;
@@ -35,6 +47,20 @@ export const darkThemeCSS = `
     color: #e4e4e7;
     max-width: 100%;
     width: 100%;
+  }
+  /* Dark theme scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #374151;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #6b7280;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
   }
   /* Dark theme overrides */
   .header h1 { color: #a5b4fc; }
@@ -74,6 +100,7 @@ export const darkThemeCSS = `
 `;
 
 export const richStyledCSS = `
+  
   .header {
     text-align: center;
     padding-bottom: 20px;
@@ -241,83 +268,156 @@ export const richStyledCSS = `
 `;
 
 export const plainCSS = `
+  
+  .header {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
   .header h1 {
     font-size: 1.8em;
     margin: 0 0 20px 0;
     font-weight: bold;
-    text-align: center;
   }
-  .section h2 {
+  .personal-details {
+    padding: 20px;
+    margin-bottom: 25px;
+  }
+  .personal-details h2 {
     font-size: 1.2em;
     font-weight: bold;
+    margin-top: 0;
     margin-bottom: 10px;
-    margin-top: 20px;
+  }
+  .contact-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .contact-item {
+    margin: 2px 0;
+    display: flex;
+    align-items: center;
+  }
+  .contact-item strong {
+    font-weight: bold;
+    min-width: 70px;
+  }
+  .section {
+    margin-bottom: 30px;
+  }
+  .section h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+  .profile {
+    padding: 25px;
+    font-size: 1.05em;
+    line-height: 1.7;
+  }
+  .job {
+    margin-bottom: 25px;
+    padding-left: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
   .job-title {
+    font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 5px;
   }
   .company {
     font-weight: bold;
+    font-size: 1em;
     margin-bottom: 3px;
   }
   .dates {
     font-style: italic;
     margin-bottom: 8px;
-  }
-  .contact-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 15px;
-  }
-  .contact-item strong {
-    font-weight: bold;
-  }
-  .personal-details h2 {
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-  .job, .project {
-    margin-bottom: 15px;
+    font-size: 0.95em;
   }
   .company-description {
     font-style: italic;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    padding: 10px;
+  }
+  .project {
+    margin-bottom: 25px;
+    padding-left: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
   .technologies {
     font-style: italic;
     margin-bottom: 8px;
+    font-size: 0.95em;
+    font-weight: 500;
   }
   .certificate {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
   }
+  .certificate .job-title {
+    margin-bottom: 10px;
+  }
+  ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  li {
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  /* Remove decorative elements but keep consistent spacing */
   .personal-details {
     border: none;
     background: none;
-    padding: 0;
-    margin-bottom: 20px;
+    box-shadow: none;
   }
   .profile {
     background: none;
-    padding: 0;
     border: none;
     box-shadow: none;
   }
   .job, .project {
     border: none;
     background: none;
-    padding: 0;
     margin-left: 0;
   }
   .job::before, .project::before {
     display: none;
   }
+  .company-description {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+  .certificate {
+    background: none;
+    border: none;
+  }
+ /* Light theme scrollbar for plain style */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
 `;
 
 export const printMediaCSS = `
   @media print {
+    
     body { 
       font-size: 11px; 
       background: white !important;
@@ -335,6 +435,7 @@ export const printMediaCSS = `
   }
 `;
 
+// Rest of the file remains the same
 export const generatePrintableHTML = (cvData, selectedStyle, theme = 'light', sectionOrder) => {
   const baseCSS = theme === 'dark' ? darkThemeCSS : lightThemeCSS;
   const styleCSS = selectedStyle === 'styled' ? richStyledCSS : plainCSS;

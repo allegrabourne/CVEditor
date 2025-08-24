@@ -274,11 +274,11 @@ const CVEditor = () => {
       const linesMap = new Map();
       const yTolerance = 2;
 
-      for (const it of content.items) {
-        const text = (it.str || '').trim();
+      for (const item of content.items) {
+        const text = (item.str || '').trim();
         if (!text) continue;
 
-        const tm = it.transform || it.matrix || [];
+        const tm = item.transform || item.matrix || [];
         const yRaw = typeof tm[5] === 'number' ? tm[5] : 0;
         const yBucket = Math.round(yRaw / yTolerance) * yTolerance;
 
@@ -528,7 +528,6 @@ const CVEditor = () => {
         }
         body {
           margin: 0 !important;
-          padding: 20px !important;
           max-width: 100% !important;
           width: 100% !important;
         }
@@ -537,22 +536,21 @@ const CVEditor = () => {
     `;
   }, [cvData, selectedStyle, isDark, visibleSections, generatePlainTextPreview]);
 
-  // Get proper input field classes with theme support
-  const getInputClasses = (isDark) => {
-    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+  const getInputClasses = useCallback(() => {
+    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-base ${
       isDark 
-        ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' 
-        : 'border-gray-200 bg-white text-gray-900 placeholder-gray-500'
+        ? 'border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:bg-gray-700' 
+        : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500'
     }`;
-  };
-
-  const getTextareaClasses = (isDark) => {
-    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none ${
+  }, [isDark]);
+  
+  const getTextareaClasses = useCallback(() => {
+    return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none text-base ${
       isDark 
-        ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' 
-        : 'border-gray-200 bg-white text-gray-900 placeholder-gray-500'
+        ? 'border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:bg-gray-700' 
+        : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500'
     }`;
-  };
+  }, [isDark]);
 
   // Render edit section based on active section
   const renderEditSection = () => {
@@ -568,7 +566,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.name}
                   onChange={(e) => updatePersonalDetails('name', e.target.value)}
-                  className={getInputClasses(isDark)}
+                  className={getInputClasses()}
                 />
               </div>
               <div>
@@ -577,7 +575,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.phone}
                   onChange={(e) => updatePersonalDetails('phone', e.target.value)}
-                  className={getInputClasses(isDark)}
+                  className={getInputClasses()}
                 />
               </div>
               <div>
@@ -586,7 +584,7 @@ const CVEditor = () => {
                   value={cvData.personalDetails.address}
                   onChange={(e) => updatePersonalDetails('address', e.target.value)}
                   rows="3"
-                  className={getTextareaClasses(isDark)}
+                  className={getTextareaClasses()}
                 />
               </div>
               <div>
@@ -595,7 +593,7 @@ const CVEditor = () => {
                   type="email"
                   value={cvData.personalDetails.email}
                   onChange={(e) => updatePersonalDetails('email', e.target.value)}
-                  className={getInputClasses(isDark)}
+                  className={getInputClasses()}
                 />
               </div>
               <div>
@@ -604,7 +602,7 @@ const CVEditor = () => {
                   type="text"
                   value={cvData.personalDetails.website}
                   onChange={(e) => updatePersonalDetails('website', e.target.value)}
-                  className={getInputClasses(isDark)}
+                  className={getInputClasses()}
                 />
               </div>
             </div>
@@ -621,7 +619,7 @@ const CVEditor = () => {
                 value={cvData.profile}
                 onChange={(e) => updateProfile(e.target.value)}
                 rows="8"
-                className={getTextareaClasses(isDark)}
+                className={getTextareaClasses()}
                 placeholder="Write your professional profile here..."
               />
             </div>
@@ -695,11 +693,11 @@ const CVEditor = () => {
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
         : 'bg-gradient-to-br from-blue-50 via-white to-indigo-50'
     }`}>
-      {/* Header */}
+      {/* Header - Fixed styling */}
       <div className={`shadow-xl border-b sticky top-0 z-50 backdrop-blur-xl ${
         isDark 
-          ? 'bg-gray-800/90 border-gray-700' 
-          : 'bg-white/90 border-gray-200'
+          ? 'bg-gray-800/95 border-gray-700' 
+          : 'bg-white/95 border-gray-200'
       }`}>
         <div className="w-full max-w-none px-6 py-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -709,29 +707,31 @@ const CVEditor = () => {
             </h1>
             
             <div className="flex flex-wrap items-center gap-3">
-              {/* Theme toggle */}
+              {/* Theme toggle - Fixed icon color issue */}
               <button
                 onClick={toggleTheme}
                 className={`p-3 rounded-xl transition-colors ${
                   isDark 
-                    ? 'bg-gray-700 hover:bg-gray-600' 
-                    : 'bg-gray-100 hover:bg-gray-200'
+                    ? 'bg-gray-700 hover:bg-gray-600 text-yellow-400' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                 }`}
                 title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
               >
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
               
-              {/* Style selector */}
-              <div className={`flex items-center gap-2 rounded-xl p-2 ${
+              {/* Style selector - Fixed */}
+              <div className={`flex items-center gap-2 rounded-xl px-3 py-2 ${
                 isDark ? 'bg-gray-700' : 'bg-gray-100'
               }`}>
-                <Palette className={`h-4 w-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+                <Palette className={`h-4 w-4 ${
+                  isDark ? 'text-purple-400' : 'text-purple-600'
+                }`} />
                 <select 
                   value={selectedStyle}
                   onChange={(e) => setSelectedStyle(e.target.value)}
-                  className={`bg-transparent text-sm font-medium focus:outline-none ${
-                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  className={`bg-transparent text-sm font-medium focus:outline-none cursor-pointer ${
+                    isDark ? 'text-gray-200' : 'text-gray-700'
                   }`}
                 >
                   <option value="styled">Rich Professional</option>
@@ -787,11 +787,11 @@ const CVEditor = () => {
           {/* Editor Panel */}
           {editMode && (
             <div className="lg:col-span-5 space-y-6">
-              {/* Section Navigation with Drag and Drop */}
+              {/* Section Navigation with Drag and Drop - Fixed layout consistency */}
               <div className={`rounded-2xl shadow-xl p-6 border ${
                 isDark 
-                  ? 'bg-gray-800 border-gray-700' 
-                  : 'bg-white border-gray-200'
+                  ? 'bg-gray-800/95 border-gray-700' 
+                  : 'bg-white/95 border-gray-200'
               }`}>
                 <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
                   isDark ? 'text-gray-100' : 'text-gray-900'
@@ -831,7 +831,7 @@ const CVEditor = () => {
                               ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
                               : `${
                                   isDark 
-                                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                                    ? 'bg-gray-700/80 text-gray-300 hover:bg-gray-600' 
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`
                             }
@@ -901,34 +901,32 @@ const CVEditor = () => {
                 </div>
                 <div className={`mt-4 p-3 rounded-lg border ${
                   isDark 
-                    ? 'bg-blue-900/20 border-blue-700' 
-                    : 'bg-blue-50 border-blue-200'
+                    ? 'bg-blue-900/20 border-blue-700 text-blue-300' 
+                    : 'bg-blue-50 border-blue-200 text-blue-700'
                 }`}>
-                  <p className={`text-sm ${
-                    isDark ? 'text-blue-300' : 'text-blue-700'
-                  }`}>
-                    💡 Drag sections to reorder • Orange border = empty section • Eye icon = show/hide
+                  <p className="text-sm">
+                    Drag sections to reorder • Orange border = empty section • Eye icon = show/hide
                   </p>
                 </div>
               </div>
 
-              {/* Edit Form */}
+              {/* Edit Form - Fixed background consistency */}
               <div className={`rounded-2xl shadow-xl p-6 border ${
                 isDark 
-                  ? 'bg-gray-800 border-gray-700' 
-                  : 'bg-white border-gray-200'
+                  ? 'bg-gray-800/95 border-gray-700' 
+                  : 'bg-white/95 border-gray-200'
               }`}>
                 {renderEditSection()}
               </div>
             </div>
           )}
 
-          {/* Preview Panel */}
+          {/* Preview Panel - Fixed layout */}
           <div className={editMode ? 'lg:col-span-7' : 'lg:col-span-12'}>
             <div className={`rounded-2xl shadow-xl border overflow-hidden ${
               isDark 
-                ? 'bg-gray-800 border-gray-700' 
-                : 'bg-white border-gray-200'
+                ? 'bg-gray-800/95 border-gray-700' 
+                : 'bg-white/95 border-gray-200'
             }`}>
               <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4">
                 <h2 className="text-xl font-semibold text-white flex items-center gap-2">

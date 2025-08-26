@@ -1,11 +1,11 @@
-// CVEditor.jsx - Fixed preview consistency
+// CVEditor.jsx - Updated with template system
 
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { 
   Download, Edit3, Eye, FileText, Palette, Plus, Trash2, 
   GripVertical, Upload, Sun, Moon, Settings, EyeOff
 } from 'lucide-react';
-import { generatePrintableHTML } from '../styles/cvstyles';
+import { templateManager } from '../utils/cvTemplates';
 import { testData } from '../utils/cvData';
 import { CVParser } from '../utils/cvParser';
 import { SectionManager, DEFAULT_SECTION_ORDER, SECTION_CONFIG } from '../utils/sectionManager';
@@ -27,7 +27,7 @@ const CVEditor = () => {
   // State management
   const [cvData, setCvData] = useState(testData);
   const [editMode, setEditMode] = useState(true);
-  const [selectedStyle, setSelectedStyle] = useState('styled');
+  const [selectedTemplate, setSelectedTemplate] = useState('rich-professional'); // Updated to use new template ID
   const [activeSection, setActiveSection] = useState('personal');
   const [sectionOrder, setSectionOrder] = useState(DEFAULT_SECTION_ORDER);
   const [hiddenSections, setHiddenSections] = useState([]);
@@ -35,6 +35,9 @@ const CVEditor = () => {
   const { theme, toggleTheme, isDark } = useTheme();
   const printRef = useRef();
   const sectionManager = useMemo(() => new SectionManager(sectionOrder), [sectionOrder]);
+
+  // Get available templates
+  const availableTemplates = useMemo(() => templateManager.getTemplateOptions(), []);
 
   // Section reordering function
   const handleReorderSections = useCallback((newOrder) => {
@@ -298,9 +301,9 @@ const CVEditor = () => {
 
   // Import/Export functions
   const exportToPDF = useCallback(() => {
-    const jsonData = JSON.stringify({ cvData, sectionOrder, hiddenSections });
+    const jsonData = JSON.stringify({ cvData, sectionOrder, hiddenSections, selectedTemplate });
     const printWindow = window.open('', '_blank');
-    const content = generatePrintableHTML(cvData, selectedStyle, 'light', visibleSections);
+    const content = templateManager.generateHTML(selectedTemplate, cvData, 'light', visibleSections);
     
     const contentWithData = content.replace(
       '</body>',
@@ -311,7 +314,7 @@ const CVEditor = () => {
     printWindow.document.close();
     printWindow.focus();
     printWindow.print();
-  }, [cvData, selectedStyle, sectionOrder, hiddenSections, visibleSections]);
+  }, [cvData, selectedTemplate, sectionOrder, hiddenSections, visibleSections]);
 
   const importFromFile = useCallback(async (event) => {
     const file = event?.target?.files?.[0];
@@ -333,6 +336,7 @@ const CVEditor = () => {
               setCvData(jsonData.cvData);
               if (jsonData.sectionOrder) setSectionOrder(jsonData.sectionOrder);
               if (jsonData.hiddenSections) setHiddenSections(jsonData.hiddenSections);
+              if (jsonData.selectedTemplate) setSelectedTemplate(jsonData.selectedTemplate);
               alert('CV data imported successfully from exported PDF!');
               event.target.value = '';
               return;
@@ -358,6 +362,7 @@ const CVEditor = () => {
             setCvData(imported.cvData);
             if (imported.sectionOrder) setSectionOrder(imported.sectionOrder);
             if (imported.hiddenSections) setHiddenSections(imported.hiddenSections);
+            if (imported.selectedTemplate) setSelectedTemplate(imported.selectedTemplate);
           } else {
             setCvData(imported);
           }
@@ -400,10 +405,9 @@ const CVEditor = () => {
     [sectionManager]
   );
 
-  // FIXED: Generate preview HTML that exactly matches the export
+  // Generate preview HTML using the new template system
   const generatePreviewHTML = useCallback(() => {
-    // Use the exact same function as export but with theme parameter
-    const fullHTML = generatePrintableHTML(cvData, selectedStyle, isDark ? 'dark' : 'light', visibleSections);
+    const fullHTML = templateManager.generateHTML(selectedTemplate, cvData, isDark ? 'dark' : 'light', visibleSections);
     
     // Extract just the body content and styles
     const styleMatch = fullHTML.match(/<style[^>]*>([\s\S]*?)<\/style>/);
@@ -441,7 +445,7 @@ const CVEditor = () => {
       </style>
       ${bodyContent}
     `;
-  }, [cvData, selectedStyle, isDark, visibleSections]);
+  }, [cvData, selectedTemplate, isDark, visibleSections]);
 
   const getInputClasses = useCallback(() => {
     return `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-base ${
@@ -600,7 +604,7 @@ const CVEditor = () => {
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
         : 'bg-gradient-to-br from-blue-50 via-white to-indigo-50'
     }`}>
-      {/* Header - Fixed styling */}
+      {/* Header */}
       <div className={`shadow-xl border-b sticky top-0 z-50 backdrop-blur-xl ${
         isDark 
           ? 'bg-gray-800/95 border-gray-700' 
@@ -614,7 +618,7 @@ const CVEditor = () => {
             </h1>
             
             <div className="flex flex-wrap items-center gap-3">
-              {/* Theme toggle - Fixed icon color issue */}
+              {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
                 className={`p-3 rounded-xl transition-colors ${
@@ -627,7 +631,7 @@ const CVEditor = () => {
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
               
-              {/* Style selector - Fixed */}
+              {/* Template selector - Updated to use new template system */}
               <div className={`flex items-center gap-2 rounded-xl px-3 py-2 ${
                 isDark ? 'bg-gray-700' : 'bg-gray-100'
               }`}>
@@ -635,14 +639,17 @@ const CVEditor = () => {
                   isDark ? 'text-purple-400' : 'text-purple-600'
                 }`} />
                 <select 
-                  value={selectedStyle}
-                  onChange={(e) => setSelectedStyle(e.target.value)}
+                  value={selectedTemplate}
+                  onChange={(e) => setSelectedTemplate(e.target.value)}
                   className={`bg-transparent text-sm font-medium focus:outline-none cursor-pointer ${
                     isDark ? 'text-gray-200' : 'text-gray-700'
                   }`}
                 >
-                  <option value="styled">Rich Professional</option>
-                  <option value="plain">Plain Professional</option>
+                  {availableTemplates.map(template => (
+                    <option key={template.value} value={template.value}>
+                      {template.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               
@@ -694,7 +701,7 @@ const CVEditor = () => {
           {/* Editor Panel */}
           {editMode && (
             <div className="lg:col-span-5 space-y-6">
-              {/* Section Navigation with Drag and Drop - Fixed layout consistency */}
+              {/* Section Navigation with Drag and Drop */}
               <div className={`rounded-2xl shadow-xl p-6 border ${
                 isDark 
                   ? 'bg-gray-800/95 border-gray-700' 
@@ -817,7 +824,7 @@ const CVEditor = () => {
                 </div>
               </div>
 
-              {/* Edit Form - Fixed background consistency */}
+              {/* Edit Form */}
               <div className={`rounded-2xl shadow-xl p-6 border ${
                 isDark 
                   ? 'bg-gray-800/95 border-gray-700' 
@@ -828,7 +835,7 @@ const CVEditor = () => {
             </div>
           )}
 
-          {/* Preview Panel - Fixed layout */}
+          {/* Preview Panel */}
           <div className={editMode ? 'lg:col-span-7' : 'lg:col-span-12'}>
             <div className={`rounded-2xl shadow-xl border overflow-hidden ${
               isDark 

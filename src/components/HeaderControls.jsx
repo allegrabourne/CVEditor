@@ -16,7 +16,7 @@ export const HeaderControls = ({
 }) => {
   return (
     <div className="flex items-center gap-2 lg:gap-3">
-      {/* Theme toggle - Always visible */}
+
       <button
         onClick={toggleTheme}
         className={`p-2.5 lg:p-3 rounded-lg lg:rounded-xl transition-colors ${
@@ -29,29 +29,35 @@ export const HeaderControls = ({
         {isDark ? <Sun className="h-4 w-4 lg:h-5 lg:w-5" /> : <Moon className="h-4 w-4 lg:h-5 lg:w-5" />}
       </button>
       
-      {/* Template selector - Always visible */}
-      <div className={`flex items-center gap-2 rounded-lg lg:rounded-xl px-2.5 lg:px-3 py-2 ${
-        isDark ? 'bg-gray-700' : 'bg-gray-100'
-      }`}>
-        <Palette className={`h-4 w-4 ${
-          isDark ? 'text-purple-400' : 'text-purple-600'
-        }`} />
-        <select 
-          value={selectedTemplate}
-          onChange={(e) => setSelectedTemplate(e.target.value)}
-          className={`bg-transparent text-xs lg:text-sm font-medium focus:outline-none cursor-pointer min-w-0 ${
-            isDark ? 'text-gray-200' : 'text-gray-700'
-          }`}
-        >
-          {availableTemplates.map(template => (
-            <option key={template.value} value={template.value}>
-              {template.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div
+  className={`flex items-center gap-2 rounded-lg lg:rounded-xl px-2.5 lg:px-3 py-2 ${
+    isDark ? "bg-gray-700" : "bg-gray-100"
+  }`}
+>
+  <Palette
+    className={`h-4 w-4 ${
+      isDark ? "text-purple-400" : "text-purple-600"
+    }`}
+  />
+  <select
+    value={selectedTemplate}
+    onChange={(e) => setSelectedTemplate(e.target.value)}
+    className={`text-xs lg:text-sm font-medium focus:outline-none cursor-pointer min-w-0
+      ${isDark ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-700"}`}
+  >
+    {availableTemplates.map((template) => (
+      <option
+        key={template.value}
+        value={template.value}
+        className={isDark ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-700"}
+      >
+        {template.label}
+      </option>
+    ))}
+  </select>
+</div>
+
       
-      {/* Mode toggle - Responsive design */}
       <button
         onClick={() => setEditMode(!editMode)}
         className={`flex items-center gap-1.5 lg:gap-2 px-3 lg:px-6 py-2.5 lg:py-3 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
@@ -65,18 +71,15 @@ export const HeaderControls = ({
         }`}
       >
         {editMode ? <Eye className="h-3.5 w-3.5 lg:h-4 lg:w-4" /> : <Edit3 className="h-3.5 w-3.5 lg:h-4 lg:w-4" />}
-        {/* Show text on desktop, hide on mobile */}
         <span className="hidden lg:inline">
           {editMode ? 'Preview Mode' : 'Edit Mode'}
         </span>
       </button>
 
-      {/* Import button - Icon only on mobile, full button on desktop */}
       <label className={`flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer ${
         'min-w-0'
       }`}>
         <Upload className="h-3.5 w-3.5 lg:h-4 lg:w-4 flex-shrink-0" />
-        {/* Show text only on desktop */}
         <span className="hidden lg:inline">Import</span>
         <input
           type="file"
@@ -86,7 +89,6 @@ export const HeaderControls = ({
         />
       </label>
       
-      {/* Export button - Icon only on mobile, full button on desktop */}
       <button
         onClick={exportToPDF}
         className={`flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl ${
@@ -94,7 +96,6 @@ export const HeaderControls = ({
         }`}
       >
         <Download className="h-3.5 w-3.5 lg:h-4 lg:w-4 flex-shrink-0" />
-        {/* Show text only on desktop */}
         <span className="hidden lg:inline">Export PDF</span>
       </button>
     </div>

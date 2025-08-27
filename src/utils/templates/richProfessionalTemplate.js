@@ -3,173 +3,180 @@ import { CVTemplate } from './cvTemplate.js';
 
 export class RichProfessionalTemplate extends CVTemplate {
   constructor() {
-    super('rich-professional', 'Rich Professional', 'Polished, modern layout with strong accents');
+    super(
+      'rich-professional',
+      'Rich Professional',
+      'Professional classic two-column layout with sidebar for personal details'
+    );
   }
 
   generateStyles(theme, isExport = false) {
     const c = this.getColorScheme(theme, isExport);
-    const RADIUS = 14; // single source of truth
 
-    // Encourage browsers/print to keep background colours & gradients
+    // Keep colours in print/PDF
     const colorAdjust = `
-      * {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     `;
 
-    // Export-only tweaks (keep visuals the same; drop fragile blur only)
+    // Use identical dimensions in preview & export
+    const WIDTH = 800;
+    const RADIUS = 10;
+    const GUTTER = 18;
+    const SIDEBAR = 260;
+
+    // No export divergence—we keep the same look; exportTweaks only enforces width/centering (identical values)
     const exportTweaks = isExport ? `
       .cv-container {
-        max-width: 800px !important;   /* match preview exactly */
+        max-width: ${WIDTH}px !important;
         width: 100% !important;
         margin: 0 auto !important;
         padding: 24px !important;
-        /* keep same background, shadows, radius as preview */
-      }
-      /* drop blur for PDF reliability (both markups) */
-      .cv-container .contact .chip,
-      .cv-container .contact-info .contact-item {
-        backdrop-filter: none !important;
-        background: #eef2ff !important;      /* soft indigo */
-        color: #1f2937 !important;           /* slate-800 */
-        border: 1px solid #c7d2fe !important;/* indigo-200 */
       }
     ` : '';
 
     return `
       ${colorAdjust}
 
-      /* Root container */
       .cv-container {
-        font-size: 0.95em;
-        text-align: initial; /* fence off app-level alignments */
+        text-align: initial;
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        font-size: 0.96em;
         line-height: 1.55;
         color: ${c.primaryText};
         background: ${c.background};
         padding: 24px;
-        max-width: 800px;
+        max-width: ${WIDTH}px;
         margin: 0 auto;
         border-radius: ${RADIUS}px;
         overflow: hidden;
       }
 
-      /* Header wrapper card (with border) */
-      .cv-container .header {
-        border-radius: ${RADIUS}px;
-        overflow: hidden;
-        margin-bottom: 24px;
-        border: 1px solid ${c.borderColor};
-        background: ${c.cardBackground};
-      }
-
-      /* Gradient header bar — support BOTH markups */
-      /* New style: .header-bar */
-      .cv-container .header-bar {
-        background: linear-gradient(135deg, ${c.accentGradientStart}, ${c.accentGradientEnd});
-        padding: 18px 20px;
-        color: #fff;
+      /* Name header across full width */
+      .cv-container .name-header {
         text-align: center;
+        margin-bottom: ${GUTTER}px;
       }
-      .cv-container .header-bar h1 {
+      .cv-container .name-header h1 {
         margin: 0;
-        font-size: 1.8em;
+        font-size: 2.0em;
+        letter-spacing: 0.5px;
         font-weight: 800;
-        letter-spacing: .2px;
-   
-        text-shadow: 0 1px 2px rgba(0,0,0,.20);
-        display: inline-block;
+        color: ${c.primaryText};
       }
 
-      /* Old style (no .header-bar): style .header directly */
-      .cv-container .header > h1 {
-        background: linear-gradient(135deg, ${c.accentGradientStart}, ${c.accentGradientEnd});
-        -webkit-background-clip: text;
-        background-clip: text;
-        display: block;
-        text-align: center;
-        margin: 18px 20px 0 20px;
-        font-size: 1.8em;
-        font-weight: 800;
-        letter-spacing: .2px;
-        text-shadow: 0 1px 2px rgba(0,0,0,.10);
+      /* Two-column grid */
+      .cv-container .layout {
+        display: grid;
+        grid-template-columns: ${SIDEBAR}px 1fr; /* fixed columns for parity */
+        gap: ${GUTTER}px;
       }
 
-      /* Contact row — support BOTH markups */
-      .cv-container .contact,
-      .cv-container .contact-info {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 10px;
-        padding: 14px 20px 18px;
-      }
-
-      /* Contact chips — BOTH markups */
-      .cv-container .contact .chip,
-      .cv-container .contact-info .contact-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.35);
-        background: rgba(255,255,255,.18);
-        backdrop-filter: blur(10px); /* pretty in preview; disabled in exportTweaks */
-        font-weight: 600;
-      }
-
-      /* Sections */
-      .cv-container .section {
+      /* Sidebar card */
+      .cv-container .sidebar {
         border: 1px solid ${c.borderColor};
         border-radius: ${RADIUS}px;
-        padding: 18px 20px;
-        margin-bottom: 18px;
         background: ${c.cardBackground};
+        padding: 14px 14px;
       }
-      .cv-container .section-title {
-        display: inline-block;
-        font-size: 1.00em;
+      .cv-container .sidebar .sidebar-title {
+        font-size: 0.95em;
         font-weight: 800;
-        letter-spacing: .3px;
         text-transform: uppercase;
         color: ${c.primaryText};
         border-bottom: 2px solid ${c.borderAccent};
         padding-bottom: 6px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+      }
+      .cv-container .sidebar .kv {
+        margin-bottom: 10px;
+      }
+      .cv-container .sidebar .kv .label {
+        display: block;
+        font-size: 0.82em;
+        text-transform: uppercase;
+        color: ${c.mutedText};
+        letter-spacing: 0.4px;
+      }
+      .cv-container .sidebar .kv .value {
+        display: block;
+        font-weight: 700;
+        color: ${c.primaryText};
+        margin-top: 2px;
+        word-break: break-word;
       }
 
-      /* Items & text */
-      .cv-container .item { margin-bottom: 30px; }
-      .cv-container .item:last-child { margin-bottom: 0; }
-      .cv-container .job-title,
-      .cv-container .project-title,
-      .cv-container .certificate-title,
-      .cv-container .degree {
-        font-weight: 700; color: ${c.primaryText};
+      /* Main column sections */
+      .cv-container .main .section {
+        border: 1px solid ${c.borderColor};
+        border-radius: ${RADIUS}px;
+        background: ${c.cardBackground};
+        padding: 16px 18px;
+        margin-bottom: ${GUTTER}px;
       }
-      .cv-container .meta {
-        color: ${c.mutedText}; font-weight: 600; margin-top: 2px;
+      .cv-container .main .section-title {
+        display: inline-block;
+        font-size: 1.0em;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: ${c.primaryText};
+        border-bottom: 2px solid ${c.borderAccent};
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+      }
+
+      /* Items and text */
+      .cv-container .item { margin-bottom: 14px; }
+      .cv-container .item:last-child { margin-bottom: 0; }
+
+      .cv-container .job-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .cv-container .job-title {
+        font-weight: 700;
+        color: ${c.primaryText};
+      }
+      .cv-container .job-meta {
+        color: ${c.mutedText};
+        font-weight: 600;
       }
       .cv-container .description {
-        margin-top: 6px; color: ${c.secondaryText}; white-space: pre-line;
+        margin-top: 6px;
+        color: ${c.secondaryText};
+        white-space: pre-line;
       }
-      .cv-container ul.bullets { margin-top: 6px; margin-bottom: 0; padding-left: 20px; }
-      .cv-container ul.bullets li { margin-bottom: 4px; color: ${c.secondaryText}; }
+      .cv-container ul.bullets {
+        margin-top: 6px;
+        margin-bottom: 0;
+        padding-left: 18px;
+      }
+      .cv-container ul.bullets li {
+        margin-bottom: 4px;
+        color: ${c.secondaryText};
+      }
+
+      /* Simple list in sidebar (no bullets) */
+      .cv-container .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .cv-container .sidebar li {
+        margin: 6px 0;
+        color: ${c.secondaryText};
+      }
 
       ${exportTweaks}
 
-      /* Safety net for print paths that honour @media print */
+      /* Print safety net (same dimensions) */
       @media print {
         .cv-container {
-          max-width: 800px !important;
+          max-width: ${WIDTH}px !important;
           margin: 0 auto !important;
-          border-radius: ${RADIUS}px !important;
-        }
-        .cv-container .header,
-        .cv-container .section {
-          border-radius: ${RADIUS}px !important;
         }
       }
     `;
@@ -177,43 +184,70 @@ export class RichProfessionalTemplate extends CVTemplate {
 
   generateBody(cvData, visibleSections) {
     const pd = cvData.personalDetails || {};
+    const show = s => this.shouldRenderSection(s, visibleSections, cvData);
+
     let html = `<div class="cv-container">`;
 
-    // Header (use .header-bar + contact-info for maximum compat)
-    if (this.shouldRenderSection('personal', visibleSections, cvData)) {
-      html += `
-        <div class="header">
-          <div class="header-bar">
-            <h1>${pd.name || ''}</h1>
+    // Name header (top)
+    const name = pd.name || '';
+    html += `
+      <div class="name-header">
+        <h1>${name}</h1>
+      </div>
+    `;
+
+    // Layout grid (sidebar + main)
+    html += `<div class="layout">`;
+
+    // Sidebar: Personal Details
+    html += `<aside class="sidebar">`;
+    if (show('personal')) {
+      html += `<div class="sidebar-title">Personal Details</div>`;
+
+      const rows = [
+        ['Name', pd.name],
+        ['Address', pd.address],
+        ['Phone', pd.phone],
+        ['Email', pd.email],
+        ['Website', pd.website],
+      ].filter(([, v]) => v);
+
+      rows.forEach(([label, value]) => {
+        html += `
+          <div class="kv">
+            <span class="label">${label}</span>
+            <span class="value">${value}</span>
           </div>
-          <div class="contact-info">
-            ${pd.phone   ? `<span class="contact-item">📱 ${pd.phone}</span>`   : ''}
-            ${pd.email   ? `<span class="contact-item">✉️ ${pd.email}</span>`   : ''}
-            ${pd.website ? `<span class="contact-item">🌐 ${pd.website}</span>` : ''}
-            ${pd.address ? `<span class="contact-item">📍 ${pd.address}</span>` : ''}
-          </div>
-        </div>
-      `;
+        `;
+      });
     }
+    html += `</aside>`;
+
+    // Main column
+    html += `<main class="main">`;
 
     // Profile
-    if (this.shouldRenderSection('profile', visibleSections, cvData)) {
+    if (show('profile')) {
       html += `
-        <div class="section">
+        <section class="section">
           <div class="section-title">Professional Profile</div>
           <div class="description">${cvData.profile || ''}</div>
-        </div>
+        </section>
       `;
     }
 
     // Experience
-    if (this.shouldRenderSection('experience', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Work Experience</div>`;
+    if (show('experience')) {
+      html += `<section class="section"><div class="section-title">Work Experience</div>`;
       (cvData.workExperience || []).forEach(j => {
+        const left = j.title || '';
+        const right = [j.company, j.dates].filter(Boolean).join(' • ');
         html += `
           <div class="item">
-            <div class="job-title">${j.title || ''}</div>
-            <div class="meta">${[j.company, j.dates].filter(Boolean).join(' • ')}</div>
+            <div class="job-head">
+              <div class="job-title">${left}</div>
+              <div class="job-meta">${right}</div>
+            </div>
             ${j.description ? `<div class="description">${j.description}</div>` : ''}
             ${(j.responsibilities && j.responsibilities.length)
               ? `<ul class="bullets">${j.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
@@ -222,17 +256,19 @@ export class RichProfessionalTemplate extends CVTemplate {
           </div>
         `;
       });
-      html += `</div>`;
+      html += `</section>`;
     }
 
-    // Projects
-    if (this.shouldRenderSection('projects', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Personal Projects</div>`;
+    // Projects (optional)
+    if (show('projects')) {
+      html += `<section class="section"><div class="section-title">Personal Projects</div>`;
       (cvData.personalProjects || []).forEach(p => {
         html += `
           <div class="item">
-            <div class="project-title">${p.title || ''}</div>
-            <div class="meta">${p.technologies || ''}</div>
+            <div class="job-head">
+              <div class="job-title">${p.title || ''}</div>
+              <div class="job-meta">${p.technologies || ''}</div>
+            </div>
             ${(p.responsibilities && p.responsibilities.length)
               ? `<ul class="bullets">${p.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
               : ''
@@ -240,48 +276,51 @@ export class RichProfessionalTemplate extends CVTemplate {
           </div>
         `;
       });
-      html += `</div>`;
+      html += `</section>`;
     }
 
     // Education
-    if (this.shouldRenderSection('education', visibleSections, cvData)) {
+    if (show('education')) {
       const ed = cvData.education || {};
+      const meta = [ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ');
       html += `
-        <div class="section">
+        <section class="section">
           <div class="section-title">Education</div>
           <div class="item">
-            <div class="degree">${ed.degree || ''}</div>
-            <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
+            <div class="job-head">
+              <div class="job-title">${ed.degree || ''}</div>
+              <div class="job-meta">${meta}</div>
+            </div>
           </div>
-        </div>
+        </section>
       `;
     }
 
     // Certificates
-    if (this.shouldRenderSection('certificates', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Certificates</div>`;
+    if (show('certificates')) {
+      html += `<section class="section"><div class="section-title">Certificates</div>`;
       (cvData.certificates || []).forEach(cert => {
         html += `
           <div class="item">
-            <div class="certificate-title">${cert.title || ''}</div>
+            <div class="job-title">${cert.title || ''}</div>
             ${cert.description ? `<div class="description">${cert.description}</div>` : ''}
           </div>
         `;
       });
-      html += `</div>`;
+      html += `</section>`;
     }
 
     // Courses
-    if (this.shouldRenderSection('courses', visibleSections, cvData)) {
+    if (show('courses')) {
       html += `
-        <div class="section">
-          <div class="section-title">Additional Courses</div>
+        <section class="section">
+          <div class="section-title">Courses & Qualifications</div>
           <div class="description">${cvData.courses || ''}</div>
-        </div>
+        </section>
       `;
     }
 
-    html += `</div>`;
+    html += `</main></div></div>`;
     return html;
   }
 }

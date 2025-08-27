@@ -1,17 +1,17 @@
-// utils/templates/RichProfessionalTemplate.js - Rich Professional Template
+// utils/templates/RichProfessionalTemplate.js - Rich Professional Template with proper theming
 
 import { CVTemplate } from './CVTemplate.js';
 
 /**
- * Rich Professional Template (existing 'styled' template)
+ * Rich Professional Template - Fixed to separate theming from structural styling
  */
 export class RichProfessionalTemplate extends CVTemplate {
   constructor() {
     super('rich-professional', 'Rich Professional', 'Professional template with colors and modern styling');
   }
 
-  generateStyles(theme) {
-    const isDark = theme === 'dark';
+  generateStyles(theme, isExport = false) {
+    const colors = this.getColorScheme(theme, isExport);
     
     return `
         /* Reset for CV preview - scoped to prevent editor interference */
@@ -25,8 +25,8 @@ export class RichProfessionalTemplate extends CVTemplate {
         .cv-container {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: ${isDark ? '#f3f4f6' : '#1f2937'};
-            background: ${isDark ? '#1f2937' : '#ffffff'};
+            color: ${colors.primaryText};
+            background: ${colors.background};
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
@@ -36,7 +36,7 @@ export class RichProfessionalTemplate extends CVTemplate {
         }
 
         .cv-container .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, ${colors.accentGradientStart} 0%, ${colors.accentGradientEnd} 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -80,10 +80,10 @@ export class RichProfessionalTemplate extends CVTemplate {
         .cv-container .section-title {
             font-size: 1.5em;
             font-weight: 700;
-            color: #667eea;
+            color: ${colors.accentPrimary};
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid ${colors.accentPrimary};
             position: relative;
         }
 
@@ -94,14 +94,14 @@ export class RichProfessionalTemplate extends CVTemplate {
             left: 0;
             width: 50px;
             height: 3px;
-            background: #764ba2;
+            background: ${colors.accentSecondary};
         }
 
         .cv-container .profile {
             font-size: 1.1em;
             line-height: 1.7;
             text-align: justify;
-            color: ${isDark ? '#d1d5db' : '#4b5563'};
+            color: ${colors.secondaryText};
             white-space: pre-line;
         }
 
@@ -110,9 +110,9 @@ export class RichProfessionalTemplate extends CVTemplate {
         .cv-container .certificate {
             margin-bottom: 25px;
             padding: 20px;
-            background: ${isDark ? '#4b5563' : '#f8fafc'};
+            background: ${colors.cardBackground};
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid ${colors.accentPrimary};
         }
 
         .cv-container .job-title, 
@@ -120,26 +120,26 @@ export class RichProfessionalTemplate extends CVTemplate {
         .cv-container .certificate-title {
             font-size: 1.2em;
             font-weight: 600;
-            color: ${isDark ? '#f3f4f6' : '#1f2937'};
+            color: ${colors.primaryText};
             margin-bottom: 8px;
         }
 
         .cv-container .job-company, 
         .cv-container .project-tech {
             font-weight: 500;
-            color: #667eea;
+            color: ${colors.accentPrimary};
             margin-bottom: 5px;
         }
 
         .cv-container .job-dates {
-            color: ${isDark ? '#9ca3af' : '#6b7280'};
+            color: ${colors.mutedText};
             font-style: italic;
             margin-bottom: 10px;
         }
 
         .cv-container .job-description, 
         .cv-container .certificate-description {
-            color: ${isDark ? '#d1d5db' : '#4b5563'};
+            color: ${colors.secondaryText};
             margin-bottom: 10px;
             white-space: pre-line;
         }
@@ -154,64 +154,101 @@ export class RichProfessionalTemplate extends CVTemplate {
             position: relative;
             padding-left: 20px;
             margin-bottom: 5px;
-            color: ${isDark ? '#d1d5db' : '#4b5563'};
+            color: ${colors.secondaryText};
         }
 
         .cv-container .responsibilities li::before {
             content: '▸';
             position: absolute;
             left: 0;
-            color: #667eea;
+            color: ${colors.accentPrimary};
             font-weight: bold;
         }
 
         .cv-container .education-item {
-            background: ${isDark ? '#4b5563' : '#f8fafc'};
+            background: ${colors.cardBackground};
             padding: 20px;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid ${colors.accentPrimary};
         }
 
         .cv-container .degree {
             font-size: 1.2em;
             font-weight: 600;
-            color: ${isDark ? '#f3f4f6' : '#1f2937'};
+            color: ${colors.primaryText};
             margin-bottom: 8px;
         }
 
         .cv-container .university {
             font-weight: 500;
-            color: #667eea;
+            color: ${colors.accentPrimary};
             margin-bottom: 5px;
         }
 
         .cv-container .education-dates, 
         .cv-container .education-grade {
-            color: ${isDark ? '#a0aec0' : '#718096'};
+            color: ${colors.mutedText};
             margin-bottom: 5px;
         }
 
         .cv-container .courses-content {
             line-height: 1.7;
-            color: ${isDark ? '#cbd5e0' : '#4a5568'};
+            color: ${colors.secondaryText};
             white-space: pre-line;
-            background: ${isDark ? '#4a5568' : '#f7fafc'};
+            background: ${colors.cardBackground};
             padding: 25px;
             border-radius: 12px;
-            border-left: 4px solid #4299e1;
+            border-left: 4px solid ${colors.accentPrimary};
         }
 
-        /* Print styles scoped to cv-container */
+        /* Print styles - ensure consistency for exports */
         @media print {
             .cv-container {
                 box-shadow: none;
                 border-radius: 0;
                 padding: 0;
+                color: #1a202c !important;
+                background: white !important;
             }
 
             .cv-container .header {
-                background: #4299e1 !important;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
                 margin: 0;
+            }
+
+            .cv-container .section-title {
+                color: #4299e1 !important;
+                border-bottom: 3px solid #4299e1 !important;
+            }
+
+            .cv-container .section-title::after {
+                background: #3182ce !important;
+            }
+
+            .cv-container .job, 
+            .cv-container .project, 
+            .cv-container .certificate,
+            .cv-container .education-item,
+            .cv-container .courses-content {
+                background: #f8fafc !important;
+                border-left: 4px solid #4299e1 !important;
+            }
+
+            .cv-container .job-title, 
+            .cv-container .project-title, 
+            .cv-container .certificate-title, 
+            .cv-container .degree {
+                color: #1a202c !important;
+            }
+
+            .cv-container .job-company, 
+            .cv-container .project-tech,
+            .cv-container .university {
+                color: #4299e1 !important;
+            }
+
+            .cv-container .responsibilities li::before {
+                color: #4299e1 !important;
             }
         }
     `;

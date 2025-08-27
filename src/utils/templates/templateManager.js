@@ -1,4 +1,4 @@
-// utils/templates/TemplateManager.js - Template Manager
+// utils/templates/TemplateManager.js - Template Manager with proper export handling
 
 import { CVTemplate } from './cvTemplate.js';
 
@@ -61,16 +61,28 @@ export class TemplateManager {
   }
 
   /**
-   * Main method for generating HTML
+   * Main method for generating HTML for preview
    * @param {string} templateId - Template ID to use
    * @param {Object} cvData - CV data object
-   * @param {string} theme - 'light' or 'dark'
+   * @param {string} theme - 'light' or 'dark' (for preview only)
    * @param {Array} visibleSections - Array of visible section IDs
    * @returns {string} Complete HTML document
    */
   generateHTML(templateId, cvData, theme = 'light', visibleSections = []) {
     const template = this.getTemplate(templateId);
-    return template.generateHTML(cvData, theme, visibleSections);
+    return template.generateHTML(cvData, theme, visibleSections, false);
+  }
+
+  /**
+   * Generate HTML for export (always uses light theme)
+   * @param {string} templateId - Template ID to use
+   * @param {Object} cvData - CV data object
+   * @param {Array} visibleSections - Array of visible section IDs
+   * @returns {string} Complete HTML document optimized for export
+   */
+  generateExportHTML(templateId, cvData, visibleSections = []) {
+    const template = this.getTemplate(templateId);
+    return template.generateHTML(cvData, 'light', visibleSections, true);
   }
 
   /**

@@ -13,6 +13,7 @@ import { HeaderControls } from './HeaderControls';
 import { SectionNavigator } from './SectionNavigation';
 import { EditPanel } from './EditPanel';
 import { PreviewPanel } from './PreviewPanel';
+import { Footer } from './Footer';
 
 const CVEditor = () => {
   // State management
@@ -169,8 +170,12 @@ const CVEditor = () => {
           </div>
         </div>
       </div>
+      <Footer isDark={isDark} />
     </div>
+    
   );
+
+  
 };
 
 export default CVEditor;

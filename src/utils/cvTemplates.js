@@ -1,7 +1,7 @@
 // utils/cvTemplates.js - Main CV Template System
 
 // Import base classes
-export { CVTemplate } from './templates/CVTemplate.js';
+export { CVTemplate } from './templates/cvTemplate.js';
 export { TemplateManager } from './templates/templateManager.js';
 
 // Import all template implementations

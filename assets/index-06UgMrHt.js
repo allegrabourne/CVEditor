@@ -50,7 +50,288 @@ Error generating stack: `+r.message+`
 <body>
     ${o}
 </body>
-</html>`}generateStyles(e,t=!1){throw new Error("generateStyles must be implemented by subclass")}generateBody(e,t){throw new Error("generateBody must be implemented by subclass")}shouldRenderSection(e,t,i){var s,r,o,a,c,u,h,d,f;if(!t.includes(e))return!1;switch(e){case"personal":return((s=i.personalDetails)==null?void 0:s.name)||((r=i.personalDetails)==null?void 0:r.email);case"profile":return(o=i.profile)==null?void 0:o.trim();case"experience":return((a=i.workExperience)==null?void 0:a.length)>0;case"projects":return((c=i.personalProjects)==null?void 0:c.length)>0;case"certificates":return((u=i.certificates)==null?void 0:u.length)>0;case"education":return((h=i.education)==null?void 0:h.degree)||((d=i.education)==null?void 0:d.university);case"courses":return(f=i.courses)==null?void 0:f.trim();default:return!1}}getColorScheme(e,t=!1){const i={primaryText:"#1a202c",secondaryText:"#4a5568",mutedText:"#718096",background:"#ffffff",cardBackground:"#f7fafc",accentPrimary:"#4299e1",accentSecondary:"#3182ce",accentGradientStart:"#667eea",accentGradientEnd:"#764ba2",borderColor:"#e2e8f0",borderAccent:"#4299e1"};return t?i:e==="dark"?{...i,primaryText:"#f7fafc",secondaryText:"#e2e8f0",mutedText:"#cbd5e0",background:"#1a202c",cardBackground:"#2d3748",borderColor:"#4a5568"}:i}}class FE{constructor(){this.templates=new Map}registerTemplate(e){if(!(e instanceof ch))throw new Error("Template must extend CVTemplate class");this.templates.set(e.id,e)}getTemplate(e){const t=this.templates.get(e);if(!t){const i=Array.from(this.templates.values())[0];if(i)return console.warn(`Template with ID "${e}" not found, falling back to ${i.id}`),i;throw new Error(`Template with ID "${e}" not found and no fallback available`)}return t}getAllTemplates(){return Array.from(this.templates.values())}getTemplateOptions(){return this.getAllTemplates().map(e=>({value:e.id,label:e.name,description:e.description}))}generateHTML(e,t,i="light",s=[]){return this.getTemplate(e).generateHTML(t,i,s,!1)}generateExportHTML(e,t,i=[]){return this.getTemplate(e).generateHTML(t,"light",i,!0)}hasTemplate(e){return this.templates.has(e)}getTemplateInfo(e){const t=this.templates.get(e);return t?{id:t.id,name:t.name,description:t.description}:null}getTemplateCount(){return this.templates.size}clearTemplates(){this.templates.clear()}getTemplateIds(){return Array.from(this.templates.keys())}}class DE extends ch{constructor(){super("rich-professional","Rich Professional","Professional template with colors and modern styling")}generateStyles(e,t=!1){const i=this.getColorScheme(e,t);return`
+</html>`}generateStyles(e,t=!1){throw new Error("generateStyles must be implemented by subclass")}generateBody(e,t){throw new Error("generateBody must be implemented by subclass")}shouldRenderSection(e,t,i){var s,r,o,a,c,u,h,d,f;if(!t.includes(e))return!1;switch(e){case"personal":return((s=i.personalDetails)==null?void 0:s.name)||((r=i.personalDetails)==null?void 0:r.email);case"profile":return(o=i.profile)==null?void 0:o.trim();case"experience":return((a=i.workExperience)==null?void 0:a.length)>0;case"projects":return((c=i.personalProjects)==null?void 0:c.length)>0;case"certificates":return((u=i.certificates)==null?void 0:u.length)>0;case"education":return((h=i.education)==null?void 0:h.degree)||((d=i.education)==null?void 0:d.university);case"courses":return(f=i.courses)==null?void 0:f.trim();default:return!1}}getColorScheme(e,t=!1){const i={primaryText:"#1a202c",secondaryText:"#4a5568",mutedText:"#718096",background:"#ffffff",cardBackground:"#f7fafc",accentPrimary:"#4299e1",accentSecondary:"#3182ce",accentGradientStart:"#667eea",accentGradientEnd:"#764ba2",borderColor:"#e2e8f0",borderAccent:"#4299e1"};return t?i:e==="dark"?{...i,primaryText:"#f7fafc",secondaryText:"#e2e8f0",mutedText:"#cbd5e0",background:"#1a202c",cardBackground:"#2d3748",borderColor:"#4a5568"}:i}}class FE{constructor(){this.templates=new Map}registerTemplate(e){if(!(e instanceof ch))throw new Error("Template must extend CVTemplate class");this.templates.set(e.id,e)}getTemplate(e){const t=this.templates.get(e);if(!t){const i=Array.from(this.templates.values())[0];if(i)return console.warn(`Template with ID "${e}" not found, falling back to ${i.id}`),i;throw new Error(`Template with ID "${e}" not found and no fallback available`)}return t}getAllTemplates(){return Array.from(this.templates.values())}getTemplateOptions(){return this.getAllTemplates().map(e=>({value:e.id,label:e.name,description:e.description}))}generateHTML(e,t,i="light",s=[]){return this.getTemplate(e).generateHTML(t,i,s,!1)}generateExportHTML(e,t,i=[]){return this.getTemplate(e).generateHTML(t,"light",i,!0)}hasTemplate(e){return this.templates.has(e)}getTemplateInfo(e){const t=this.templates.get(e);return t?{id:t.id,name:t.name,description:t.description}:null}getTemplateCount(){return this.templates.size}clearTemplates(){this.templates.clear()}getTemplateIds(){return Array.from(this.templates.keys())}}class DE extends ch{constructor(){super("plain-professional","Plain Professional","Clean, minimal template suitable for ATS systems")}generateStyles(e,t=!1){const i=this.getColorScheme(e,t);return`
+        /* Reset for CV preview - scoped to prevent editor interference */
+        .cv-container * {
+         font-size: 0.95em;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* All styles scoped to .cv-container to prevent editor interference */
+        .cv-container {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: ${i.primaryText};
+            background: ${i.background};
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header styling - always left aligned for consistent layout */
+        .cv-container .header {
+            text-align: left;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid ${i.borderAccent};
+        }
+
+        .cv-container .header h1 {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: ${i.primaryText};
+            text-align: left;
+        }
+
+        .cv-container .contact-info {
+            line-height: 1.4;
+            color: ${i.secondaryText};
+            text-align: left;
+        }
+
+        .cv-container .content {
+            max-width: 100%;
+        }
+
+        .cv-container .section {
+            margin-bottom: 25px;
+        }
+
+        .cv-container .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: ${i.primaryText};
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px solid ${i.borderAccent};
+            padding-bottom: 5px;
+            text-align: left;
+        }
+
+        .cv-container .profile {
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 15px;
+            white-space: pre-line;
+            color: ${i.secondaryText};
+        }
+
+        .cv-container .job, 
+        .cv-container .project, 
+        .cv-container .certificate {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted ${i.borderColor};
+            text-align: left;
+        }
+
+        .cv-container .job:last-child, 
+        .cv-container .project:last-child, 
+        .cv-container .certificate:last-child {
+            border-bottom: none;
+        }
+
+        .cv-container .job-title, 
+        .cv-container .project-title, 
+        .cv-container .certificate-title {
+            font-weight: bold;
+            color: ${i.primaryText};
+            margin-bottom: 3px;
+            text-align: left;
+        }
+
+        .cv-container .job-company, 
+        .cv-container .project-tech {
+            font-weight: bold;
+            color: ${i.mutedText};
+            margin-bottom: 3px;
+            text-align: left;
+        }
+
+        .cv-container .job-dates {
+            color: ${i.mutedText};
+            font-style: italic;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .cv-container .job-description, 
+        .cv-container .certificate-description {
+            margin-bottom: 8px;
+            color: ${i.secondaryText};
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        .cv-container .responsibilities {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 0;
+            text-align: left;
+        }
+
+        .cv-container .responsibilities li {
+            margin-bottom: 3px;
+            color: ${i.secondaryText};
+            text-align: left;
+        }
+
+        .cv-container .education-item {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .cv-container .degree {
+            font-weight: bold;
+            color: ${i.primaryText};
+            margin-bottom: 3px;
+            text-align: left;
+        }
+
+        .cv-container .university {
+            font-weight: bold;
+            color: ${i.mutedText};
+            margin-bottom: 3px;
+            text-align: left;
+        }
+
+        .cv-container .education-dates, 
+        .cv-container .education-grade {
+            color: ${i.mutedText};
+            margin-bottom: 3px;
+            text-align: left;
+        }
+
+        .cv-container .courses-content {
+            line-height: 1.6;
+            white-space: pre-line;
+            color: ${i.secondaryText};
+            text-align: left;
+        }
+
+        /* Print styles - maintain exact same layout as screen */
+        @media print {
+            .cv-container {
+                padding: 10px;
+                background: white !important;
+                color: #1a202c !important;
+                max-width: none !important;
+            }
+
+            .cv-container .header {
+                border-bottom: 2px solid #4299e1 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .header h1 {
+                color: #1a202c !important;
+                text-align: left !important;
+            }
+
+            .cv-container .contact-info {
+                color: #4a5568 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .section-title {
+                color: #1a202c !important;
+                border-bottom: 1px solid #4299e1 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .job-title, 
+            .cv-container .project-title, 
+            .cv-container .certificate-title, 
+            .cv-container .degree {
+                color: #1a202c !important;
+                text-align: left !important;
+            }
+
+            .cv-container .job-company,
+            .cv-container .project-tech,
+            .cv-container .university,
+            .cv-container .job-dates,
+            .cv-container .education-dates,
+            .cv-container .education-grade {
+                color: #718096 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .profile,
+            .cv-container .job-description,
+            .cv-container .certificate-description,
+            .cv-container .courses-content,
+            .cv-container .responsibilities li {
+                color: #4a5568 !important;
+                text-align: left !important;
+            }
+
+            /* Ensure all elements maintain left alignment in print */
+            .cv-container * {
+                text-align: left !important;
+            }
+        }
+    `}generateBody(e,t){var s,r,o,a,c,u,h,d,f,p,m,b;let i='<div class="cv-container">';return this.shouldRenderSection("personal",t,e)&&(i+=`
+        <div class="header">
+          <h1>${((s=e.personalDetails)==null?void 0:s.name)||""}</h1>
+          <div class="contact-info">
+            ${((r=e.personalDetails)==null?void 0:r.phone)||""}${(o=e.personalDetails)!=null&&o.phone&&((a=e.personalDetails)!=null&&a.email)?" | ":""}
+            ${((c=e.personalDetails)==null?void 0:c.email)||""}${((u=e.personalDetails)!=null&&u.phone||(h=e.personalDetails)!=null&&h.email)&&((d=e.personalDetails)!=null&&d.address)?"<br>":""}
+            ${((f=e.personalDetails)==null?void 0:f.address)||""}${(p=e.personalDetails)!=null&&p.address&&((m=e.personalDetails)!=null&&m.website)?"<br>":""}
+            ${((b=e.personalDetails)==null?void 0:b.website)||""}
+          </div>
+        </div>
+      `),i+='<div class="content">',t.forEach(E=>{var g,w,A,S,T,_,C;switch(E){case"profile":this.shouldRenderSection("profile",t,e)&&(i+=`
+              <div class="section">
+                <h2 class="section-title">Professional Profile</h2>
+                <div class="profile">${e.profile||""}</div>
+              </div>
+            `);break;case"experience":this.shouldRenderSection("experience",t,e)&&(i+='<div class="section"><h2 class="section-title">Work Experience</h2>',(g=e.workExperience)==null||g.forEach(k=>{var R;i+=`
+                <div class="job">
+                  <div class="job-title">${k.title||""}</div>
+                  <div class="job-company">${k.company||""}</div>
+                  <div class="job-dates">${k.dates||""}</div>
+                  ${k.description?`<div class="job-description">${k.description}</div>`:""}
+                  ${((R=k.responsibilities)==null?void 0:R.length)>0?`
+                    <ul class="responsibilities">
+                      ${k.responsibilities.map(L=>L.trim()?`<li>${L}</li>`:"").join("")}
+                    </ul>
+                  `:""}
+                </div>
+              `}),i+="</div>");break;case"projects":this.shouldRenderSection("projects",t,e)&&(i+='<div class="section"><h2 class="section-title">Personal Projects</h2>',(w=e.personalProjects)==null||w.forEach(k=>{var R;i+=`
+                <div class="project">
+                  <div class="project-title">${k.title||""}</div>
+                  <div class="project-tech">${k.technologies||""}</div>
+                  ${((R=k.responsibilities)==null?void 0:R.length)>0?`
+                    <ul class="responsibilities">
+                      ${k.responsibilities.map(L=>L.trim()?`<li>${L}</li>`:"").join("")}
+                    </ul>
+                  `:""}
+                </div>
+              `}),i+="</div>");break;case"education":this.shouldRenderSection("education",t,e)&&(i+=`
+              <div class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                  <div class="degree">${((A=e.education)==null?void 0:A.degree)||""}</div>
+                  <div class="university">${((S=e.education)==null?void 0:S.university)||""}</div>
+                  <div class="education-dates">${((T=e.education)==null?void 0:T.dates)||""}</div>
+                  <div class="education-grade">${((_=e.education)==null?void 0:_.grade)||""}</div>
+                </div>
+              </div>
+            `);break;case"certificates":this.shouldRenderSection("certificates",t,e)&&(i+='<div class="section"><h2 class="section-title">Certificates</h2>',(C=e.certificates)==null||C.forEach(k=>{i+=`
+                <div class="certificate">
+                  <div class="certificate-title">${k.title||""}</div>
+                  <div class="certificate-description">${k.description||""}</div>
+                </div>
+              `}),i+="</div>");break;case"courses":this.shouldRenderSection("courses",t,e)&&(i+=`
+              <div class="section">
+                <h2 class="section-title">Additional Courses</h2>
+                <div class="courses-content">${e.courses||""}</div>
+              </div>
+            `);break}}),i+="</div></div>",i}}class OE extends ch{constructor(){super("rich-professional","Rich Professional","Professional template with colors and modern styling")}generateStyles(e,t=!1){const i=this.getColorScheme(e,t);return`
         /* Reset for CV preview - scoped to prevent editor interference */
         .cv-container * {
             margin: 0;
@@ -358,287 +639,6 @@ Error generating stack: `+r.message+`
                 <div class="certificate">
                   <div class="certificate-title">${g.title||""}</div>
                   <div class="certificate-description">${g.description||""}</div>
-                </div>
-              `}),i+="</div>");break;case"courses":this.shouldRenderSection("courses",t,e)&&(i+=`
-              <div class="section">
-                <h2 class="section-title">Additional Courses</h2>
-                <div class="courses-content">${e.courses||""}</div>
-              </div>
-            `);break}}),i+="</div></div>",i}}class OE extends ch{constructor(){super("plain-professional","Plain Professional","Clean, minimal template suitable for ATS systems")}generateStyles(e,t=!1){const i=this.getColorScheme(e,t);return`
-        /* Reset for CV preview - scoped to prevent editor interference */
-        .cv-container * {
-         font-size: 0.95em;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* All styles scoped to .cv-container to prevent editor interference */
-        .cv-container {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: ${i.primaryText};
-            background: ${i.background};
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Header styling - always left aligned for consistent layout */
-        .cv-container .header {
-            text-align: left;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid ${i.borderAccent};
-        }
-
-        .cv-container .header h1 {
-            font-size: 2.2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: ${i.primaryText};
-            text-align: left;
-        }
-
-        .cv-container .contact-info {
-            line-height: 1.4;
-            color: ${i.secondaryText};
-            text-align: left;
-        }
-
-        .cv-container .content {
-            max-width: 100%;
-        }
-
-        .cv-container .section {
-            margin-bottom: 25px;
-        }
-
-        .cv-container .section-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: ${i.primaryText};
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            border-bottom: 1px solid ${i.borderAccent};
-            padding-bottom: 5px;
-            text-align: left;
-        }
-
-        .cv-container .profile {
-            line-height: 1.6;
-            text-align: left;
-            margin-bottom: 15px;
-            white-space: pre-line;
-            color: ${i.secondaryText};
-        }
-
-        .cv-container .job, 
-        .cv-container .project, 
-        .cv-container .certificate {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dotted ${i.borderColor};
-            text-align: left;
-        }
-
-        .cv-container .job:last-child, 
-        .cv-container .project:last-child, 
-        .cv-container .certificate:last-child {
-            border-bottom: none;
-        }
-
-        .cv-container .job-title, 
-        .cv-container .project-title, 
-        .cv-container .certificate-title {
-            font-weight: bold;
-            color: ${i.primaryText};
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .cv-container .job-company, 
-        .cv-container .project-tech {
-            font-weight: bold;
-            color: ${i.mutedText};
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .cv-container .job-dates {
-            color: ${i.mutedText};
-            font-style: italic;
-            margin-bottom: 8px;
-            text-align: left;
-        }
-
-        .cv-container .job-description, 
-        .cv-container .certificate-description {
-            margin-bottom: 8px;
-            color: ${i.secondaryText};
-            white-space: pre-line;
-            text-align: left;
-        }
-
-        .cv-container .responsibilities {
-            list-style: disc;
-            padding-left: 20px;
-            margin: 0;
-            text-align: left;
-        }
-
-        .cv-container .responsibilities li {
-            margin-bottom: 3px;
-            color: ${i.secondaryText};
-            text-align: left;
-        }
-
-        .cv-container .education-item {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .cv-container .degree {
-            font-weight: bold;
-            color: ${i.primaryText};
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .cv-container .university {
-            font-weight: bold;
-            color: ${i.mutedText};
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .cv-container .education-dates, 
-        .cv-container .education-grade {
-            color: ${i.mutedText};
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .cv-container .courses-content {
-            line-height: 1.6;
-            white-space: pre-line;
-            color: ${i.secondaryText};
-            text-align: left;
-        }
-
-        /* Print styles - maintain exact same layout as screen */
-        @media print {
-            .cv-container {
-                padding: 10px;
-                background: white !important;
-                color: #1a202c !important;
-                max-width: none !important;
-            }
-
-            .cv-container .header {
-                border-bottom: 2px solid #4299e1 !important;
-                text-align: left !important;
-            }
-
-            .cv-container .header h1 {
-                color: #1a202c !important;
-                text-align: left !important;
-            }
-
-            .cv-container .contact-info {
-                color: #4a5568 !important;
-                text-align: left !important;
-            }
-
-            .cv-container .section-title {
-                color: #1a202c !important;
-                border-bottom: 1px solid #4299e1 !important;
-                text-align: left !important;
-            }
-
-            .cv-container .job-title, 
-            .cv-container .project-title, 
-            .cv-container .certificate-title, 
-            .cv-container .degree {
-                color: #1a202c !important;
-                text-align: left !important;
-            }
-
-            .cv-container .job-company,
-            .cv-container .project-tech,
-            .cv-container .university,
-            .cv-container .job-dates,
-            .cv-container .education-dates,
-            .cv-container .education-grade {
-                color: #718096 !important;
-                text-align: left !important;
-            }
-
-            .cv-container .profile,
-            .cv-container .job-description,
-            .cv-container .certificate-description,
-            .cv-container .courses-content,
-            .cv-container .responsibilities li {
-                color: #4a5568 !important;
-                text-align: left !important;
-            }
-
-            /* Ensure all elements maintain left alignment in print */
-            .cv-container * {
-                text-align: left !important;
-            }
-        }
-    `}generateBody(e,t){var s,r,o,a,c,u,h,d,f,p,m,b;let i='<div class="cv-container">';return this.shouldRenderSection("personal",t,e)&&(i+=`
-        <div class="header">
-          <h1>${((s=e.personalDetails)==null?void 0:s.name)||""}</h1>
-          <div class="contact-info">
-            ${((r=e.personalDetails)==null?void 0:r.phone)||""}${(o=e.personalDetails)!=null&&o.phone&&((a=e.personalDetails)!=null&&a.email)?" | ":""}
-            ${((c=e.personalDetails)==null?void 0:c.email)||""}${((u=e.personalDetails)!=null&&u.phone||(h=e.personalDetails)!=null&&h.email)&&((d=e.personalDetails)!=null&&d.address)?"<br>":""}
-            ${((f=e.personalDetails)==null?void 0:f.address)||""}${(p=e.personalDetails)!=null&&p.address&&((m=e.personalDetails)!=null&&m.website)?"<br>":""}
-            ${((b=e.personalDetails)==null?void 0:b.website)||""}
-          </div>
-        </div>
-      `),i+='<div class="content">',t.forEach(E=>{var g,w,A,S,T,_,C;switch(E){case"profile":this.shouldRenderSection("profile",t,e)&&(i+=`
-              <div class="section">
-                <h2 class="section-title">Professional Profile</h2>
-                <div class="profile">${e.profile||""}</div>
-              </div>
-            `);break;case"experience":this.shouldRenderSection("experience",t,e)&&(i+='<div class="section"><h2 class="section-title">Work Experience</h2>',(g=e.workExperience)==null||g.forEach(k=>{var R;i+=`
-                <div class="job">
-                  <div class="job-title">${k.title||""}</div>
-                  <div class="job-company">${k.company||""}</div>
-                  <div class="job-dates">${k.dates||""}</div>
-                  ${k.description?`<div class="job-description">${k.description}</div>`:""}
-                  ${((R=k.responsibilities)==null?void 0:R.length)>0?`
-                    <ul class="responsibilities">
-                      ${k.responsibilities.map(L=>L.trim()?`<li>${L}</li>`:"").join("")}
-                    </ul>
-                  `:""}
-                </div>
-              `}),i+="</div>");break;case"projects":this.shouldRenderSection("projects",t,e)&&(i+='<div class="section"><h2 class="section-title">Personal Projects</h2>',(w=e.personalProjects)==null||w.forEach(k=>{var R;i+=`
-                <div class="project">
-                  <div class="project-title">${k.title||""}</div>
-                  <div class="project-tech">${k.technologies||""}</div>
-                  ${((R=k.responsibilities)==null?void 0:R.length)>0?`
-                    <ul class="responsibilities">
-                      ${k.responsibilities.map(L=>L.trim()?`<li>${L}</li>`:"").join("")}
-                    </ul>
-                  `:""}
-                </div>
-              `}),i+="</div>");break;case"education":this.shouldRenderSection("education",t,e)&&(i+=`
-              <div class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-item">
-                  <div class="degree">${((A=e.education)==null?void 0:A.degree)||""}</div>
-                  <div class="university">${((S=e.education)==null?void 0:S.university)||""}</div>
-                  <div class="education-dates">${((T=e.education)==null?void 0:T.dates)||""}</div>
-                  <div class="education-grade">${((_=e.education)==null?void 0:_.grade)||""}</div>
-                </div>
-              </div>
-            `);break;case"certificates":this.shouldRenderSection("certificates",t,e)&&(i+='<div class="section"><h2 class="section-title">Certificates</h2>',(C=e.certificates)==null||C.forEach(k=>{i+=`
-                <div class="certificate">
-                  <div class="certificate-title">${k.title||""}</div>
-                  <div class="certificate-description">${k.description||""}</div>
                 </div>
               `}),i+="</div>");break;case"courses":this.shouldRenderSection("courses",t,e)&&(i+=`
               <div class="section">

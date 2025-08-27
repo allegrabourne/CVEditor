@@ -8,9 +8,8 @@ export class ModernCreativeTemplate extends CVTemplate {
 
   generateStyles(theme, isExport = false) {
     const c = this.getColorScheme(theme, isExport);
-    const RADIUS = 14; // single source of truth
+    const RADIUS = 14;
 
-    // Encourage browsers/print to keep background colours & gradients
     const colorAdjust = `
       * {
         -webkit-print-color-adjust: exact;
@@ -18,7 +17,6 @@ export class ModernCreativeTemplate extends CVTemplate {
       }
     `;
 
-    // Export-only tweaks (keep visuals the same; drop fragile blur only)
     const exportTweaks = isExport ? `
       .cv-container {
         max-width: 800px !important;   /* match preview exactly */
@@ -177,10 +175,11 @@ export class ModernCreativeTemplate extends CVTemplate {
 
   generateBody(cvData, visibleSections) {
     const pd = cvData.personalDetails || {};
+    const show = s => this.shouldRenderSection(s, visibleSections, cvData);
     let html = `<div class="cv-container">`;
 
     // Header (use .header-bar + contact-info for maximum compat)
-    if (this.shouldRenderSection('personal', visibleSections, cvData)) {
+    if (show('personal')) {
       html += `
         <div class="header">
           <div class="header-bar">
@@ -196,90 +195,101 @@ export class ModernCreativeTemplate extends CVTemplate {
       `;
     }
 
-    // Profile
-    if (this.shouldRenderSection('profile', visibleSections, cvData)) {
-      html += `
-        <div class="section">
-          <div class="section-title">Professional Profile</div>
-          <div class="description">${cvData.profile || ''}</div>
-        </div>
-      `;
-    }
+    // Render sections in the order specified by visibleSections array
+    visibleSections.forEach(sectionId => {
+      switch (sectionId) {
+        case 'profile':
+          if (show('profile')) {
+            html += `
+              <div class="section">
+                <div class="section-title">Professional Profile</div>
+                <div class="description">${cvData.profile || ''}</div>
+              </div>
+            `;
+          }
+          break;
 
-    // Experience
-    if (this.shouldRenderSection('experience', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Work Experience</div>`;
-      (cvData.workExperience || []).forEach(j => {
-        html += `
-          <div class="item">
-            <div class="job-title">${j.title || ''}</div>
-            <div class="meta">${[j.company, j.dates].filter(Boolean).join(' • ')}</div>
-            ${j.description ? `<div class="description">${j.description}</div>` : ''}
-            ${(j.responsibilities && j.responsibilities.length)
-              ? `<ul class="bullets">${j.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
-              : ''
-            }
-          </div>
-        `;
-      });
-      html += `</div>`;
-    }
+        case 'experience':
+          if (show('experience')) {
+            html += `<div class="section"><div class="section-title">Work Experience</div>`;
+            (cvData.workExperience || []).forEach(j => {
+              html += `
+                <div class="item">
+                  <div class="job-title">${j.title || ''}</div>
+                  <div class="meta">${[j.company, j.dates].filter(Boolean).join(' • ')}</div>
+                  ${j.description ? `<div class="description">${j.description}</div>` : ''}
+                  ${(j.responsibilities && j.responsibilities.length)
+                    ? `<ul class="bullets">${j.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+                    : ''
+                  }
+                </div>
+              `;
+            });
+            html += `</div>`;
+          }
+          break;
 
-    // Projects
-    if (this.shouldRenderSection('projects', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Personal Projects</div>`;
-      (cvData.personalProjects || []).forEach(p => {
-        html += `
-          <div class="item">
-            <div class="project-title">${p.title || ''}</div>
-            <div class="meta">${p.technologies || ''}</div>
-            ${(p.responsibilities && p.responsibilities.length)
-              ? `<ul class="bullets">${p.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
-              : ''
-            }
-          </div>
-        `;
-      });
-      html += `</div>`;
-    }
+        case 'projects':
+          if (show('projects')) {
+            html += `<div class="section"><div class="section-title">Personal Projects</div>`;
+            (cvData.personalProjects || []).forEach(p => {
+              html += `
+                <div class="item">
+                  <div class="project-title">${p.title || ''}</div>
+                  <div class="meta">${p.technologies || ''}</div>
+                  ${(p.responsibilities && p.responsibilities.length)
+                    ? `<ul class="bullets">${p.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+                    : ''
+                  }
+                </div>
+              `;
+            });
+            html += `</div>`;
+          }
+          break;
 
-    // Education
-    if (this.shouldRenderSection('education', visibleSections, cvData)) {
-      const ed = cvData.education || {};
-      html += `
-        <div class="section">
-          <div class="section-title">Education</div>
-          <div class="item">
-            <div class="degree">${ed.degree || ''}</div>
-            <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
-          </div>
-        </div>
-      `;
-    }
+        case 'education':
+          if (show('education')) {
+            const ed = cvData.education || {};
+            html += `
+              <div class="section">
+                <div class="section-title">Education</div>
+                <div class="item">
+                  <div class="degree">${ed.degree || ''}</div>
+                  <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
+                </div>
+              </div>
+            `;
+          }
+          break;
 
-    // Certificates
-    if (this.shouldRenderSection('certificates', visibleSections, cvData)) {
-      html += `<div class="section"><div class="section-title">Certificates</div>`;
-      (cvData.certificates || []).forEach(cert => {
-        html += `
-          <div class="item">
-            <div class="certificate-title">${cert.title || ''}</div>
-            ${cert.description ? `<div class="description">${cert.description}</div>` : ''}
-          </div>
-        `;
-      });
-      html += `</div>`;
-    }
+        case 'certificates':
+          if (show('certificates')) {
+            html += `<div class="section"><div class="section-title">Certificates</div>`;
+            (cvData.certificates || []).forEach(cert => {
+              html += `
+                <div class="item">
+                  <div class="certificate-title">${cert.title || ''}</div>
+                  ${cert.description ? `<div class="description">${cert.description}</div>` : ''}
+                </div>
+              `;
+            });
+            html += `</div>`;
+          }
+          break;
 
-    // Courses
-    if (this.shouldRenderSection('courses', visibleSections, cvData)) {
-      html += `
-        <div class="section">
-          <div class="section-title">Additional Courses</div>
-          <div class="description">${cvData.courses || ''}</div>
-        </div>
-      `;
-    }
+        case 'courses':
+          if (show('courses')) {
+            html += `
+              <div class="section">
+                <div class="section-title">Additional Courses</div>
+                <div class="description">${cvData.courses || ''}</div>
+              </div>
+            `;
+          }
+          break;
+      }
+    });
 
     html += `</div>`;
     return html;

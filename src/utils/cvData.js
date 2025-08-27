@@ -17,6 +17,7 @@ export const testData = {
           "Development of new Consignment Delivery Management portal with API development utilising Fast Endpoints, messaging via Azure ServiceBus and Angular for UI development.",
           "Worked to develop the new Landed Cost portal, a project which helped to retain Myer; Australia's largest department store, as a customer. Providing Myer with accurate landed cost and end-to-end visibility of their supply chain, from production confirmation, to freight booking, through to delivery to stores spanning Australia.",
           "Azure DevOps / Octopus Deploy for CI and release management, creation and maintenance of deployment pipelines inline with industry practice.",
+           "Development of the Ligentix supply chain platform, giving the customer the most cost-effective, efficient version of their supply chain.",
           "Blazor utilised for the developmental concept for the new Client onboarding web application.",
           "Business analysis of legacy processes where knowledge had been lost with a view of replacing them with newer tech stacks."
         ]

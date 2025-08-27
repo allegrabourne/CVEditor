@@ -68,38 +68,34 @@ const CVEditor = () => {
 
   // Generate preview HTML using theme-aware function
   const generatePreviewHTML = () => {
-    const fullHTML = templateManager.generateHTML(selectedTemplate, cvData, isDark ? 'dark' : 'light', visibleSections);
-    
+    const fullHTML = templateManager.generateHTML(
+      selectedTemplate,
+      cvData,
+      isDark ? 'dark' : 'light',
+      visibleSections
+    );
+  
     const styleMatch = fullHTML.match(/<style[^>]*>([\s\S]*?)<\/style>/);
-    const bodyMatch = fullHTML.match(/<body[^>]*>([\s\S]*?)<\/body>/);
-    
+    const bodyMatch  = fullHTML.match(/<body[^>]*>([\s\S]*?)<\/body>/);
+  
     const styles = styleMatch ? styleMatch[1] : '';
-    const bodyContent = bodyMatch ? bodyMatch[1] : fullHTML;
-    
+    const body   = bodyMatch  ? bodyMatch[1]  : fullHTML;
+  
     return `
       <style>
-        ${styles}
-        .cv-container {
-          max-width: 100% !important;
-          width: 100% !important;
-          margin: 0 !important;
-          padding: 20px !important;
+        /* --- Neutral preview baseline (scoped to preview only) --- */
+        .cv-preview .cv-container {
           box-sizing: border-box !important;
-        }
-        * {
-          text-align: inherit !important;
-        }
-        .header {
-          text-align: center !important;
-        }
-        .personal-details, .section, .profile, .job, .project, .certificate {
-          text-align: left !important;
-        }
-        .cv-preview * {
-          text-align: inherit !important;
+          margin: 0 auto !important;  
+          text-align: initial !important; /* fence off any global alignments */
         }
       </style>
-      ${bodyContent}
+  
+      <style>
+        ${styles}  /* template CSS overrides the neutral baseline */
+      </style>
+  
+     ${body}
     `;
   };
 

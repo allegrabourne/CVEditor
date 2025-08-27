@@ -20,13 +20,11 @@ export const PreviewPanel = ({
         </h2>
       </div>
       <div className="max-h-screen overflow-y-auto">
-        <div 
-          className="cv-preview transition-colors duration-300"
-          style={{ width: '100%', maxWidth: '100%' }}
-          dangerouslySetInnerHTML={{ 
-            __html: generatePreviewHTML()
-          }}
-        />
+      <div
+  className={`cv-preview ${isDark ? 'dark-theme' : 'light-theme'} transition-colors duration-300`}
+  style={{ width: '100%', maxWidth: '100%' }}
+  dangerouslySetInnerHTML={{ __html: generatePreviewHTML() }}
+/>
       </div>
     </div>
   );

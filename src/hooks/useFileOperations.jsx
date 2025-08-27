@@ -59,19 +59,24 @@ export const useFileOperations = (
     const visibleSections = sectionOrder.filter(section => !hiddenSections.includes(section));
     const jsonData = JSON.stringify({ cvData, sectionOrder, hiddenSections, selectedTemplate });
     const printWindow = window.open('', '_blank');
-    
-    // Use the export-specific function that always uses light theme
+  
     const content = templateManager.generateExportHTML(selectedTemplate, cvData, visibleSections);
-    
     const contentWithData = content.replace(
       '</body>',
       `<!-- CV_DATA:${btoa(jsonData)}:CV_DATA --></body>`
     );
-    
+  
+    printWindow.document.open();
     printWindow.document.write(contentWithData);
     printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+  
+    // ✅ wait for styles to apply, then print
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      // (optional) close the window after print
+      // setTimeout(() => printWindow.close(), 250);
+    };
   }, [cvData, selectedTemplate, sectionOrder, hiddenSections]);
 
   // Import from file

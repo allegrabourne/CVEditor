@@ -17,6 +17,7 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         /* Reset for CV preview - scoped to prevent editor interference */
         .cv-container * {
             font-size: 0.95em;
+              text-align: left;
             margin: 0;
             padding: 0;
             box-sizing: border-box;

@@ -1,480 +1,287 @@
-// utils/templates/ModernCreativeTemplate.js - Modern Creative Template with consistent styling
-
+// utils/templates/modernCreativeTemplate.js
 import { CVTemplate } from './cvTemplate.js';
 
-/**
- * Modern Creative Template - Contemporary design with consistent visual elements
- */
 export class ModernCreativeTemplate extends CVTemplate {
   constructor() {
-    super('modern-creative', 'Modern Creative', 'Contemporary design with creative elements and typography');
+    super('modern-creative', 'Modern Creative', 'Polished, modern layout with strong accents');
   }
 
   generateStyles(theme, isExport = false) {
-    const colors = this.getColorScheme(theme, isExport);
-    
+    const c = this.getColorScheme(theme, isExport);
+    const RADIUS = 14; // single source of truth
+
+    // Encourage browsers/print to keep background colours & gradients
+    const colorAdjust = `
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    `;
+
+    // Export-only tweaks (keep visuals the same; drop fragile blur only)
+    const exportTweaks = isExport ? `
+      .cv-container {
+        max-width: 800px !important;   /* match preview exactly */
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 24px !important;
+        /* keep same background, shadows, radius as preview */
+      }
+      /* drop blur for PDF reliability (both markups) */
+      .cv-container .contact .chip,
+      .cv-container .contact-info .contact-item {
+        backdrop-filter: none !important;
+        background: #eef2ff !important;      /* soft indigo */
+        color: #1f2937 !important;           /* slate-800 */
+        border: 1px solid #c7d2fe !important;/* indigo-200 */
+      }
+    ` : '';
+
     return `
-        /* Reset for CV preview - scoped to prevent editor interference */
-        .cv-container * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      ${colorAdjust}
 
-        /* All styles scoped to .cv-container to prevent editor interference */
+      /* Root container */
+      .cv-container {
+        font-size: 0.95em;
+        text-align: initial; /* fence off app-level alignments */
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height: 1.55;
+        color: ${c.primaryText};
+        background: ${c.background};
+        padding: 24px;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: ${RADIUS}px;
+        overflow: hidden;
+      }
+
+      /* Header wrapper card (with border) */
+      .cv-container .header {
+        border-radius: ${RADIUS}px;
+        overflow: hidden;
+        margin-bottom: 24px;
+        border: 1px solid ${c.borderColor};
+        background: ${c.cardBackground};
+      }
+
+      /* Gradient header bar — support BOTH markups */
+      /* New style: .header-bar */
+      .cv-container .header-bar {
+        background: linear-gradient(135deg, ${c.accentGradientStart}, ${c.accentGradientEnd});
+        padding: 18px 20px;
+        color: #fff;
+        text-align: center;
+      }
+      .cv-container .header-bar h1 {
+        margin: 0;
+        font-size: 1.8em;
+        font-weight: 800;
+        letter-spacing: .2px;
+   
+        text-shadow: 0 1px 2px rgba(0,0,0,.20);
+        display: inline-block;
+      }
+
+      /* Old style (no .header-bar): style .header directly */
+      .cv-container .header > h1 {
+        background: linear-gradient(135deg, ${c.accentGradientStart}, ${c.accentGradientEnd});
+        -webkit-background-clip: text;
+        background-clip: text;
+        display: block;
+        text-align: center;
+        margin: 18px 20px 0 20px;
+        font-size: 1.8em;
+        font-weight: 800;
+        letter-spacing: .2px;
+        text-shadow: 0 1px 2px rgba(0,0,0,.10);
+      }
+
+      /* Contact row — support BOTH markups */
+      .cv-container .contact,
+      .cv-container .contact-info {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 10px;
+        padding: 14px 20px 18px;
+      }
+
+      /* Contact chips — BOTH markups */
+      .cv-container .contact .chip,
+      .cv-container .contact-info .contact-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.35);
+        background: rgba(255,255,255,.18);
+        backdrop-filter: blur(10px); /* pretty in preview; disabled in exportTweaks */
+        font-weight: 600;
+      }
+
+      /* Sections */
+      .cv-container .section {
+        border: 1px solid ${c.borderColor};
+        border-radius: ${RADIUS}px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+        background: ${c.cardBackground};
+      }
+      .cv-container .section-title {
+        display: inline-block;
+        font-size: 1.00em;
+        font-weight: 800;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+        color: ${c.primaryText};
+        border-bottom: 2px solid ${c.borderAccent};
+        padding-bottom: 6px;
+        margin-bottom: 12px;
+      }
+
+      /* Items & text */
+      .cv-container .item { margin-bottom: 30px; }
+      .cv-container .item:last-child { margin-bottom: 0; }
+      .cv-container .job-title,
+      .cv-container .project-title,
+      .cv-container .certificate-title,
+      .cv-container .degree {
+        font-weight: 700; color: ${c.primaryText};
+      }
+      .cv-container .meta {
+        color: ${c.mutedText}; font-weight: 600; margin-top: 2px;
+      }
+      .cv-container .description {
+        margin-top: 6px; color: ${c.secondaryText}; white-space: pre-line;
+      }
+      .cv-container ul.bullets { margin-top: 6px; margin-bottom: 0; padding-left: 20px; }
+      .cv-container ul.bullets li { margin-bottom: 4px; color: ${c.secondaryText}; }
+
+      ${exportTweaks}
+
+      /* Safety net for print paths that honour @media print */
+      @media print {
         .cv-container {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: ${colors.primaryText};
-            background: ${colors.background};
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          max-width: 800px !important;
+          margin: 0 auto !important;
+          border-radius: ${RADIUS}px !important;
         }
-
-        /* Header - structural design always consistent */
-        .cv-container .header {
-            background: linear-gradient(135deg, ${colors.accentGradientStart} 0%, ${colors.accentSecondary} 50%, ${colors.accentGradientEnd} 100%);
-            color: white;
-            padding: 50px 40px;
-            position: relative;
-            overflow: hidden;
-            margin: -20px -20px 0 -20px;
-            text-align: center;
-        }
-
-        .cv-container .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transform: rotate(30deg);
-        }
-
-        .cv-container .header h1 {
-            font-size: 3em;
-            font-weight: 300;
-            margin-bottom: 10px;
-            letter-spacing: -0.02em;
-            position: relative;
-            z-index: 1;
-            color: white;
-        }
-
-        .cv-container .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cv-container .contact-item {
-            font-size: 1em;
-            opacity: 0.95;
-            color: white;
-        }
-
-        .cv-container .content {
-            padding: 50px 40px 20px 40px;
-        }
-
+        .cv-container .header,
         .cv-container .section {
-            margin-bottom: 40px;
-            position: relative;
+          border-radius: ${RADIUS}px !important;
         }
-
-        /* Section titles - structural color always consistent */
-        .cv-container .section-title {
-            font-size: 1.8em;
-            font-weight: 600;
-            color: ${colors.accentPrimary};
-            margin-bottom: 25px;
-            position: relative;
-            padding-left: 25px;
-            text-align: left;
-        }
-
-        .cv-container .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 30px;
-            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
-            border-radius: 2px;
-        }
-
-        /* Profile section - left aligned */
-        .cv-container .profile {
-            font-size: 1.1em;
-            line-height: 1.8;
-            color: ${colors.secondaryText};
-            background: ${colors.cardBackground};
-            padding: 25px;
-            border-radius: 12px;
-            border-left: 4px solid ${colors.accentPrimary};
-            white-space: pre-line;
-            text-align: left;
-        }
-
-        /* Cards - left aligned content */
-        .cv-container .job, 
-        .cv-container .project, 
-        .cv-container .certificate {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: ${colors.cardBackground};
-            border-radius: 12px;
-            position: relative;
-            transition: transform 0.2s ease;
-            text-align: left;
-        }
-
-        .cv-container .job::before, 
-        .cv-container .project::before, 
-        .cv-container .certificate::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
-            border-radius: 0 2px 2px 0;
-        }
-
-        .cv-container .job-title, 
-        .cv-container .project-title, 
-        .cv-container .certificate-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: ${colors.primaryText};
-            margin-bottom: 8px;
-            text-align: left;
-        }
-
-        .cv-container .job-company, 
-        .cv-container .project-tech {
-            font-weight: 500;
-            color: ${colors.accentPrimary};
-            margin-bottom: 8px;
-            font-size: 1.05em;
-            text-align: left;
-        }
-
-        .cv-container .job-dates {
-            color: ${colors.mutedText};
-            font-style: italic;
-            margin-bottom: 12px;
-            font-size: 0.95em;
-            text-align: left;
-        }
-
-        .cv-container .job-description, 
-        .cv-container .certificate-description {
-            color: ${colors.secondaryText};
-            margin-bottom: 12px;
-            line-height: 1.6;
-            white-space: pre-line;
-            text-align: left;
-        }
-
-        .cv-container .responsibilities {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            text-align: left;
-        }
-
-        .cv-container .responsibilities li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 8px;
-            color: ${colors.secondaryText};
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .cv-container .responsibilities li::before {
-            content: '↗';
-            position: absolute;
-            left: 0;
-            color: ${colors.accentPrimary};
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        /* Education section */
-        .cv-container .education-item {
-            background: ${colors.cardBackground};
-            padding: 25px;
-            border-radius: 12px;
-            position: relative;
-            text-align: left;
-        }
-
-        .cv-container .education-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
-            border-radius: 0 2px 2px 0;
-        }
-
-        .cv-container .degree {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: ${colors.primaryText};
-            margin-bottom: 8px;
-            text-align: left;
-        }
-
-        .cv-container .university {
-            font-weight: 500;
-            color: ${colors.accentPrimary};
-            margin-bottom: 8px;
-            font-size: 1.05em;
-            text-align: left;
-        }
-
-        .cv-container .education-dates, 
-        .cv-container .education-grade {
-            color: ${colors.mutedText};
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        /* Courses section */
-        .cv-container .courses-content {
-            line-height: 1.7;
-            color: ${colors.secondaryText};
-            white-space: pre-line;
-            background: ${colors.cardBackground};
-            padding: 25px;
-            border-radius: 12px;
-            border-left: 4px solid ${colors.accentPrimary};
-            text-align: left;
-        }
-
-        /* Print styles - maintain exact same styling as light theme */
-        @media print {
-            .cv-container {
-                box-shadow: none;
-                border-radius: 0;
-                padding: 20px;
-                background: #ffffff;
-                color: #1a202c;
-            }
-
-            .cv-container .header {
-                background: linear-gradient(135deg, #667eea 0%, #3182ce 50%, #764ba2 100%);
-                color: white;
-            }
-            
-            .cv-container .header h1 {
-                color: white;
-            }
-            
-            .cv-container .contact-item {
-                color: white;
-            }
-
-            .cv-container .section-title {
-                color: #4299e1;
-            }
-            
-            .cv-container .section-title::before {
-                background: linear-gradient(135deg, #4299e1, #3182ce);
-            }
-            
-            .cv-container .job::before, 
-            .cv-container .project::before, 
-            .cv-container .certificate::before,
-            .cv-container .education-item::before {
-                background: linear-gradient(135deg, #4299e1, #3182ce);
-            }
-            
-            .cv-container .job-company, 
-            .cv-container .project-tech,
-            .cv-container .university {
-                color: #4299e1;
-            }
-            
-            .cv-container .responsibilities li::before {
-                color: #4299e1;
-            }
-            
-            .cv-container .profile,
-            .cv-container .courses-content {
-                border-left: 4px solid #4299e1;
-                background: #f7fafc;
-            }
-
-            .cv-container .job,
-            .cv-container .project,
-            .cv-container .certificate,
-            .cv-container .education-item {
-                background: #f7fafc;
-            }
-
-            .cv-container .job-title,
-            .cv-container .project-title,
-            .cv-container .certificate-title,
-            .cv-container .degree {
-                color: #1a202c;
-            }
-
-            .cv-container .job-description,
-            .cv-container .certificate-description,
-            .cv-container .profile,
-            .cv-container .courses-content,
-            .cv-container .responsibilities li {
-                color: #4a5568;
-            }
-
-            .cv-container .job-dates,
-            .cv-container .education-dates,
-            .cv-container .education-grade {
-                color: #718096;
-            }
-        }
+      }
     `;
   }
 
   generateBody(cvData, visibleSections) {
-    let html = '<div class="cv-container">';
+    const pd = cvData.personalDetails || {};
+    let html = `<div class="cv-container">`;
 
-    // Header - always centered
+    // Header (use .header-bar + contact-info for maximum compat)
     if (this.shouldRenderSection('personal', visibleSections, cvData)) {
       html += `
         <div class="header">
-          <h1>${cvData.personalDetails?.name || ''}</h1>
+          <div class="header-bar">
+            <h1>${pd.name || ''}</h1>
+          </div>
           <div class="contact-info">
-            ${cvData.personalDetails?.phone ? `<div class="contact-item">${cvData.personalDetails.phone}</div>` : ''}
-            ${cvData.personalDetails?.email ? `<div class="contact-item">${cvData.personalDetails.email}</div>` : ''}
-            ${cvData.personalDetails?.address ? `<div class="contact-item">${cvData.personalDetails.address}</div>` : ''}
-            ${cvData.personalDetails?.website ? `<div class="contact-item">${cvData.personalDetails.website}</div>` : ''}
+            ${pd.phone   ? `<span class="contact-item">📱 ${pd.phone}</span>`   : ''}
+            ${pd.email   ? `<span class="contact-item">✉️ ${pd.email}</span>`   : ''}
+            ${pd.website ? `<span class="contact-item">🌐 ${pd.website}</span>` : ''}
+            ${pd.address ? `<span class="contact-item">📍 ${pd.address}</span>` : ''}
           </div>
         </div>
       `;
     }
 
-    html += '<div class="content">';
+    // Profile
+    if (this.shouldRenderSection('profile', visibleSections, cvData)) {
+      html += `
+        <div class="section">
+          <div class="section-title">Professional Profile</div>
+          <div class="description">${cvData.profile || ''}</div>
+        </div>
+      `;
+    }
 
-    // Render sections in order - all left-aligned content except header
-    visibleSections.forEach(sectionId => {
-      switch (sectionId) {
-        case 'profile':
-          if (this.shouldRenderSection('profile', visibleSections, cvData)) {
-            html += `
-              <div class="section">
-                <h2 class="section-title">Professional Profile</h2>
-                <div class="profile">${cvData.profile || ''}</div>
-              </div>
-            `;
-          }
-          break;
+    // Experience
+    if (this.shouldRenderSection('experience', visibleSections, cvData)) {
+      html += `<div class="section"><div class="section-title">Work Experience</div>`;
+      (cvData.workExperience || []).forEach(j => {
+        html += `
+          <div class="item">
+            <div class="job-title">${j.title || ''}</div>
+            <div class="meta">${[j.company, j.dates].filter(Boolean).join(' • ')}</div>
+            ${j.description ? `<div class="description">${j.description}</div>` : ''}
+            ${(j.responsibilities && j.responsibilities.length)
+              ? `<ul class="bullets">${j.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+              : ''
+            }
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
 
-        case 'experience':
-          if (this.shouldRenderSection('experience', visibleSections, cvData)) {
-            html += `<div class="section"><h2 class="section-title">Work Experience</h2>`;
-            cvData.workExperience?.forEach(job => {
-              html += `
-                <div class="job">
-                  <div class="job-title">${job.title || ''}</div>
-                  <div class="job-company">${job.company || ''}</div>
-                  <div class="job-dates">${job.dates || ''}</div>
-                  ${job.description ? `<div class="job-description">${job.description}</div>` : ''}
-                  ${job.responsibilities?.length > 0 ? `
-                    <ul class="responsibilities">
-                      ${job.responsibilities.map(resp => resp.trim() ? `<li>${resp}</li>` : '').join('')}
-                    </ul>
-                  ` : ''}
-                </div>
-              `;
-            });
-            html += '</div>';
-          }
-          break;
+    // Projects
+    if (this.shouldRenderSection('projects', visibleSections, cvData)) {
+      html += `<div class="section"><div class="section-title">Personal Projects</div>`;
+      (cvData.personalProjects || []).forEach(p => {
+        html += `
+          <div class="item">
+            <div class="project-title">${p.title || ''}</div>
+            <div class="meta">${p.technologies || ''}</div>
+            ${(p.responsibilities && p.responsibilities.length)
+              ? `<ul class="bullets">${p.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+              : ''
+            }
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
 
-        case 'projects':
-          if (this.shouldRenderSection('projects', visibleSections, cvData)) {
-            html += `<div class="section"><h2 class="section-title">Personal Projects</h2>`;
-            cvData.personalProjects?.forEach(project => {
-              html += `
-                <div class="project">
-                  <div class="project-title">${project.title || ''}</div>
-                  <div class="project-tech">${project.technologies || ''}</div>
-                  ${project.responsibilities?.length > 0 ? `
-                    <ul class="responsibilities">
-                      ${project.responsibilities.map(resp => resp.trim() ? `<li>${resp}</li>` : '').join('')}
-                    </ul>
-                  ` : ''}
-                </div>
-              `;
-            });
-            html += '</div>';
-          }
-          break;
+    // Education
+    if (this.shouldRenderSection('education', visibleSections, cvData)) {
+      const ed = cvData.education || {};
+      html += `
+        <div class="section">
+          <div class="section-title">Education</div>
+          <div class="item">
+            <div class="degree">${ed.degree || ''}</div>
+            <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
+          </div>
+        </div>
+      `;
+    }
 
-        case 'education':
-          if (this.shouldRenderSection('education', visibleSections, cvData)) {
-            html += `
-              <div class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-item">
-                  <div class="degree">${cvData.education?.degree || ''}</div>
-                  <div class="university">${cvData.education?.university || ''}</div>
-                  <div class="education-dates">${cvData.education?.dates || ''}</div>
-                  <div class="education-grade">${cvData.education?.grade || ''}</div>
-                </div>
-              </div>
-            `;
-          }
-          break;
+    // Certificates
+    if (this.shouldRenderSection('certificates', visibleSections, cvData)) {
+      html += `<div class="section"><div class="section-title">Certificates</div>`;
+      (cvData.certificates || []).forEach(cert => {
+        html += `
+          <div class="item">
+            <div class="certificate-title">${cert.title || ''}</div>
+            ${cert.description ? `<div class="description">${cert.description}</div>` : ''}
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
 
-        case 'certificates':
-          if (this.shouldRenderSection('certificates', visibleSections, cvData)) {
-            html += `<div class="section"><h2 class="section-title">Certificates</h2>`;
-            cvData.certificates?.forEach(cert => {
-              html += `
-                <div class="certificate">
-                  <div class="certificate-title">${cert.title || ''}</div>
-                  <div class="certificate-description">${cert.description || ''}</div>
-                </div>
-              `;
-            });
-            html += '</div>';
-          }
-          break;
+    // Courses
+    if (this.shouldRenderSection('courses', visibleSections, cvData)) {
+      html += `
+        <div class="section">
+          <div class="section-title">Additional Courses</div>
+          <div class="description">${cvData.courses || ''}</div>
+        </div>
+      `;
+    }
 
-        case 'courses':
-          if (this.shouldRenderSection('courses', visibleSections, cvData)) {
-            html += `
-              <div class="section">
-                <h2 class="section-title">Additional Courses</h2>
-                <div class="courses-content">${cvData.courses || ''}</div>
-              </div>
-            `;
-          }
-          break;
-      }
-    });
-
-    html += '</div></div>';
+    html += `</div>`;
     return html;
   }
 }

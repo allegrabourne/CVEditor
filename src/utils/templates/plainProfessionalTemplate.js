@@ -20,6 +20,7 @@ export class PlainProfessionalTemplate extends CVTemplate {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            text-align: left;
         }
 
         /* All styles scoped to .cv-container to prevent editor interference */

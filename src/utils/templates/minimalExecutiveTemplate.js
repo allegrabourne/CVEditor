@@ -351,7 +351,7 @@ export class MinimalExecutiveTemplate extends CVTemplate {
           if (show('profile')) {
             html += `
               <section class="executive-section">
-                <h2 class="section-title">${cvData.workExperience[0].title || ''}</h2>
+                <h2 class="section-title">Executive Summary</h2>
                 <div class="executive-summary">${cvData.profile || ''}</div>
               </section>
             `;

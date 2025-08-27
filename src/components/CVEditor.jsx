@@ -134,11 +134,11 @@ const CVEditor = () => {
       </div>
 
       <div className="w-full max-w-none px-6 py-8">
-        <div className={`grid gap-8 ${editMode ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
+      <div className={`grid gap-8 ${editMode ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
           
-          {/* Editor Panel */}
+          {/* Editor Panel - Full width on mobile when in edit mode */}
           {editMode && (
-            <div className="lg:col-span-5 space-y-6">
+            <div className="col-span-1 lg:col-span-5 space-y-6">
               <SectionNavigator
                 isDark={isDark}
                 sectionOrder={sectionOrder}
@@ -161,7 +161,7 @@ const CVEditor = () => {
           )}
 
           {/* Preview Panel */}
-          <div className={editMode ? 'lg:col-span-7' : 'lg:col-span-12'}>
+          <div className={`${editMode ? 'hidden lg:block lg:col-span-7' : 'lg:col-span-12'}`}>
             <PreviewPanel
               isDark={isDark}
               generatePreviewHTML={generatePreviewHTML}

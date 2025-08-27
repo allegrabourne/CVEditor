@@ -264,102 +264,113 @@ export class AcademicClassicTemplate extends CVTemplate {
       `;
     }
 
-    // Profile/Summary section
-    if (show('profile')) {
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Academic Profile</h2>
-          <div class="academic-profile">${cvData.profile || ''}</div>
-        </section>
-      `;
-    }
+    // Render sections in order based on visibleSections array
+    visibleSections.forEach(sectionId => {
+      switch (sectionId) {
+        case 'profile':
+          if (show('profile')) {
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Academic Profile</h2>
+                <div class="academic-profile">${cvData.profile || ''}</div>
+              </section>
+            `;
+          }
+          break;
 
-    // Education (prioritized in academic CVs)
-    if (show('education')) {
-      const ed = cvData.education || {};
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Education</h2>
-          <div class="academic-item">
-            <div class="academic-degree">${ed.degree || ''}</div>
-            <div class="academic-university">${ed.university || ''}</div>
-            <div class="academic-dates">${ed.dates || ''}</div>
-            ${ed.grade ? `<div class="academic-grade">${ed.grade}</div>` : ''}
-          </div>
-        </section>
-      `;
-    }
+        case 'education':
+          if (show('education')) {
+            const ed = cvData.education || {};
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Education</h2>
+                <div class="academic-item">
+                  <div class="academic-degree">${ed.degree || ''}</div>
+                  <div class="academic-university">${ed.university || ''}</div>
+                  <div class="academic-dates">${ed.dates || ''}</div>
+                  ${ed.grade ? `<div class="academic-grade">${ed.grade}</div>` : ''}
+                </div>
+              </section>
+            `;
+          }
+          break;
 
-    // Academic/Professional Experience
-    if (show('experience')) {
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Academic & Professional Experience</h2>
-      `;
-      (cvData.workExperience || []).forEach(job => {
-        html += `
-          <div class="academic-item">
-            <div class="academic-position">${job.title || ''}</div>
-            <div class="academic-institution">${job.company || ''}</div>
-            <div class="academic-dates">${job.dates || ''}</div>
-            ${job.description ? `<div class="academic-description">${job.description}</div>` : ''}
-            ${(job.responsibilities && job.responsibilities.length)
-              ? `<ul class="academic-achievements">${job.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
-              : ''
-            }
-          </div>
-        `;
-      });
-      html += `</section>`;
-    }
+        case 'experience':
+          if (show('experience')) {
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Academic & Professional Experience</h2>
+            `;
+            (cvData.workExperience || []).forEach(job => {
+              html += `
+                <div class="academic-item">
+                  <div class="academic-position">${job.title || ''}</div>
+                  <div class="academic-institution">${job.company || ''}</div>
+                  <div class="academic-dates">${job.dates || ''}</div>
+                  ${job.description ? `<div class="academic-description">${job.description}</div>` : ''}
+                  ${(job.responsibilities && job.responsibilities.length)
+                    ? `<ul class="academic-achievements">${job.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+                    : ''
+                  }
+                </div>
+              `;
+            });
+            html += `</section>`;
+          }
+          break;
 
-    // Research Projects
-    if (show('projects')) {
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Research & Projects</h2>
-      `;
-      (cvData.personalProjects || []).forEach(project => {
-        html += `
-          <div class="academic-item">
-            <div class="academic-project-title">${project.title || ''}</div>
-            <div class="academic-project-tech">${project.technologies || ''}</div>
-            ${(project.responsibilities && project.responsibilities.length)
-              ? `<ul class="academic-achievements">${project.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
-              : ''
-            }
-          </div>
-        `;
-      });
-      html += `</section>`;
-    }
+        case 'projects':
+          if (show('projects')) {
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Research & Projects</h2>
+            `;
+            (cvData.personalProjects || []).forEach(project => {
+              html += `
+                <div class="academic-item">
+                  <div class="academic-project-title">${project.title || ''}</div>
+                  <div class="academic-project-tech">${project.technologies || ''}</div>
+                  ${(project.responsibilities && project.responsibilities.length)
+                    ? `<ul class="academic-achievements">${project.responsibilities.map(r => r?.trim() ? `<li>${r}</li>` : '').join('')}</ul>`
+                    : ''
+                  }
+                </div>
+              `;
+            });
+            html += `</section>`;
+          }
+          break;
 
-    // Academic Certificates & Qualifications
-    if (show('certificates')) {
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Professional Qualifications</h2>
-      `;
-      (cvData.certificates || []).forEach(cert => {
-        html += `
-          <div class="academic-item">
-            <div class="academic-certificate">${cert.title || ''}</div>
-            ${cert.description ? `<div class="academic-cert-description">${cert.description}</div>` : ''}
-          </div>
-        `;
-      });
-      html += `</section>`;
-    }
+        case 'certificates':
+          if (show('certificates')) {
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Professional Qualifications</h2>
+            `;
+            (cvData.certificates || []).forEach(cert => {
+              html += `
+                <div class="academic-item">
+                  <div class="academic-certificate">${cert.title || ''}</div>
+                  ${cert.description ? `<div class="academic-cert-description">${cert.description}</div>` : ''}
+                </div>
+              `;
+            });
+            html += `</section>`;
+          }
+          break;
 
-    // Additional Courses & Training
-    if (show('courses')) {
-      html += `
-        <section class="academic-section">
-          <h2 class="academic-section-title">Additional Training & Courses</h2>
-          <div class="academic-courses">${cvData.courses || ''}</div>
-        </section>
-      `;
-    }
+        case 'courses':
+          if (show('courses')) {
+            html += `
+              <section class="academic-section">
+                <h2 class="academic-section-title">Additional Training & Courses</h2>
+                <div class="academic-courses">${cvData.courses || ''}</div>
+              </section>
+            `;
+          }
+          break;
+      }
+    });
 
     html += `</div>`;
     return html;

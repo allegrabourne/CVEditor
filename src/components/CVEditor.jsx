@@ -17,7 +17,7 @@ import { PreviewPanel } from './PreviewPanel';
 const CVEditor = () => {
   // State management
   const [editMode, setEditMode] = useState(true);
-  const [selectedTemplate, setSelectedTemplate] = useState('rich-professional');
+  const [selectedTemplate, setSelectedTemplate] = useState('plain-professional');
   const [activeSection, setActiveSection] = useState('personal');
   const [sectionOrder, setSectionOrder] = useState(DEFAULT_SECTION_ORDER);
   const [hiddenSections, setHiddenSections] = useState([]);

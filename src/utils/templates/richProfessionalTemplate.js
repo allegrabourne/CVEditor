@@ -10,27 +10,29 @@ export class RichProfessionalTemplate extends CVTemplate {
     );
   }
 
+ 
+
   generateStyles(theme, isExport = false) {
     const c = this.getColorScheme(theme, isExport);
 
-    // Keep colours in print/PDF
+    // Dimensions / rhythm
+    const WIDTH   = 800;
+    const RADIUS  = 10;
+    const GUTTER  = 16;   // slightly tighter than before
+    const SIDEBAR = 260;
+    const BASE_FS = 0.92; // down a touch from ~0.96
+
     const colorAdjust = `
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     `;
 
-    // Use identical dimensions in preview & export
-    const WIDTH = 800;
-    const RADIUS = 10;
-    const GUTTER = 18;
-    const SIDEBAR = 260;
-
-    // No export divergence—we keep the same look; exportTweaks only enforces width/centering (identical values)
+    // No visual changes for export—just enforce same width/centering.
     const exportTweaks = isExport ? `
       .cv-container {
         max-width: ${WIDTH}px !important;
         width: 100% !important;
         margin: 0 auto !important;
-        padding: 24px !important;
+        padding: 22px !important; /* slightly tighter padding */
       }
     ` : '';
 
@@ -40,26 +42,26 @@ export class RichProfessionalTemplate extends CVTemplate {
       .cv-container {
         text-align: initial;
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        font-size: 0.96em;
-        line-height: 1.55;
+        font-size: ${BASE_FS}em;
+        line-height: 1.5;                     /* a touch tighter */
         color: ${c.primaryText};
         background: ${c.background};
-        padding: 24px;
+        padding: 22px;                        /* a touch tighter */
         max-width: ${WIDTH}px;
         margin: 0 auto;
         border-radius: ${RADIUS}px;
         overflow: hidden;
       }
 
-      /* Name header across full width */
+      /* Name header */
       .cv-container .name-header {
         text-align: center;
         margin-bottom: ${GUTTER}px;
       }
       .cv-container .name-header h1 {
         margin: 0;
-        font-size: 2.0em;
-        letter-spacing: 0.5px;
+        font-size: 1.9em;                     /* slightly smaller */
+        letter-spacing: 0.4px;
         font-weight: 800;
         color: ${c.primaryText};
       }
@@ -67,35 +69,33 @@ export class RichProfessionalTemplate extends CVTemplate {
       /* Two-column grid */
       .cv-container .layout {
         display: grid;
-        grid-template-columns: ${SIDEBAR}px 1fr; /* fixed columns for parity */
+        grid-template-columns: ${SIDEBAR}px 1fr;
         gap: ${GUTTER}px;
       }
 
-      /* Sidebar card */
+      /* Sidebar */
       .cv-container .sidebar {
         border: 1px solid ${c.borderColor};
         border-radius: ${RADIUS}px;
         background: ${c.cardBackground};
-        padding: 14px 14px;
+        padding: 12px 12px;                   /* tighter */
       }
       .cv-container .sidebar .sidebar-title {
-        font-size: 0.95em;
+        font-size: 0.92em;                    /* smaller title */
         font-weight: 800;
         text-transform: uppercase;
         color: ${c.primaryText};
         border-bottom: 2px solid ${c.borderAccent};
         padding-bottom: 6px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
-      .cv-container .sidebar .kv {
-        margin-bottom: 10px;
-      }
+      .cv-container .sidebar .kv { margin-bottom: 8px; }
       .cv-container .sidebar .kv .label {
         display: block;
-        font-size: 0.82em;
+        font-size: 0.78em;                    /* smaller label */
         text-transform: uppercase;
         color: ${c.mutedText};
-        letter-spacing: 0.4px;
+        letter-spacing: 0.35px;
       }
       .cv-container .sidebar .kv .value {
         display: block;
@@ -104,29 +104,64 @@ export class RichProfessionalTemplate extends CVTemplate {
         margin-top: 2px;
         word-break: break-word;
       }
+      .cv-container .sidebar ul { list-style: none; padding: 0; margin: 0; }
+      .cv-container .sidebar li { margin: 5px 0; color: ${c.secondaryText}; }
 
-      /* Main column sections */
+      /* Main sections */
       .cv-container .main .section {
         border: 1px solid ${c.borderColor};
         border-radius: ${RADIUS}px;
         background: ${c.cardBackground};
-        padding: 16px 18px;
+        padding: 14px 16px;                   /* tighter */
         margin-bottom: ${GUTTER}px;
       }
       .cv-container .main .section-title {
         display: inline-block;
-        font-size: 1.0em;
+        font-size: 0.98em;                    /* tighter */
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.3px;
+        letter-spacing: 0.28px;
         color: ${c.primaryText};
         border-bottom: 2px solid ${c.borderAccent};
-        padding-bottom: 6px;
-        margin-bottom: 10px;
+        padding-bottom: 5px;
+        margin-bottom: 8px;
       }
 
-      /* Items and text */
-      .cv-container .item { margin-bottom: 14px; }
+      /* Work Experience: extra-tight rhythm */
+      .cv-container .section-experience .item { margin-bottom: 30px; }
+      .cv-container .section-experience .job-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .cv-container .section-experience .job-title {
+        font-weight: 700;
+        color: ${c.primaryText};
+      }
+      .cv-container .section-experience .job-meta {
+        color: ${c.mutedText};
+        font-weight: 600;
+        font-size: 0.92em;                    /* slightly smaller meta */
+      }
+      .cv-container .section-experience .description {
+        margin-top: 4px;                      /* tighter */
+        color: ${c.secondaryText};
+        white-space: pre-line;
+      }
+      .cv-container .section-experience ul.bullets {
+        margin-top: 4px;                      /* tighter */
+        margin-bottom: 0;
+        padding-left: 16px;                   /* smaller indent */
+      }
+      .cv-container .section-experience ul.bullets li {
+        margin-bottom: 2px;                   /* tighter */
+        color: ${c.secondaryText};
+      }
+
+      /* Generic items (non-experience) */
+      .cv-container .item { margin-bottom: 12px; }
       .cv-container .item:last-child { margin-bottom: 0; }
 
       .cv-container .job-head {
@@ -136,43 +171,15 @@ export class RichProfessionalTemplate extends CVTemplate {
         align-items: baseline;
         flex-wrap: wrap;
       }
-      .cv-container .job-title {
-        font-weight: 700;
-        color: ${c.primaryText};
-      }
-      .cv-container .job-meta {
-        color: ${c.mutedText};
-        font-weight: 600;
-      }
-      .cv-container .description {
-        margin-top: 6px;
-        color: ${c.secondaryText};
-        white-space: pre-line;
-      }
-      .cv-container ul.bullets {
-        margin-top: 6px;
-        margin-bottom: 0;
-        padding-left: 18px;
-      }
-      .cv-container ul.bullets li {
-        margin-bottom: 4px;
-        color: ${c.secondaryText};
-      }
+      .cv-container .job-title { font-weight: 700; color: ${c.primaryText}; }
+      .cv-container .job-meta { color: ${c.mutedText}; font-weight: 600; }
+      .cv-container .description { margin-top: 6px; color: ${c.secondaryText}; white-space: pre-line; }
 
-      /* Simple list in sidebar (no bullets) */
-      .cv-container .sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .cv-container .sidebar li {
-        margin: 6px 0;
-        color: ${c.secondaryText};
-      }
+      .cv-container ul.bullets { margin-top: 6px; margin-bottom: 0; padding-left: 18px; }
+      .cv-container ul.bullets li { margin-bottom: 4px; color: ${c.secondaryText}; }
 
       ${exportTweaks}
 
-      /* Print safety net (same dimensions) */
       @media print {
         .cv-container {
           max-width: ${WIDTH}px !important;
@@ -185,25 +192,22 @@ export class RichProfessionalTemplate extends CVTemplate {
   generateBody(cvData, visibleSections) {
     const pd = cvData.personalDetails || {};
     const show = s => this.shouldRenderSection(s, visibleSections, cvData);
-
     let html = `<div class="cv-container">`;
 
-    // Name header (top)
-    const name = pd.name || '';
+    // Name header
     html += `
       <div class="name-header">
-        <h1>${name}</h1>
+        <h1>${pd.name || ''}</h1>
       </div>
     `;
 
-    // Layout grid (sidebar + main)
+    // Layout
     html += `<div class="layout">`;
 
-    // Sidebar: Personal Details
+    // Sidebar
     html += `<aside class="sidebar">`;
     if (show('personal')) {
       html += `<div class="sidebar-title">Personal Details</div>`;
-
       const rows = [
         ['Name', pd.name],
         ['Address', pd.address],
@@ -211,7 +215,6 @@ export class RichProfessionalTemplate extends CVTemplate {
         ['Email', pd.email],
         ['Website', pd.website],
       ].filter(([, v]) => v);
-
       rows.forEach(([label, value]) => {
         html += `
           <div class="kv">
@@ -223,10 +226,9 @@ export class RichProfessionalTemplate extends CVTemplate {
     }
     html += `</aside>`;
 
-    // Main column
+    // Main
     html += `<main class="main">`;
 
-    // Profile
     if (show('profile')) {
       html += `
         <section class="section">
@@ -236,11 +238,10 @@ export class RichProfessionalTemplate extends CVTemplate {
       `;
     }
 
-    // Experience
     if (show('experience')) {
-      html += `<section class="section"><div class="section-title">Work Experience</div>`;
+      html += `<section class="section section-experience"><div class="section-title">Work Experience</div>`;
       (cvData.workExperience || []).forEach(j => {
-        const left = j.title || '';
+        const left  = j.title || '';
         const right = [j.company, j.dates].filter(Boolean).join(' • ');
         html += `
           <div class="item">
@@ -259,7 +260,6 @@ export class RichProfessionalTemplate extends CVTemplate {
       html += `</section>`;
     }
 
-    // Projects (optional)
     if (show('projects')) {
       html += `<section class="section"><div class="section-title">Personal Projects</div>`;
       (cvData.personalProjects || []).forEach(p => {
@@ -279,9 +279,8 @@ export class RichProfessionalTemplate extends CVTemplate {
       html += `</section>`;
     }
 
-    // Education
     if (show('education')) {
-      const ed = cvData.education || {};
+      const ed   = cvData.education || {};
       const meta = [ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ');
       html += `
         <section class="section">
@@ -296,7 +295,6 @@ export class RichProfessionalTemplate extends CVTemplate {
       `;
     }
 
-    // Certificates
     if (show('certificates')) {
       html += `<section class="section"><div class="section-title">Certificates</div>`;
       (cvData.certificates || []).forEach(cert => {
@@ -310,7 +308,6 @@ export class RichProfessionalTemplate extends CVTemplate {
       html += `</section>`;
     }
 
-    // Courses
     if (show('courses')) {
       html += `
         <section class="section">

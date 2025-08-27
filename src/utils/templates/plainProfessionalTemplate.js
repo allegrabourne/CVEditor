@@ -1,6 +1,6 @@
 // utils/templates/PlainProfessionalTemplate.js - Plain Professional Template
 
-import { CVTemplate } from './CVTemplate.js';
+import { CVTemplate } from './cvTemplate.js';
 
 /**
  * Plain Professional Template - Clean, minimal template suitable for ATS systems

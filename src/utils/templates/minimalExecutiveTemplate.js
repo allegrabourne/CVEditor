@@ -1,6 +1,6 @@
 // utils/templates/MinimalExecutiveTemplate.js - Minimal Executive Template
 
-import { CVTemplate } from './CVTemplate.js';
+import { CVTemplate } from './cvTemplate.js';
 
 /**
  * Minimal Executive Template - Clean, sophisticated design for executive-level positions

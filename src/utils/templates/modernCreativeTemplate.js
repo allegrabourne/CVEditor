@@ -1,6 +1,6 @@
 // utils/templates/ModernCreativeTemplate.js - Modern Creative Template with consistent styling
 
-import { CVTemplate } from './CVTemplate.js';
+import { CVTemplate } from './cvTemplate.js';
 
 /**
  * Modern Creative Template - Contemporary design with consistent visual elements

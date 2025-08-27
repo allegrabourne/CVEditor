@@ -1,6 +1,6 @@
 // utils/templates/RichProfessionalTemplate.js - Rich Professional Template with consistent styling
 
-import { CVTemplate } from './CVTemplate.js';
+import { CVTemplate } from './cvTemplate.js';
 
 /**
  * Rich Professional Template - Consistent visual design between preview and export

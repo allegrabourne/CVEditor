@@ -1,17 +1,17 @@
-// utils/templates/ModernCreativeTemplate.js - Modern Creative Template
+// utils/templates/ModernCreativeTemplate.js - Modern Creative Template with consistent styling
 
 import { CVTemplate } from './CVTemplate.js';
 
 /**
- * Modern Creative Template - Contemporary design with creative elements
+ * Modern Creative Template - Contemporary design with consistent visual elements
  */
 export class ModernCreativeTemplate extends CVTemplate {
   constructor() {
     super('modern-creative', 'Modern Creative', 'Contemporary design with creative elements and typography');
   }
 
-  generateStyles(theme) {
-    const isDark = theme === 'dark';
+  generateStyles(theme, isExport = false) {
+    const colors = this.getColorScheme(theme, isExport);
     
     return `
         /* Reset for CV preview - scoped to prevent editor interference */
@@ -25,8 +25,8 @@ export class ModernCreativeTemplate extends CVTemplate {
         .cv-container {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
-            color: ${isDark ? '#f3f4f6' : '#2d3748'};
-            background: ${isDark ? '#1a202c' : '#f7fafc'};
+            color: ${colors.primaryText};
+            background: ${colors.background};
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
@@ -35,13 +35,15 @@ export class ModernCreativeTemplate extends CVTemplate {
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
+        /* Header - structural design always consistent */
         .cv-container .header {
-            background: linear-gradient(135deg, #4299e1 0%, #3182ce 50%, #2c5282 100%);
+            background: linear-gradient(135deg, ${colors.accentGradientStart} 0%, ${colors.accentSecondary} 50%, ${colors.accentGradientEnd} 100%);
             color: white;
             padding: 50px 40px;
             position: relative;
             overflow: hidden;
             margin: -20px -20px 0 -20px;
+            text-align: center;
         }
 
         .cv-container .header::before {
@@ -62,6 +64,7 @@ export class ModernCreativeTemplate extends CVTemplate {
             letter-spacing: -0.02em;
             position: relative;
             z-index: 1;
+            color: white;
         }
 
         .cv-container .contact-info {
@@ -76,6 +79,7 @@ export class ModernCreativeTemplate extends CVTemplate {
         .cv-container .contact-item {
             font-size: 1em;
             opacity: 0.95;
+            color: white;
         }
 
         .cv-container .content {
@@ -87,13 +91,15 @@ export class ModernCreativeTemplate extends CVTemplate {
             position: relative;
         }
 
+        /* Section titles - structural color always consistent */
         .cv-container .section-title {
             font-size: 1.8em;
             font-weight: 600;
-            color: #4299e1;
+            color: ${colors.accentPrimary};
             margin-bottom: 25px;
             position: relative;
             padding-left: 25px;
+            text-align: left;
         }
 
         .cv-container .section-title::before {
@@ -104,30 +110,34 @@ export class ModernCreativeTemplate extends CVTemplate {
             transform: translateY(-50%);
             width: 4px;
             height: 30px;
-            background: linear-gradient(135deg, #4299e1, #3182ce);
+            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
             border-radius: 2px;
         }
 
+        /* Profile section - left aligned */
         .cv-container .profile {
             font-size: 1.1em;
             line-height: 1.8;
-            color: ${isDark ? '#cbd5e0' : '#4a5568'};
-            background: ${isDark ? '#4a5568' : '#f7fafc'};
+            color: ${colors.secondaryText};
+            background: ${colors.cardBackground};
             padding: 25px;
             border-radius: 12px;
-            border-left: 4px solid #4299e1;
+            border-left: 4px solid ${colors.accentPrimary};
             white-space: pre-line;
+            text-align: left;
         }
 
+        /* Cards - left aligned content */
         .cv-container .job, 
         .cv-container .project, 
         .cv-container .certificate {
             margin-bottom: 30px;
             padding: 25px;
-            background: ${isDark ? '#4a5568' : '#f7fafc'};
+            background: ${colors.cardBackground};
             border-radius: 12px;
             position: relative;
             transition: transform 0.2s ease;
+            text-align: left;
         }
 
         .cv-container .job::before, 
@@ -139,7 +149,7 @@ export class ModernCreativeTemplate extends CVTemplate {
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(135deg, #4299e1, #3182ce);
+            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
             border-radius: 0 2px 2px 0;
         }
 
@@ -148,61 +158,69 @@ export class ModernCreativeTemplate extends CVTemplate {
         .cv-container .certificate-title {
             font-size: 1.3em;
             font-weight: 600;
-            color: ${isDark ? '#f7fafc' : '#2d3748'};
+            color: ${colors.primaryText};
             margin-bottom: 8px;
+            text-align: left;
         }
 
         .cv-container .job-company, 
         .cv-container .project-tech {
             font-weight: 500;
-            color: #4299e1;
+            color: ${colors.accentPrimary};
             margin-bottom: 8px;
             font-size: 1.05em;
+            text-align: left;
         }
 
         .cv-container .job-dates {
-            color: ${isDark ? '#a0aec0' : '#718096'};
+            color: ${colors.mutedText};
             font-style: italic;
             margin-bottom: 12px;
             font-size: 0.95em;
+            text-align: left;
         }
 
         .cv-container .job-description, 
         .cv-container .certificate-description {
-            color: ${isDark ? '#cbd5e0' : '#4a5568'};
+            color: ${colors.secondaryText};
             margin-bottom: 12px;
             line-height: 1.6;
             white-space: pre-line;
+            text-align: left;
         }
 
         .cv-container .responsibilities {
             list-style: none;
             margin: 0;
             padding: 0;
+            text-align: left;
         }
 
         .cv-container .responsibilities li {
             position: relative;
             padding-left: 25px;
             margin-bottom: 8px;
-            color: ${isDark ? '#cbd5e0' : '#4a5568'};
+            color: ${colors.secondaryText};
             line-height: 1.6;
+            text-align: left;
         }
 
         .cv-container .responsibilities li::before {
-            content: '→';
+            content: '↗';
             position: absolute;
             left: 0;
-            color: #4299e1;
+            color: ${colors.accentPrimary};
             font-weight: bold;
             font-size: 1.1em;
         }
 
+        /* Education section */
         .cv-container .education-item {
-            background: ${isDark ? '#4a5568' : '#f7fafc'};
+            background: ${colors.cardBackground};
             padding: 25px;
             border-radius: 12px;
             position: relative;
+            text-align: left;
         }
 
         .cv-container .education-item::before {
@@ -212,73 +230,134 @@ export class ModernCreativeTemplate extends CVTemplate {
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(135deg, #4299e1, #3182ce);
+            background: linear-gradient(135deg, ${colors.accentPrimary}, ${colors.accentSecondary});
             border-radius: 0 2px 2px 0;
         }
 
         .cv-container .degree {
             font-size: 1.3em;
             font-weight: 600;
-            color: ${isDark ? '#f7fafc' : '#2d3748'};
+            color: ${colors.primaryText};
             margin-bottom: 8px;
+            text-align: left;
         }
 
         .cv-container .university {
             font-weight: 500;
-            color: #4299e1;
+            color: ${colors.accentPrimary};
             margin-bottom: 8px;
             font-size: 1.05em;
+            text-align: left;
         }
 
         .cv-container .education-dates, 
         .cv-container .education-grade {
-            color: ${isDark ? '#a0aec0' : '#718096'};
+            color: ${colors.mutedText};
             margin-bottom: 5px;
+            text-align: left;
         }
 
+        /* Courses section */
         .cv-container .courses-content {
             line-height: 1.7;
-            color: ${isDark ? '#cbd5e0' : '#4a5568'};
+            color: ${colors.secondaryText};
             white-space: pre-line;
-            background: ${isDark ? '#4a5568' : '#f7fafc'};
+            background: ${colors.cardBackground};
             padding: 25px;
             border-radius: 12px;
-            border-left: 4px solid #4299e1;
+            border-left: 4px solid ${colors.accentPrimary};
+            text-align: left;
         }
 
-        /* Print styles scoped to cv-container */
+        /* Print styles - maintain exact same styling as light theme */
         @media print {
             .cv-container {
                 box-shadow: none;
                 border-radius: 0;
-                padding: 10px;
-                background: white;
-                color: black;
+                padding: 20px;
+                background: #ffffff;
+                color: #1a202c;
             }
 
             .cv-container .header {
-                background: #4299e1 !important;
-                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #3182ce 50%, #764ba2 100%);
+                color: white;
+            }
+            
+            .cv-container .header h1 {
+                color: white;
+            }
+            
+            .cv-container .contact-item {
+                color: white;
             }
 
             .cv-container .section-title {
-                color: #2d3748;
+                color: #4299e1;
+            }
+            
+            .cv-container .section-title::before {
+                background: linear-gradient(135deg, #4299e1, #3182ce);
+            }
+            
+            .cv-container .job::before, 
+            .cv-container .project::before, 
+            .cv-container .certificate::before,
+            .cv-container .education-item::before {
+                background: linear-gradient(135deg, #4299e1, #3182ce);
+            }
+            
+            .cv-container .job-company, 
+            .cv-container .project-tech,
+            .cv-container .university {
+                color: #4299e1;
+            }
+            
+            .cv-container .responsibilities li::before {
+                color: #4299e1;
+            }
+            
+            .cv-container .profile,
+            .cv-container .courses-content {
+                border-left: 4px solid #4299e1;
+                background: #f7fafc;
             }
 
-            .cv-container .job-title, 
-            .cv-container .project-title, 
-            .cv-container .certificate-title, 
+            .cv-container .job,
+            .cv-container .project,
+            .cv-container .certificate,
+            .cv-container .education-item {
+                background: #f7fafc;
+            }
+
+            .cv-container .job-title,
+            .cv-container .project-title,
+            .cv-container .certificate-title,
             .cv-container .degree {
-                color: #2d3748;
+                color: #1a202c;
+            }
+
+            .cv-container .job-description,
+            .cv-container .certificate-description,
+            .cv-container .profile,
+            .cv-container .courses-content,
+            .cv-container .responsibilities li {
+                color: #4a5568;
+            }
+
+            .cv-container .job-dates,
+            .cv-container .education-dates,
+            .cv-container .education-grade {
+                color: #718096;
             }
         }
-    `
+    `;
   }
 
   generateBody(cvData, visibleSections) {
     let html = '<div class="cv-container">';
 
-    // Header
+    // Header - always centered
     if (this.shouldRenderSection('personal', visibleSections, cvData)) {
       html += `
         <div class="header">
@@ -295,7 +374,7 @@ export class ModernCreativeTemplate extends CVTemplate {
 
     html += '<div class="content">';
 
-    // Render sections in order
+    // Render sections in order - all left-aligned content except header
     visibleSections.forEach(sectionId => {
       switch (sectionId) {
         case 'profile':

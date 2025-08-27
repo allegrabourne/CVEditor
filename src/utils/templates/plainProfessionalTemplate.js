@@ -10,12 +10,13 @@ export class PlainProfessionalTemplate extends CVTemplate {
     super('plain-professional', 'Plain Professional', 'Clean, minimal template suitable for ATS systems');
   }
 
-  generateStyles(theme) {
-    const isDark = theme === 'dark';
+  generateStyles(theme, isExport = false) {
+    const colors = this.getColorScheme(theme, isExport);
     
     return `
         /* Reset for CV preview - scoped to prevent editor interference */
         .cv-container * {
+         font-size: 0.95em;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -25,30 +26,33 @@ export class PlainProfessionalTemplate extends CVTemplate {
         .cv-container {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: ${isDark ? '#f3f4f6' : '#333'};
-            background: ${isDark ? '#1f2937' : '#ffffff'};
+            color: ${colors.primaryText};
+            background: ${colors.background};
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
 
+        /* Header styling - always left aligned for consistent layout */
         .cv-container .header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 30px;
             padding-bottom: 20px;
-            border-bottom: 2px solid ${isDark ? '#4b5563' : '#333'};
+            border-bottom: 2px solid ${colors.borderAccent};
         }
 
         .cv-container .header h1 {
             font-size: 2.2em;
             font-weight: bold;
             margin-bottom: 10px;
-            color: ${isDark ? '#f3f4f6' : '#333'};
+            color: ${colors.primaryText};
+            text-align: left;
         }
 
         .cv-container .contact-info {
-            font-size: 1em;
             line-height: 1.4;
+            color: ${colors.secondaryText};
+            text-align: left;
         }
 
         .cv-container .content {
@@ -62,19 +66,20 @@ export class PlainProfessionalTemplate extends CVTemplate {
         .cv-container .section-title {
             font-size: 1.3em;
             font-weight: bold;
-            color: ${isDark ? '#f3f4f6' : '#333'};
+            color: ${colors.primaryText};
             margin-bottom: 15px;
             text-transform: uppercase;
-            border-bottom: 1px solid ${isDark ? '#4b5563' : '#666'};
+            border-bottom: 1px solid ${colors.borderAccent};
             padding-bottom: 5px;
+            text-align: left;
         }
 
         .cv-container .profile {
-            font-size: 1em;
             line-height: 1.6;
-            text-align: justify;
+            text-align: left;
             margin-bottom: 15px;
             white-space: pre-line;
+            color: ${colors.secondaryText};
         }
 
         .cv-container .job, 
@@ -82,7 +87,8 @@ export class PlainProfessionalTemplate extends CVTemplate {
         .cv-container .certificate {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px dotted ${isDark ? '#4b5563' : '#ccc'};
+            border-bottom: 1px dotted ${colors.borderColor};
+            text-align: left;
         }
 
         .cv-container .job:last-child, 
@@ -94,93 +100,141 @@ export class PlainProfessionalTemplate extends CVTemplate {
         .cv-container .job-title, 
         .cv-container .project-title, 
         .cv-container .certificate-title {
-            font-size: 1.1em;
             font-weight: bold;
-            color: ${isDark ? '#f3f4f6' : '#333'};
+            color: ${colors.primaryText};
             margin-bottom: 3px;
+            text-align: left;
         }
 
         .cv-container .job-company, 
         .cv-container .project-tech {
             font-weight: bold;
-            color: ${isDark ? '#d1d5db' : '#666'};
+            color: ${colors.mutedText};
             margin-bottom: 3px;
+            text-align: left;
         }
 
         .cv-container .job-dates {
-            color: ${isDark ? '#9ca3af' : '#666'};
+            color: ${colors.mutedText};
             font-style: italic;
             margin-bottom: 8px;
+            text-align: left;
         }
 
         .cv-container .job-description, 
         .cv-container .certificate-description {
             margin-bottom: 8px;
-            color: ${isDark ? '#d1d5db' : '#555'};
+            color: ${colors.secondaryText};
             white-space: pre-line;
+            text-align: left;
         }
 
         .cv-container .responsibilities {
             list-style: disc;
             padding-left: 20px;
             margin: 0;
+            text-align: left;
         }
 
         .cv-container .responsibilities li {
             margin-bottom: 3px;
-            color: ${isDark ? '#d1d5db' : '#555'};
+            color: ${colors.secondaryText};
+            text-align: left;
         }
 
         .cv-container .education-item {
             margin-bottom: 15px;
+            text-align: left;
         }
 
         .cv-container .degree {
-            font-size: 1.1em;
             font-weight: bold;
-            color: ${isDark ? '#f3f4f6' : '#333'};
+            color: ${colors.primaryText};
             margin-bottom: 3px;
+            text-align: left;
         }
 
         .cv-container .university {
             font-weight: bold;
-            color: ${isDark ? '#d1d5db' : '#666'};
+            color: ${colors.mutedText};
             margin-bottom: 3px;
+            text-align: left;
         }
 
         .cv-container .education-dates, 
         .cv-container .education-grade {
-            color: ${isDark ? '#9ca3af' : '#666'};
+            color: ${colors.mutedText};
             margin-bottom: 3px;
+            text-align: left;
         }
 
         .cv-container .courses-content {
             line-height: 1.6;
             white-space: pre-line;
+            color: ${colors.secondaryText};
+            text-align: left;
         }
 
-        /* Print styles scoped to cv-container */
+        /* Print styles - maintain exact same layout as screen */
         @media print {
             .cv-container {
                 padding: 10px;
-                background: white;
-                color: black;
+                background: white !important;
+                color: #1a202c !important;
+                max-width: none !important;
             }
 
             .cv-container .header {
-                border-bottom: 2px solid #333;
+                border-bottom: 2px solid #4299e1 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .header h1 {
+                color: #1a202c !important;
+                text-align: left !important;
+            }
+
+            .cv-container .contact-info {
+                color: #4a5568 !important;
+                text-align: left !important;
             }
 
             .cv-container .section-title {
-                color: #333;
-                border-bottom: 1px solid #666;
+                color: #1a202c !important;
+                border-bottom: 1px solid #4299e1 !important;
+                text-align: left !important;
             }
 
             .cv-container .job-title, 
             .cv-container .project-title, 
             .cv-container .certificate-title, 
             .cv-container .degree {
-                color: #333;
+                color: #1a202c !important;
+                text-align: left !important;
+            }
+
+            .cv-container .job-company,
+            .cv-container .project-tech,
+            .cv-container .university,
+            .cv-container .job-dates,
+            .cv-container .education-dates,
+            .cv-container .education-grade {
+                color: #718096 !important;
+                text-align: left !important;
+            }
+
+            .cv-container .profile,
+            .cv-container .job-description,
+            .cv-container .certificate-description,
+            .cv-container .courses-content,
+            .cv-container .responsibilities li {
+                color: #4a5568 !important;
+                text-align: left !important;
+            }
+
+            /* Ensure all elements maintain left alignment in print */
+            .cv-container * {
+                text-align: left !important;
             }
         }
     `;
@@ -189,7 +243,7 @@ export class PlainProfessionalTemplate extends CVTemplate {
   generateBody(cvData, visibleSections) {
     let html = '<div class="cv-container">';
 
-    // Header
+    // Header - left aligned
     if (this.shouldRenderSection('personal', visibleSections, cvData)) {
       html += `
         <div class="header">

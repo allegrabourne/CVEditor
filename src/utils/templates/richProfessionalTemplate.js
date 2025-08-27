@@ -1,9 +1,9 @@
-// utils/templates/RichProfessionalTemplate.js - Rich Professional Template with proper theming
+// utils/templates/RichProfessionalTemplate.js - Rich Professional Template with consistent styling
 
 import { CVTemplate } from './CVTemplate.js';
 
 /**
- * Rich Professional Template - Fixed to separate theming from structural styling
+ * Rich Professional Template - Consistent visual design between preview and export
  */
 export class RichProfessionalTemplate extends CVTemplate {
   constructor() {
@@ -35,6 +35,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             overflow: hidden;
         }
 
+        /* Header - structural design always consistent */
         .cv-container .header {
             background: linear-gradient(135deg, ${colors.accentGradientStart} 0%, ${colors.accentGradientEnd} 100%);
             color: white;
@@ -48,6 +49,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             font-weight: 700;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
         }
 
         .cv-container .contact-info {
@@ -67,6 +69,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             padding: 8px 16px;
             border-radius: 25px;
             backdrop-filter: blur(10px);
+            color: white;
         }
 
         .cv-container .content {
@@ -77,6 +80,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             margin-bottom: 35px;
         }
 
+        /* Section titles - structural color always consistent */
         .cv-container .section-title {
             font-size: 1.5em;
             font-weight: 700;
@@ -85,6 +89,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             padding-bottom: 10px;
             border-bottom: 3px solid ${colors.accentPrimary};
             position: relative;
+            text-align: left;
         }
 
         .cv-container .section-title::after {
@@ -97,14 +102,16 @@ export class RichProfessionalTemplate extends CVTemplate {
             background: ${colors.accentSecondary};
         }
 
+        /* Profile section */
         .cv-container .profile {
             font-size: 1.1em;
             line-height: 1.7;
-            text-align: justify;
+            text-align: left;
             color: ${colors.secondaryText};
             white-space: pre-line;
         }
 
+        /* Job, project, certificate cards */
         .cv-container .job, 
         .cv-container .project, 
         .cv-container .certificate {
@@ -113,6 +120,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             background: ${colors.cardBackground};
             border-radius: 8px;
             border-left: 4px solid ${colors.accentPrimary};
+            text-align: left;
         }
 
         .cv-container .job-title, 
@@ -122,6 +130,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             font-weight: 600;
             color: ${colors.primaryText};
             margin-bottom: 8px;
+            text-align: left;
         }
 
         .cv-container .job-company, 
@@ -129,12 +138,14 @@ export class RichProfessionalTemplate extends CVTemplate {
             font-weight: 500;
             color: ${colors.accentPrimary};
             margin-bottom: 5px;
+            text-align: left;
         }
 
         .cv-container .job-dates {
             color: ${colors.mutedText};
             font-style: italic;
             margin-bottom: 10px;
+            text-align: left;
         }
 
         .cv-container .job-description, 
@@ -142,12 +153,14 @@ export class RichProfessionalTemplate extends CVTemplate {
             color: ${colors.secondaryText};
             margin-bottom: 10px;
             white-space: pre-line;
+            text-align: left;
         }
 
         .cv-container .responsibilities {
             list-style: none;
             margin: 0;
             padding: 0;
+            text-align: left;
         }
 
         .cv-container .responsibilities li {
@@ -155,6 +168,7 @@ export class RichProfessionalTemplate extends CVTemplate {
             padding-left: 20px;
             margin-bottom: 5px;
             color: ${colors.secondaryText};
+            text-align: left;
         }
 
         .cv-container .responsibilities li::before {
@@ -165,11 +179,13 @@ export class RichProfessionalTemplate extends CVTemplate {
             font-weight: bold;
         }
 
+        /* Education section */
         .cv-container .education-item {
             background: ${colors.cardBackground};
             padding: 20px;
             border-radius: 8px;
             border-left: 4px solid ${colors.accentPrimary};
+            text-align: left;
         }
 
         .cv-container .degree {
@@ -177,78 +193,81 @@ export class RichProfessionalTemplate extends CVTemplate {
             font-weight: 600;
             color: ${colors.primaryText};
             margin-bottom: 8px;
+            text-align: left;
         }
 
         .cv-container .university {
             font-weight: 500;
             color: ${colors.accentPrimary};
             margin-bottom: 5px;
+            text-align: left;
         }
 
         .cv-container .education-dates, 
         .cv-container .education-grade {
             color: ${colors.mutedText};
             margin-bottom: 5px;
+            text-align: left;
         }
 
+        /* Courses section */
         .cv-container .courses-content {
             line-height: 1.7;
             color: ${colors.secondaryText};
             white-space: pre-line;
             background: ${colors.cardBackground};
-            padding: 25px;
             border-radius: 12px;
             border-left: 4px solid ${colors.accentPrimary};
+            text-align: left;
         }
 
-        /* Print styles - ensure consistency for exports */
+        /* Print styles - ensure everything remains consistent */
         @media print {
             .cv-container {
                 box-shadow: none;
                 border-radius: 0;
-                padding: 0;
-                color: #1a202c !important;
-                background: white !important;
+                padding: 20px;
             }
-
+            
+            /* Structural elements stay the same */
             .cv-container .header {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                margin: 0;
+                color: white !important;
             }
-
+            
+            .cv-container .header h1 {
+                color: white !important;
+            }
+            
+            .cv-container .contact-item {
+                color: white !important;
+            }
+            
             .cv-container .section-title {
                 color: #4299e1 !important;
                 border-bottom: 3px solid #4299e1 !important;
             }
-
+            
             .cv-container .section-title::after {
                 background: #3182ce !important;
             }
-
-            .cv-container .job, 
-            .cv-container .project, 
-            .cv-container .certificate,
-            .cv-container .education-item,
-            .cv-container .courses-content {
-                background: #f8fafc !important;
-                border-left: 4px solid #4299e1 !important;
-            }
-
-            .cv-container .job-title, 
-            .cv-container .project-title, 
-            .cv-container .certificate-title, 
-            .cv-container .degree {
-                color: #1a202c !important;
-            }
-
-            .cv-container .job-company, 
+            
+            .cv-container .job-company,
             .cv-container .project-tech,
             .cv-container .university {
                 color: #4299e1 !important;
             }
-
+            
             .cv-container .responsibilities li::before {
                 color: #4299e1 !important;
+            }
+            
+            .cv-container .job,
+            .cv-container .project,
+            .cv-container .certificate,
+            .cv-container .education-item,
+            .cv-container .courses-content {
+                border-left: 4px solid #4299e1 !important;
             }
         }
     `;
@@ -257,7 +276,7 @@ export class RichProfessionalTemplate extends CVTemplate {
   generateBody(cvData, visibleSections) {
     let html = '<div class="cv-container">';
 
-    // Header
+    // Header - always centered
     if (this.shouldRenderSection('personal', visibleSections, cvData)) {
       html += `
         <div class="header">
@@ -274,7 +293,7 @@ export class RichProfessionalTemplate extends CVTemplate {
 
     html += '<div class="content">';
 
-    // Render sections in order
+    // Render sections in order - all left-aligned content
     visibleSections.forEach(sectionId => {
       switch (sectionId) {
         case 'profile':

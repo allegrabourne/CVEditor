@@ -19,9 +19,7 @@ export class CVTemplate {
    * @returns {string} Complete HTML document
    */
   generateHTML(cvData, theme, visibleSections, isExport = false) {
-    // Always use light theme for exports, regardless of current theme
-    const effectiveTheme = isExport ? 'light' : theme;
-    const styles = this.generateStyles(effectiveTheme, isExport);
+    const styles = this.generateStyles(theme, isExport);
     const body = this.generateBody(cvData, visibleSections);
     
     return `<!DOCTYPE html>
@@ -98,73 +96,48 @@ export class CVTemplate {
    * @returns {Object} Color scheme object
    */
   getColorScheme(theme, isExport = false) {
-    // For exports, always use light theme colors for consistency
+    // Define the base light theme colors (what will be exported)
+    const baseColors = {
+      // Text colors
+      primaryText: '#1a202c',
+      secondaryText: '#4a5568',
+      mutedText: '#718096',
+      
+      // Background colors
+      background: '#ffffff',
+      cardBackground: '#f7fafc',
+      
+      // Structural colors - these NEVER change between themes or export
+      accentPrimary: '#4299e1',
+      accentSecondary: '#3182ce',
+      accentGradientStart: '#667eea',
+      accentGradientEnd: '#764ba2',
+      
+      // Border colors
+      borderColor: '#e2e8f0',
+      borderAccent: '#4299e1',
+    };
+
+    // For exports, ALWAYS return light theme colors
     if (isExport) {
+      return baseColors;
+    }
+
+    // For preview in dark theme, only change text and background colors
+    if (theme === 'dark') {
       return {
-        // Text colors
-        primaryText: '#1a202c',
-        secondaryText: '#4a5568',
-        mutedText: '#718096',
-        
-        // Background colors
-        background: '#ffffff',
-        cardBackground: '#f8fafc',
-        
-        // Accent colors (structural elements - consistent across themes)
-        accentPrimary: '#4299e1',
-        accentSecondary: '#3182ce',
-        accentGradientStart: '#667eea',
-        accentGradientEnd: '#764ba2',
-        
-        // Border colors
-        borderColor: '#e2e8f0',
-        borderAccent: '#4299e1',
+        ...baseColors, // Keep all structural colors the same
+        // Only override text and background colors
+        primaryText: '#f7fafc',
+        secondaryText: '#e2e8f0', 
+        mutedText: '#cbd5e0',
+        background: '#1a202c',
+        cardBackground: '#2d3748',
+        borderColor: '#4a5568',
       };
     }
 
-    // For preview, use theme-appropriate colors
-    if (theme === 'dark') {
-      return {
-        // Text colors
-        primaryText: '#f3f4f6',
-        secondaryText: '#cbd5e0',
-        mutedText: '#9ca3af',
-        
-        // Background colors
-        background: '#1a202c',
-        cardBackground: '#4a5568',
-        
-        // Accent colors (structural elements - consistent across themes)
-        accentPrimary: '#4299e1',
-        accentSecondary: '#3182ce',
-        accentGradientStart: '#667eea',
-        accentGradientEnd: '#764ba2',
-        
-        // Border colors
-        borderColor: '#4b5563',
-        borderAccent: '#4299e1',
-      };
-    } else {
-      return {
-        // Text colors
-        primaryText: '#1a202c',
-        secondaryText: '#4a5568',
-        mutedText: '#718096',
-        
-        // Background colors
-        background: '#ffffff',
-        cardBackground: '#f8fafc',
-        
-        // Accent colors (structural elements - consistent across themes)
-        accentPrimary: '#4299e1',
-        accentSecondary: '#3182ce',
-        accentGradientStart: '#667eea',
-        accentGradientEnd: '#764ba2',
-        
-        // Border colors
-        borderColor: '#e2e8f0',
-        borderAccent: '#4299e1',
-      };
-    }
+    // For preview in light theme, return the same as export
+    return baseColors;
   }
 }

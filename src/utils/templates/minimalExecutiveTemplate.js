@@ -16,6 +16,7 @@ export class MinimalExecutiveTemplate extends CVTemplate {
     return `
         /* Reset for CV preview - scoped to prevent editor interference */
         .cv-container * {
+            font-size: 0.95em;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -27,13 +28,12 @@ export class MinimalExecutiveTemplate extends CVTemplate {
             line-height: 1.6;
             color: ${isDark ? '#f3f4f6' : '#1a202c'};
             background: ${isDark ? '#1a202c' : '#ffffff'};
-            padding: 40px;
+    
             max-width: 750px;
             margin: 0 auto;
         }
 
         .cv-container .header {
-            text-align: center;
             margin-bottom: 50px;
             padding-bottom: 30px;
             border-bottom: 3px solid ${isDark ? '#4a5568' : '#1a202c'};
@@ -48,7 +48,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         }
 
         .cv-container .contact-info {
-            font-size: 1em;
             line-height: 1.8;
             color: ${isDark ? '#cbd5e0' : '#4a5568'};
         }
@@ -72,7 +71,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-align: center;
             position: relative;
         }
 
@@ -88,14 +86,10 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         }
 
         .cv-container .profile {
-            font-size: 1.1em;
             line-height: 1.8;
-            text-align: justify;
             margin-bottom: 20px;
             color: ${isDark ? '#cbd5e0' : '#2d3748'};
             max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
             white-space: pre-line;
         }
 
@@ -109,7 +103,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         .cv-container .job-title, 
         .cv-container .project-title, 
         .cv-container .certificate-title {
-            font-size: 1.2em;
             font-weight: bold;
             color: ${isDark ? '#f7fafc' : '#1a202c'};
             margin-bottom: 5px;
@@ -125,7 +118,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         .cv-container .job-dates {
             color: ${isDark ? '#a0aec0' : '#718096'};
             margin-bottom: 10px;
-            font-size: 0.95em;
         }
 
         .cv-container .job-description, 
@@ -155,7 +147,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
             position: absolute;
             left: 0;
             color: ${isDark ? '#a0aec0' : '#718096'};
-            font-size: 1.2em;
         }
 
         .cv-container .education-item {
@@ -164,7 +155,6 @@ export class MinimalExecutiveTemplate extends CVTemplate {
         }
 
         .cv-container .degree {
-            font-size: 1.2em;
             font-weight: bold;
             color: ${isDark ? '#f7fafc' : '#1a202c'};
             margin-bottom: 5px;
@@ -186,10 +176,7 @@ export class MinimalExecutiveTemplate extends CVTemplate {
             line-height: 1.7;
             color: ${isDark ? '#cbd5e0' : '#4a5568'};
             white-space: pre-line;
-            text-align: justify;
             max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         /* Print styles scoped to cv-container */

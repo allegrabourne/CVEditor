@@ -10,6 +10,7 @@ import { PlainProfessionalTemplate } from './templates/plainProfessionalTemplate
 import { ModernCreativeTemplate } from './templates/modernCreativeTemplate.js';
 import { MinimalExecutiveTemplate } from './templates/minimalExecutiveTemplate.js';
 import { AcademicClassicTemplate } from './templates/academicClassicTemplate.js';
+import { CompactProfessionalTemplate } from './templates/compactTemplate.js';
 import { TemplateManager } from './templates/templateManager.js';
 
 // Create and configure the singleton template manager
@@ -21,6 +22,7 @@ templateManager.registerTemplate(new PlainProfessionalTemplate());
 templateManager.registerTemplate(new ModernCreativeTemplate());
 templateManager.registerTemplate(new MinimalExecutiveTemplate());
 templateManager.registerTemplate(new AcademicClassicTemplate());
+templateManager.registerTemplate(new CompactProfessionalTemplate());
 
 // Export the configured template manager
 export { templateManager };
@@ -43,5 +45,6 @@ export {
   PlainProfessionalTemplate,
   ModernCreativeTemplate,
   MinimalExecutiveTemplate,
-  AcademicClassicTemplate
+  AcademicClassicTemplate,
+  CompactProfessionalTemplate
 };

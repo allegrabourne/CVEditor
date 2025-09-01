@@ -16,8 +16,8 @@ export class RichProfessionalTemplate extends CVTemplate {
     // Dimensions / rhythm
     const WIDTH   = 800;
     const RADIUS  = 10;
-    const GUTTER  = 16;   // slightly tighter than before
-    const SIDEBAR = 260;
+    const GUTTER  = 14;  
+    const SIDEBAR = 220;
     const BASE_FS = 0.92; // down a touch from ~0.96
 
     const colorAdjust = `

@@ -265,7 +265,19 @@ export const ProfileManager = ({
         )}
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-          
+                 {/* Export Reminder Note */}
+                 {profiles.length > 0 && (
+            <div className={`mb-6 p-4 rounded-lg border-l-4 border-yellow-500 ${
+              isDark ? 'bg-yellow-900/20 border-yellow-500' : 'bg-yellow-50 border-yellow-500'
+            }`}>
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 text-yellow-600" />
+                <p className={`text-sm ${isDark ? 'text-yellow-200' : 'text-yellow-800'}`}>
+                  <strong>Remember:</strong> Export your CV to save it permanently. Data stored here is temporary and may be lost.
+                </p>
+              </div>
+            </div>
+          )}
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-3 mb-6">
             <button

@@ -1,10 +1,11 @@
-// CVEditor.jsx - Main component with separated concerns
+// CVEditor.jsx - Main component with profile manager integration
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { FileText } from 'lucide-react';
 import { templateManager } from '../utils/cvTemplates';
 import { testData } from '../utils/cvData';
 import { SectionManager, DEFAULT_SECTION_ORDER } from '../utils/sectionManager';
+import { profileManager } from '../utils/profileManager';
 import { useTheme } from '../hooks/useTheme';
 import { useDragDrop } from '../hooks/useDragDrop';
 import { useCVData } from '../hooks/useCVData';
@@ -14,6 +15,7 @@ import { SectionNavigator } from './SectionNavigation';
 import { EditPanel } from './EditPanel';
 import { PreviewPanel } from './PreviewPanel';
 import { Footer } from './Footer';
+import { ProfileManager } from './ProfileManager';
 
 const CVEditor = () => {
   // State management
@@ -22,6 +24,12 @@ const CVEditor = () => {
   const [activeSection, setActiveSection] = useState('personal');
   const [sectionOrder, setSectionOrder] = useState(DEFAULT_SECTION_ORDER);
   const [hiddenSections, setHiddenSections] = useState([]);
+  
+  // Profile manager state
+  const [showProfileManager, setShowProfileManager] = useState(false);
+  const [currentProfileId, setCurrentProfileId] = useState(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [currentProfileName, setCurrentProfileName] = useState('Untitled CV');
   
   const { theme, toggleTheme, isDark } = useTheme();
   const printRef = useRef();
@@ -42,6 +50,35 @@ const CVEditor = () => {
 
   // Get available templates
   const availableTemplates = useMemo(() => templateManager.getTemplateOptions(), []);
+
+  // Check for unsaved changes whenever data changes
+  useEffect(() => {
+    const hasChanges = profileManager.hasUnsavedChanges(
+      cvData, 
+      sectionOrder, 
+      hiddenSections, 
+      selectedTemplate
+    );
+    setHasUnsavedChanges(hasChanges);
+  }, [cvData, sectionOrder, hiddenSections, selectedTemplate]);
+
+  // Update current profile name based on loaded profile
+  useEffect(() => {
+    const profileId = profileManager.getCurrentProfileId();
+    setCurrentProfileId(profileId);
+    
+    if (profileId) {
+      try {
+        const profiles = profileManager.getProfileList();
+        const currentProfile = profiles.find(p => p.id === profileId);
+        setCurrentProfileName(currentProfile ? currentProfile.name : 'Untitled CV');
+      } catch (error) {
+        setCurrentProfileName('Untitled CV');
+      }
+    } else {
+      setCurrentProfileName('Untitled CV');
+    }
+  }, [currentProfileId]);
 
   // Section reordering
   const handleReorderSections = (newOrder) => {
@@ -65,6 +102,45 @@ const CVEditor = () => {
         ? prev.filter(id => id !== sectionId)
         : [...prev, sectionId]
     );
+  };
+
+  // Profile manager handlers
+  const handleOpenProfileManager = () => {
+    setShowProfileManager(true);
+  };
+
+  const handleCloseProfileManager = () => {
+    setShowProfileManager(false);
+  };
+
+  // Quick save current profile (if one is loaded)
+  const handleQuickSave = () => {
+    if (!currentProfileId) {
+      setShowProfileManager(true);
+      return;
+    }
+
+    try {
+      const profiles = profileManager.getProfileList();
+      const currentProfile = profiles.find(p => p.id === currentProfileId);
+      
+      if (currentProfile) {
+        profileManager.saveProfile(
+          currentProfile.name,
+          cvData,
+          sectionOrder,
+          hiddenSections,
+          selectedTemplate
+        );
+        setHasUnsavedChanges(false);
+        
+        // Show success notification (you could implement a toast system)
+        console.log(`Profile "${currentProfile.name}" saved successfully`);
+      }
+    } catch (error) {
+      console.error('Failed to save profile:', error);
+      setShowProfileManager(true);
+    }
   };
 
   // Generate preview HTML using theme-aware function
@@ -129,13 +205,16 @@ const CVEditor = () => {
               setEditMode={setEditMode}
               importFromFile={importFromFile}
               exportToPDF={exportToPDF}
+              onOpenProfileManager={handleOpenProfileManager}
+              hasUnsavedChanges={hasUnsavedChanges}
+              currentProfileName={currentProfileName}
             />
           </div>
         </div>
       </div>
 
       <div className="w-full max-w-none px-6 py-8">
-      <div className={`grid gap-8 ${editMode ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
+        <div className={`grid gap-8 ${editMode ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
           
           {/* Editor Panel - Full width on mobile when in edit mode */}
           {editMode && (
@@ -170,12 +249,48 @@ const CVEditor = () => {
           </div>
         </div>
       </div>
-      <Footer isDark={isDark} />
-    </div>
-    
-  );
 
-  
+      {/* Profile Manager Modal */}
+      {showProfileManager && (
+        <ProfileManager
+          isDark={isDark}
+          cvData={cvData}
+          sectionOrder={sectionOrder}
+          hiddenSections={hiddenSections}
+          selectedTemplate={selectedTemplate}
+          setCvData={cvDataActions.setCvData}
+          setSectionOrder={setSectionOrder}
+          setHiddenSections={setHiddenSections}
+          setSelectedTemplate={setSelectedTemplate}
+          onClose={handleCloseProfileManager}
+        />
+      )}
+
+      <Footer isDark={isDark} />
+      
+      {/* Keyboard shortcuts for quick actions */}
+      <div
+        onKeyDown={(e) => {
+          if (e.ctrlKey || e.metaKey) {
+            switch (e.key) {
+              case 's':
+                e.preventDefault();
+                handleQuickSave();
+                break;
+              case 'o':
+                e.preventDefault();
+                handleOpenProfileManager();
+                break;
+              default:
+                break;
+            }
+          }
+        }}
+        tabIndex={-1}
+        className="sr-only"
+      />
+    </div>
+  );
 };
 
 export default CVEditor;

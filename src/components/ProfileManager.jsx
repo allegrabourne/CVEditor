@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   Save, 
@@ -265,8 +264,9 @@ export const ProfileManager = ({
         )}
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-                 {/* Export Reminder Note */}
-                 {profiles.length > 0 && (
+          
+          {/* Export Reminder Note */}
+          {profiles.length > 0 && (
             <div className={`mb-6 p-4 rounded-lg border-l-4 border-yellow-500 ${
               isDark ? 'bg-yellow-900/20 border-yellow-500' : 'bg-yellow-50 border-yellow-500'
             }`}>
@@ -278,6 +278,7 @@ export const ProfileManager = ({
               </div>
             </div>
           )}
+
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-3 mb-6">
             <button
@@ -380,7 +381,7 @@ export const ProfileManager = ({
                           : 'bg-gray-50 border-gray-200 hover:bg-gray-100')
                   }`}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between sm:items-center">
                     <div className="flex-1">
                       {editingProfile === profile.id ? (
                         <div className="flex gap-2 items-center">
@@ -433,46 +434,92 @@ export const ProfileManager = ({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-3 ml-4">
-                      <button
-                        onClick={() => handleLoadProfile(profile.id)}
-                        className={`p-2 rounded-lg transition-colors ${
-                          currentProfileId === profile.id
-                            ? 'opacity-50 cursor-not-allowed'
-                            : 'text-blue-600 hover:bg-blue-100'
-                        }`}
-                        disabled={currentProfileId === profile.id}
-                        title="Load profile"
-                      >
-                        <FolderOpen className="h-4 w-4" />
-                      </button>
+                    <div className="flex items-center gap-2 ml-4 sm:gap-3">
+                      {/* Desktop: single row layout */}
+                      <div className="hidden sm:flex items-center gap-3">
+                        <button
+                          onClick={() => handleLoadProfile(profile.id)}
+                          className={`p-2 rounded-lg transition-colors ${
+                            currentProfileId === profile.id
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'text-blue-600 hover:bg-blue-100'
+                          }`}
+                          disabled={currentProfileId === profile.id}
+                          title="Load profile"
+                        >
+                          <FolderOpen className="h-4 w-4" />
+                        </button>
 
-                      <button
-                        onClick={() => {
-                          setEditingProfile(profile.id);
-                          setEditName(profile.name);
-                        }}
-                        className="p-2 text-orange-600 hover:bg-orange-100 rounded-lg transition-colors"
-                        title="Rename profile"
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </button>
+                        <button
+                          onClick={() => {
+                            setEditingProfile(profile.id);
+                            setEditName(profile.name);
+                          }}
+                          className="p-2 text-orange-600 hover:bg-orange-100 rounded-lg transition-colors"
+                          title="Rename profile"
+                        >
+                          <Edit3 className="h-4 w-4" />
+                        </button>
 
-                      <button
-                        onClick={() => handleExportProfile(profile.id, 'json')}
-                        className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
-                        title="Export profile to file"
-                      >
-                        <Download className="h-4 w-4" />
-                      </button>
+                        <button
+                          onClick={() => handleExportProfile(profile.id, 'json')}
+                          className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                          title="Save profile to file"
+                        >
+                          <Download className="h-4 w-4" />
+                        </button>
 
-                      <button
-                        onClick={() => handleDeleteProfile(profile.id)}
-                        className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
-                        title="Delete profile"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                        <button
+                          onClick={() => handleDeleteProfile(profile.id)}
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                          title="Delete profile"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      {/* Mobile: 2x2 grid layout */}
+                      <div className="grid grid-cols-2 grid-rows-2 gap-1 sm:hidden">
+                        <button
+                          onClick={() => handleLoadProfile(profile.id)}
+                          className={`p-3 rounded-lg transition-colors ${
+                            currentProfileId === profile.id
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'text-blue-600 hover:bg-blue-100'
+                          }`}
+                          disabled={currentProfileId === profile.id}
+                          title="Load profile"
+                        >
+                          <FolderOpen className="h-5 w-5" />
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setEditingProfile(profile.id);
+                            setEditName(profile.name);
+                          }}
+                          className="p-3 text-orange-600 hover:bg-orange-100 rounded-lg transition-colors"
+                          title="Rename profile"
+                        >
+                          <Edit3 className="h-5 w-5" />
+                        </button>
+
+                        <button
+                          onClick={() => handleExportProfile(profile.id, 'json')}
+                          className="p-3 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                          title="Save profile to file"
+                        >
+                          <Download className="h-5 w-5" />
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteProfile(profile.id)}
+                          className="p-3 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                          title="Delete profile"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

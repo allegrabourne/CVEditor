@@ -1,11 +1,8 @@
-// useCVData.js - Custom hook for CV data management
-
 import { useState, useCallback } from 'react';
 
 export const useCVData = (initialData) => {
   const [cvData, setCvData] = useState(initialData);
 
-  // Personal details functions
   const updatePersonalDetails = useCallback((field, value) => {
     setCvData(prev => ({
       ...prev,
@@ -17,10 +14,29 @@ export const useCVData = (initialData) => {
     setCvData(prev => ({ ...prev, profile: value }));
   }, []);
 
-  const updateEducation = useCallback((field, value) => {
+  const addEducation = useCallback((field, value) => {
     setCvData(prev => ({
       ...prev,
-      education: { ...prev.education, [field]: value }
+      education: [...prev.education, {
+        degree: "",
+        university: "",
+        dates: "",
+        grade: ""    }]
+    }));
+  }, []);
+
+  const updateEducation = useCallback((index, field, value) => {
+    setCvData(prev => ({
+      ...prev,
+      education: prev.education.map((education, i) => 
+        i === index ? { ...education, [field]: value } : education
+    )
+  }), [])});
+
+  const removeEducation = useCallback((index) => {
+    setCvData(prev => ({
+      ...prev,
+      education: prev.education.filter((_, i) => i !== index)
     }));
   }, []);
 
@@ -28,7 +44,6 @@ export const useCVData = (initialData) => {
     setCvData(prev => ({ ...prev, courses: value }));
   }, []);
 
-  // Work experience functions
   const addWorkExperience = useCallback(() => {
     setCvData(prev => ({
       ...prev,
@@ -188,6 +203,8 @@ export const useCVData = (initialData) => {
     setCvData,
     updatePersonalDetails,
     updateProfile,
+    addEducation,
+    removeEducation,
     updateEducation,
     updateCourses,
     addWorkExperience,

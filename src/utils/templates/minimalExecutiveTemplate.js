@@ -402,27 +402,27 @@ export class MinimalExecutiveTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
-          if (show('education')) {
-            const ed = cvData.education || {};
-            html += `
-              <section class="executive-section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-entry">
-                  <div class="degree-info">
-                    <div class="degree-title">${ed.degree || ''}</div>
-                    <div class="degree-details">
-                      <div class="institution">${ed.university || ''}</div>
-                      ${ed.dates ? `<div>${ed.dates}</div>` : ''}
-                      ${ed.grade ? `<div>${ed.grade}</div>` : ''}
+          case 'education':
+            if (show('education')) {
+              html += `<section class="executive-section"><h2 class="section-title">Education</h2>`;
+              (cvData.education || []).forEach(ed => {
+                html += `
+                  <div class="education-entry">
+                    <div class="degree-info">
+                      <div class="degree-title">${ed.degree || ''}</div>
+                      <div class="degree-details">
+                        <div class="institution">${ed.university || ''}</div>
+                        ${ed.dates ? `<div>${ed.dates}</div>` : ''}
+                        ${ed.grade ? `<div>${ed.grade}</div>` : ''}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </section>
-            `;
-          }
-          break;
-
+                `;
+              });
+              html += `</section>`;
+            }
+            break;
+          
         case 'certificates':
           if (show('certificates')) {
             html += `<section class="executive-section"><h2 class="section-title">Executive Credentials</h2>`;

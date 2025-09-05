@@ -77,7 +77,9 @@ export const EditPanel = ({
         return (
           <EducationSection
             education={cvData.education}
+            onAdd={cvDataActions.addEducation}
             onUpdate={cvDataActions.updateEducation}
+            onRemove={cvDataActions.removeEducation}
           />
         );
 

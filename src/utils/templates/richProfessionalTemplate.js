@@ -286,24 +286,24 @@ export class RichProfessionalTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
-          if (show('education')) {
-            const ed   = cvData.education || {};
-            const meta = [ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ');
-            html += `
-              <section class="section">
-                <div class="section-title">Education</div>
-                <div class="item">
-                  <div class="job-head">
-                    <div class="job-title">${ed.degree || ''}</div>
-                    <div class="job-meta">${meta}</div>
+          case 'education':
+            if (show('education')) {
+              html += `<section class="section"><div class="section-title">Education</div>`;
+              (cvData.education || []).forEach(ed => {
+                const meta = [ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ');
+                html += `
+                  <div class="item">
+                    <div class="job-head">
+                      <div class="job-title">${ed.degree || ''}</div>
+                      <div class="job-meta">${meta}</div>
+                    </div>
                   </div>
-                </div>
-              </section>
-            `;
-          }
-          break;
-
+                `;
+              });
+              html += `</section>`;
+            }
+            break;
+            
         case 'certificates':
           if (show('certificates')) {
             html += `<section class="section"><div class="section-title">Certificates</div>`;

@@ -278,22 +278,22 @@ export class AcademicClassicTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
-          if (show('education')) {
-            const ed = cvData.education || {};
-            html += `
-              <section class="academic-section">
-                <h2 class="academic-section-title">Education</h2>
-                <div class="academic-item">
-                  <div class="academic-degree">${ed.degree || ''}</div>
-                  <div class="academic-university">${ed.university || ''}</div>
-                  <div class="academic-dates">${ed.dates || ''}</div>
-                  ${ed.grade ? `<div class="academic-grade">${ed.grade}</div>` : ''}
-                </div>
-              </section>
-            `;
-          }
-          break;
+          case 'education':
+            if (show('education')) {
+              html += `<section class="academic-section"><h2 class="academic-section-title">Education</h2>`;
+              (cvData.education || []).forEach(ed => {
+                html += `
+                  <div class="academic-item">
+                    <div class="academic-degree">${ed.degree || ''}</div>
+                    <div class="academic-university">${ed.university || ''}</div>
+                    <div class="academic-dates">${ed.dates || ''}</div>
+                    ${ed.grade ? `<div class="academic-grade">${ed.grade}</div>` : ''}
+                  </div>
+                `;
+              });
+              html += `</section>`;
+            }
+            break;
 
         case 'experience':
           if (show('experience')) {

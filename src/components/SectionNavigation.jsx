@@ -36,7 +36,9 @@ export const SectionNavigator = ({
       case 'certificates': 
         return Array.isArray(data.certificates) && data.certificates.length > 0;
       case 'education': 
-        return data.education && (data.education.degree || data.education.university);
+        // Fixed: Check if education is an array and has items with meaningful content
+        return Array.isArray(data.education) && data.education.length > 0 && 
+               data.education.some(edu => edu.degree || edu.university || edu.dates || edu.grade);
       case 'courses': 
         return typeof data.courses === 'string' && data.courses.trim().length > 0;
       default: 

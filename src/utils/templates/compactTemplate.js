@@ -487,9 +487,11 @@ export class CompactProfessionalTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
+          case 'education':
           if (show('education')) {
-            const ed = cvData.education || {};
+            // Only show the first education entry
+            const educationArray = Array.isArray(cvData.education) ? cvData.education : [cvData.education];
+            const ed = educationArray[0] || {};
             const details = [ed.university, ed.dates, ed.grade].filter(Boolean);
             html += `
               <section class="compact-section">

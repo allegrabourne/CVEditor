@@ -81,7 +81,8 @@ export class CVTemplate {
       case 'certificates':
         return cvData.certificates?.length > 0;
       case 'education':
-        return cvData.education?.degree || cvData.education?.university;
+          return Array.isArray(cvData.education) && cvData.education.length > 0 && 
+                 cvData.education.some(edu => edu.degree || edu.university || edu.dates || edu.grade);
       case 'courses':
         return cvData.courses?.trim();
       default:

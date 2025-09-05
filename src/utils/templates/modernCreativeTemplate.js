@@ -248,20 +248,20 @@ export class ModernCreativeTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
-          if (show('education')) {
-            const ed = cvData.education || {};
-            html += `
-              <div class="section">
-                <div class="section-title">Education</div>
-                <div class="item">
-                  <div class="degree">${ed.degree || ''}</div>
-                  <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
-                </div>
-              </div>
-            `;
-          }
-          break;
+          case 'education':
+            if (show('education')) {
+              html += `<div class="section"><div class="section-title">Education</div>`;
+              (cvData.education || []).forEach(ed => {
+                html += `
+                  <div class="item">
+                    <div class="degree">${ed.degree || ''}</div>
+                    <div class="meta">${[ed.university, ed.dates, ed.grade].filter(Boolean).join(' • ')}</div>
+                  </div>
+                `;
+              });
+              html += `</div>`;
+            }
+            break;
 
         case 'certificates':
           if (show('certificates')) {

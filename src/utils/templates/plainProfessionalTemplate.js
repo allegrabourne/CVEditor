@@ -317,21 +317,22 @@ export class PlainProfessionalTemplate extends CVTemplate {
           }
           break;
 
-        case 'education':
-          if (this.shouldRenderSection('education', visibleSections, cvData)) {
-            html += `
-              <div class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-item">
-                  <div class="degree">${cvData.education?.degree || ''}</div>
-                  <div class="university">${cvData.education?.university || ''}</div>
-                  <div class="education-dates">${cvData.education?.dates || ''}</div>
-                  <div class="education-grade">${cvData.education?.grade || ''}</div>
-                </div>
-              </div>
-            `;
-          }
-          break;
+          case 'education':
+            if (this.shouldRenderSection('education', visibleSections, cvData)) {
+              html += `<div class="section"><h2 class="section-title">Education</h2>`;
+              (cvData.education || []).forEach(ed => {
+                html += `
+                  <div class="education-item">
+                    <div class="degree">${ed.degree || ''}</div>
+                    <div class="university">${ed.university || ''}</div>
+                    <div class="education-dates">${ed.dates || ''}</div>
+                    <div class="education-grade">${ed.grade || ''}</div>
+                  </div>
+                `;
+              });
+              html += `</div>`;
+            }
+            break;
 
         case 'certificates':
           if (this.shouldRenderSection('certificates', visibleSections, cvData)) {

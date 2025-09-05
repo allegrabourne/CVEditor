@@ -173,11 +173,11 @@ export const testData = {
         description: "A comprehensive program focused on the essential skills for developing AI applications, including machine learning, deep learning, and natural language processing."
       }
     ],
-    education: {
+    education: [{
       degree: "BSc (HONS) BUSINESS COMPUTING",
       university: "University of Teesside",
       dates: "2004 - 2008",
       grade: "With Second Class Honours Division One (2:1)"
-    },
+    }],
     courses: "Please see LinkedIn for a comprehensive list of completed courses and qualifications"
   };

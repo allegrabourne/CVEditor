@@ -136,8 +136,8 @@ export class SectionManager {
                data.certificates.some(cert => cert.title);
       
       case 'education':
-        return data.education && 
-               (data.education.degree || data.education.university);
+        return Array.isArray(data.education) && data.education.length > 0 && 
+                       data.education.some(edu => edu.degree || edu.university || edu.dates || edu.grade);
       
       case 'courses':
         return typeof data.courses === 'string' && data.courses.trim().length > 0;

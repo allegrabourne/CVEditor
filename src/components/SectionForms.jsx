@@ -291,61 +291,92 @@ export const CertificatesSection = ({
   );
 };
 
-// Education Section
-export const EducationSection = ({ education, onUpdate }) => {
+// Fixed Education Section Component
+
+export const EducationSection = ({   
+  education,
+  onAdd,
+  onUpdate,
+  onRemove 
+}) => {
   const isDark = useIsDark();
   
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Education</h3>
-      <div className={`p-6 rounded-2xl border shadow-lg ${
-        isDark 
-          ? 'bg-gray-800/95 border-gray-700' 
-          : 'bg-gray-50/95 border-gray-200'
-      }`}>
-        <div className="grid grid-cols-1 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Degree</label>
-            <input
-              type="text"
-              value={education.degree}
-              onChange={(e) => onUpdate('degree', e.target.value)}
-              placeholder="Degree Title"
-              className={getInputClasses(isDark)}
-            />
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Education</h3>
+        <button
+          onClick={onAdd}
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+        >
+          <Plus className="h-4 w-4" />
+          Add Education
+        </button>
+      </div>
+
+      {education.map((educationItem, educationIndex) => (
+        <div key={educationIndex} className={`p-6 rounded-2xl border shadow-lg ${
+          isDark 
+            ? 'bg-gray-800/95 border-gray-700' 
+            : 'bg-gray-50/95 border-gray-200'
+        }`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <GripVertical className="h-5 w-5 text-gray-400" />
+              <span className="font-medium text-gray-700 dark:text-gray-300">Education #{educationIndex + 1}</span>
+            </div>
+            <button
+              onClick={() => onRemove(educationIndex)}
+              className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">University</label>
-            <input
-              type="text"
-              value={education.university}
-              onChange={(e) => onUpdate('university', e.target.value)}
-              placeholder="University Name"
-              className={getInputClasses(isDark)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dates</label>
-            <input
-              type="text"
-              value={education.dates}
-              onChange={(e) => onUpdate('dates', e.target.value)}
-              placeholder="Study Period"
-              className={getInputClasses(isDark)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Grade/Classification</label>
-            <input
-              type="text"
-              value={education.grade}
-              onChange={(e) => onUpdate('grade', e.target.value)}
-              placeholder="Grade or Classification"
-              className={getInputClasses(isDark)}
-            />
+          
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Degree</label>
+              <input
+                type="text"
+                value={educationItem.degree}
+                onChange={(e) => onUpdate(educationIndex, 'degree', e.target.value)}
+                placeholder="Degree Title"
+                className={getInputClasses(isDark)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">University</label>
+              <input
+                type="text"
+                value={educationItem.university}
+                onChange={(e) => onUpdate(educationIndex, 'university', e.target.value)}
+                placeholder="University Name"
+                className={getInputClasses(isDark)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dates</label>
+              <input
+                type="text"
+                value={educationItem.dates}
+                onChange={(e) => onUpdate(educationIndex, 'dates', e.target.value)}
+                placeholder="Study Period"
+                className={getInputClasses(isDark)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Grade/Classification</label>
+              <input
+                type="text"
+                value={educationItem.grade}
+                onChange={(e) => onUpdate(educationIndex, 'grade', e.target.value)}
+                placeholder="Grade or Classification"
+                className={getInputClasses(isDark)}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

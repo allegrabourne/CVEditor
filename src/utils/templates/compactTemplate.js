@@ -39,8 +39,6 @@ export class CompactProfessionalTemplate extends CVTemplate {
         margin: 0 auto;
         padding: 16px;
         text-align: left;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       /* Compact header with horizontal contact layout */
@@ -48,8 +46,6 @@ export class CompactProfessionalTemplate extends CVTemplate {
         margin-bottom: 16px;
         padding-bottom: 10px;
         border-bottom: 2px solid ${c.borderAccent};
-        page-break-after: avoid;
-        break-after: avoid;
       }
 
       .cv-container .compact-name {
@@ -73,11 +69,9 @@ export class CompactProfessionalTemplate extends CVTemplate {
         color: ${c.mutedText};
       }
 
-      /* Ultra-compact sections */
+      /* Ultra-compact sections - REMOVED all page break controls */
       .cv-container .compact-section {
         margin-bottom: 14px;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       .cv-container .compact-section:last-child {
@@ -93,13 +87,9 @@ export class CompactProfessionalTemplate extends CVTemplate {
         margin-bottom: 8px;
         padding-bottom: 3px;
         border-bottom: 1px solid ${c.borderColor};
-        page-break-after: avoid;
-        break-after: avoid;
-        orphans: 2;
-        widows: 2;
       }
 
-      /* Profile - condensed with shorter line height to prevent page breaks */
+      /* Profile - condensed with shorter line height */
       .cv-container .compact-profile {
         font-size: 0.9em;
         line-height: 1.4;
@@ -108,12 +98,10 @@ export class CompactProfessionalTemplate extends CVTemplate {
         white-space: pre-line;
       }
 
-      /* Experience items - minimal spacing */
+      /* Experience items - minimal spacing - REMOVED page break controls */
       .cv-container .compact-item {
         margin-bottom: 12px;
         padding-bottom: 8px;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       .cv-container .compact-item:last-child {
@@ -121,12 +109,10 @@ export class CompactProfessionalTemplate extends CVTemplate {
         padding-bottom: 0;
       }
 
-      /* Minimal items for older positions */
+      /* Minimal items for older positions - REMOVED page break controls */
       .cv-container .compact-item-minimal {
         margin-bottom: 10px;
         padding-bottom: 6px;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       .cv-container .compact-item-minimal:last-child {
@@ -152,8 +138,6 @@ export class CompactProfessionalTemplate extends CVTemplate {
         align-items: baseline;
         margin-bottom: 4px;
         gap: 12px;
-        page-break-after: avoid;
-        break-after: avoid;
       }
 
       .cv-container .item-title {
@@ -186,13 +170,11 @@ export class CompactProfessionalTemplate extends CVTemplate {
         font-size: 0.95em;
       }
 
-      /* Compact bullet points */
+      /* Compact bullet points - REMOVED page break controls */
       .cv-container .compact-bullets {
         list-style: none;
         margin: 6px 0 0 0;
         padding: 0;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       .cv-container .compact-bullets li {
@@ -212,15 +194,13 @@ export class CompactProfessionalTemplate extends CVTemplate {
         font-weight: bold;
       }
 
-      /* Project bullets limited to 2 lines maximum */
+      /* Project bullets limited to 2 lines maximum - REMOVED page break controls */
       .cv-container .project-bullets {
         list-style: none;
         margin: 6px 0 0 0;
         padding: 0;
         max-height: 2.8em; /* 2 lines max */
         overflow: hidden;
-        page-break-inside: avoid;
-        break-inside: avoid;
       }
 
       .cv-container .project-bullets li {
@@ -273,8 +253,6 @@ export class CompactProfessionalTemplate extends CVTemplate {
         align-items: baseline;
         gap: 12px;
         margin-bottom: 4px;
-        page-break-after: avoid;
-        break-after: avoid;
       }
 
       .cv-container .project-title {
@@ -356,6 +334,7 @@ export class CompactProfessionalTemplate extends CVTemplate {
         }
       }
 
+      /* SIMPLIFIED PRINT STYLES - Only essential formatting, no page break controls */
       @media print {
         .cv-container {
           max-width: 800px !important;
@@ -363,46 +342,19 @@ export class CompactProfessionalTemplate extends CVTemplate {
           padding: 16px !important;
           font-size: 0.80em !important;
           line-height: 1.3 !important;
-          orphans: 3;
-          widows: 3;
         }
         
         .cv-container .compact-header {
-          page-break-after: avoid;
-          break-after: avoid;
           margin-bottom: 18px;
         }
         
         .cv-container .compact-section {
-          page-break-inside: avoid;
-          break-inside: avoid;
           margin-bottom: 16px;
         }
         
         .cv-container .compact-item,
         .cv-container .compact-item-minimal {
-          page-break-inside: avoid;
-          break-inside: avoid;
           margin-bottom: 14px;
-        }
-        
-        .cv-container .section-title {
-          page-break-after: avoid;
-          break-after: avoid;
-          orphans: 2;
-          widows: 2;
-        }
-        
-        .cv-container .item-header,
-        .cv-container .project-header {
-          page-break-after: avoid;
-          break-after: avoid;
-        }
-        
-        .cv-container .compact-bullets,
-        .cv-container .project-bullets {
-          page-break-inside: avoid;
-          break-inside: avoid;
         }
       }
     `;
@@ -470,7 +422,7 @@ export class CompactProfessionalTemplate extends CVTemplate {
                 `;
               } else if (index === 1) {
                 // Medium details for second position
-                const limitedResponsibilities = job.responsibilities?.slice(0, 3) || []; // Max 4 bullets
+                const limitedResponsibilities = job.responsibilities?.slice(0, 3) || []; // Max 3 bullets
                 html += `
                   <div class="compact-item">
                     <div class="item-header">
@@ -502,7 +454,7 @@ export class CompactProfessionalTemplate extends CVTemplate {
                   </div>
                 `;
               } else if (index === 3) {
-                const limitedResponsibilities = job.responsibilities?.slice(0, 1) || []; // Max 1 bullets
+                const limitedResponsibilities = job.responsibilities?.slice(0, 1) || []; // Max 1 bullet
                 html += `
                   <div class="compact-item">
                     <div class="item-header">
@@ -518,7 +470,7 @@ export class CompactProfessionalTemplate extends CVTemplate {
                   </div>
                 `;
               } else if (index < 8) {
-                // Title-only for positions 3-8
+                // Title-only for positions 4-7
                 html += `
                   <div class="compact-item-minimal">
                     <div class="item-header">

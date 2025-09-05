@@ -461,7 +461,7 @@ export const ProfileManager = ({
                       <button
                         onClick={() => handleExportProfile(profile.id, 'json')}
                         className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
-                        title="Save profile to file"
+                        title="Export profile to file"
                       >
                         <Download className="h-4 w-4" />
                       </button>

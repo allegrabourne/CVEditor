@@ -1,9 +1,9 @@
 export const testData = {
     personalDetails: {
       name: "Allegra Bourne",
-      phone: "(+44) 7854 943 193",
-      address: "14 Lewis Road, Northallerton, North Yorkshire, UK. DL6 3RX",
-      email: "allegrabourne@gmail.com",
+      phone: "(+44) 7899 999 999",
+      address: "99 Spring Field, Nottingham, Yorkshire, UK. SP6 8SP",
+      email: "ally@notmyemail.com",
       website: "allegrabourne.github.io/"
     },
     profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nAdvocate of mentoring and collaboration. Seeking to contribute technical expertise to innovative projects.",

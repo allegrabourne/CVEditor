@@ -1,7 +1,7 @@
 /* App.css - Global styles and drag-drop styles */
 
 .App {
-    text-align: center;
+   
   }
   
   /* Drag and drop styles */
@@ -32,65 +32,53 @@
   }
   
   /* Preview theme styles */
-  .light-preview {
+  .cv-preview.light-theme {
     background: white;
     color: #333;
   }
   
-  .dark-preview {
+  .cv-preview.dark-theme {
     background: #18181b;
     color: #e4e4e7;
   }
   
-  .dark-preview .header h1 {
+  /* Scoped dark-theme overrides — ONLY inside the preview panel */
+  .cv-preview.dark-theme .header h1 {
     color: #a5b4fc !important;
   }
   
-  .dark-preview .personal-details {
+  .cv-preview.dark-theme .personal-details {
     background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(196, 181, 253, 0.1)) !important;
     border: 1px solid #374151 !important;
   }
   
-  .dark-preview .personal-details h2 {
+  .cv-preview.dark-theme .personal-details h2 {
     color: #a5b4fc !important;
     border-bottom: 1px solid #a5b4fc !important;
   }
   
-  .dark-preview .contact-item strong {
+  .cv-preview.dark-theme .contact-item strong {
     color: #a5b4fc !important;
   }
   
-  .dark-preview .section h2 {
+  .cv-preview.dark-theme .section h2 {
     color: #a5b4fc !important;
     border-bottom: 2px solid #a5b4fc !important;
     background: linear-gradient(90deg, rgba(165, 180, 252, 0.1), transparent) !important;
   }
   
-  .dark-preview .job-title {
-    color: #a5b4fc !important;
-  }
+  .cv-preview.dark-theme .job-title { color: #a5b4fc !important; }
+  .cv-preview.dark-theme .company { color: #e4e4e7 !important; }
+  .cv-preview.dark-theme .dates { color: #9ca3af !important; }
   
-  .dark-preview .company {
-    color: #e4e4e7 !important;
-  }
-  
-  .dark-preview .dates {
-    color: #9ca3af !important;
-  }
-  
-  .dark-preview .company-description {
+  .cv-preview.dark-theme .company-description {
     color: #9ca3af !important;
     background: rgba(165, 180, 252, 0.08) !important;
     border-left: 2px solid #a5b4fc !important;
   }
   
-  .dark-preview .technologies {
-    color: #c4b5fd !important;
-  }
-  
-  .dark-preview .certificate .job-title {
-    color: #a5b4fc !important;
-  }
+  .cv-preview.dark-theme .technologies { color: #c4b5fd !important; }
+  .cv-preview.dark-theme .certificate .job-title { color: #a5b4fc !important; }
   
   /* Animation classes */
   @keyframes fadeIn {

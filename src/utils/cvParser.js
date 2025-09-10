@@ -451,7 +451,7 @@ export function makeDefaultCV() {
   return {
     personalDetails: { name: '', phone: '', address: '', email: '', website: '' },
     profile: '',
-    education: { degree: '', university: '', dates: '', grade: '' },
+    education: [{ degree: '', university: '', dates: '', grade: '' }],
     workExperience: [],
     personalProjects: [],
     certificates: [],

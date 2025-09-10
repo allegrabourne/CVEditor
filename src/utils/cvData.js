@@ -1,9 +1,9 @@
 export const testData = {
     personalDetails: {
       name: "Allegra Bourne",
-      phone: "(+44) 7854 943 193",
-      address: "14 Lewis Road, Northallerton, North Yorkshire, UK. DL6 3RX",
-      email: "allegrabourne@gmail.com",
+      phone: "(+44) 7899 999 999",
+      address: "99 Spring Field, Nottingham, Yorkshire, UK. SP6 8SP",
+      email: "ally@notmyemail.com",
       website: "allegrabourne.github.io/"
     },
     profile: "Software Engineer with 15+ years of experience delivering event driven, AI powered and scalable solutions for local, national and multinational businesses in both the private and public sectors across diverse industries, including finance, supply chain and transportation systems.\n\nAdept at translating business requirements into technical solutions and working with modern development frameworks, cloud services, and enterprise messaging solutions with an emphasis on test-driven development and design patterns.\n\nAdvocate of mentoring and collaboration. Seeking to contribute technical expertise to innovative projects.",
@@ -17,6 +17,7 @@ export const testData = {
           "Development of new Consignment Delivery Management portal with API development utilising Fast Endpoints, messaging via Azure ServiceBus and Angular for UI development.",
           "Worked to develop the new Landed Cost portal, a project which helped to retain Myer; Australia's largest department store, as a customer. Providing Myer with accurate landed cost and end-to-end visibility of their supply chain, from production confirmation, to freight booking, through to delivery to stores spanning Australia.",
           "Azure DevOps / Octopus Deploy for CI and release management, creation and maintenance of deployment pipelines inline with industry practice.",
+           "Development of the Ligentix supply chain platform, giving the customer the most cost-effective, efficient version of their supply chain.",
           "Blazor utilised for the developmental concept for the new Client onboarding web application.",
           "Business analysis of legacy processes where knowledge had been lost with a view of replacing them with newer tech stacks."
         ]
@@ -172,11 +173,11 @@ export const testData = {
         description: "A comprehensive program focused on the essential skills for developing AI applications, including machine learning, deep learning, and natural language processing."
       }
     ],
-    education: {
+    education: [{
       degree: "BSc (HONS) BUSINESS COMPUTING",
       university: "University of Teesside",
       dates: "2004 - 2008",
       grade: "With Second Class Honours Division One (2:1)"
-    },
+    }],
     courses: "Please see LinkedIn for a comprehensive list of completed courses and qualifications"
   };

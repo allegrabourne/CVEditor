@@ -234,11 +234,11 @@ export class AcademicClassicTemplate extends CVTemplate {
         }
         
         .cv-container .academic-header {
-          page-break-after: avoid;
+
         }
         
         .cv-container .academic-item {
-          page-break-inside: avoid;
+     
         }
       }
     `;

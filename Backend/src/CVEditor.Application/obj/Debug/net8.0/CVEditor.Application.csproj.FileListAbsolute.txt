@@ -1,0 +1,16 @@
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\bin\Debug\net8.0\CVEditor.Application.deps.json
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\bin\Debug\net8.0\CVEditor.Application.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\bin\Debug\net8.0\CVEditor.Application.pdb
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\bin\Debug\net8.0\CVEditor.Domain.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\bin\Debug\net8.0\CVEditor.Domain.pdb
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.csproj.AssemblyReference.cache
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.AssemblyInfoInputs.cache
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.AssemblyInfo.cs
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.csproj.CoreCompileInputs.cache
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.sourcelink.json
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.362A98EF.Up2Date
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\refint\CVEditor.Application.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\CVEditor.Application.pdb
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Application\obj\Debug\net8.0\ref\CVEditor.Application.dll

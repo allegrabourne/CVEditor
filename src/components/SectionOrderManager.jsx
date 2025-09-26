@@ -38,7 +38,7 @@ const SectionOrderManager = ({
       case 'certificates':
         return cvData.certificates.length > 0;
       case 'education':
-        return cvData.education.degree || cvData.education.university;
+        return cvData.education.length > 0;
       case 'courses':
         return cvData.courses && cvData.courses.trim();
       default:

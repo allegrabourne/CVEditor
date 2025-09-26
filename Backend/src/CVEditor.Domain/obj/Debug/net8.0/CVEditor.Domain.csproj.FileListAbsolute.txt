@@ -1,0 +1,12 @@
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\bin\Debug\net8.0\CVEditor.Domain.deps.json
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\bin\Debug\net8.0\CVEditor.Domain.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\bin\Debug\net8.0\CVEditor.Domain.pdb
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.AssemblyInfoInputs.cache
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.AssemblyInfo.cs
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.sourcelink.json
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\refint\CVEditor.Domain.dll
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\CVEditor.Domain.pdb
+C:\Users\Allegra.Weston\Downloads\CVEditor\Backend\src\CVEditor.Domain\obj\Debug\net8.0\ref\CVEditor.Domain.dll
